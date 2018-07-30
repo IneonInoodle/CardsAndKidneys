@@ -133,8 +133,8 @@ public class PlayerManager : TurnManager {
 
         if (mySide == location.bottom)
 
-        StartCoroutine(playerMover.MoveIntoEnzone(boardManager.Bottom));
-        else StartCoroutine(playerMover.MoveIntoEnzone(boardManager.Top));
+        StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
+        else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
 
         turnsOnBoard = 1;
         ActionPoints = 0;
@@ -147,8 +147,23 @@ public class PlayerManager : TurnManager {
         // respawn in endzone in endzone
     }
 
-    public void StealKidney()
+    public void CaptureKidney()
     {
+        Debug.Log("hey");
+        if ((playerKidneys.Count > 0))
+        {
+            Debug.Log("boo");
+            foreach (GameObject t in playerKidneys)
+            {
+                patientKidneys.Add(t);
+                t.transform.SetParent(Patient.transform, false);
+                playerKidneys.Remove(t);
+            }
+             // give player the kidney
+             //set kidney to be parentet to playercard
+
+            
+        }
         //check if inside of enemy endzone and enemy has kidney
         // check if have room for kidney
 
@@ -231,18 +246,7 @@ public class PlayerManager : TurnManager {
         //
     }
 
-    public void MoveKidneyFromCardToDoctor()
-    {
-        
-        if (playerKidneys.Count > 0) // check if kidney on card and if player has room for kidney
-        {
-            Debug.Log("Move Kidney from Card to Doctor");
-            playerKidneys[0].transform.SetParent(Doctor.transform, false);
-        }
-        //add kidney to playeer
-        //remove kidney from gameboard
-        //
-    }
+
 
 
     public void takeDamage(OneCardManager c)

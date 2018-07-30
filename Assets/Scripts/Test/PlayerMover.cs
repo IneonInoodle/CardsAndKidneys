@@ -69,10 +69,10 @@ public void setPlayerArrows(arrows arrowz)
             StartCoroutine(MoveOutOfEndzone(des));
         } else if (des.Y == -1) // check if move endzone top
         {
-            StartCoroutine(MoveIntoEnzone(boardManager.Top));
+            StartCoroutine(MoveIntoEndzone(boardManager.Top));
         } else if (des.Y == 2) // ,move to endzone bottom
         {
-            StartCoroutine(MoveIntoEnzone(boardManager.Bottom));
+            StartCoroutine(MoveIntoEndzone(boardManager.Bottom));
         } else // move on board
         {
             Debug.Log(des.X + " " + des.Y);
@@ -126,17 +126,18 @@ public void setPlayerArrows(arrows arrowz)
         }
     }
    
-    public IEnumerator MoveIntoEnzone(GameObject des)
+    public IEnumerator MoveIntoEndzone(GameObject des)
     {
         Debug.Log("moveintoendzone");
         //needs to be coroutinetm
         isMoving = true;
-     
-        playerManager.MoveKidneyFromCardToDoctor();
+        Debug.Log("moveintoendzone");
         playerManager.Doctor.transform.position = des.transform.position; // move doctor image
         playerManager.Doctor.SetActive(true); // make visable
 
-        boardManager.DeleteCard(playerManager.myCardManager); // delete player card
+
+        Debug.Log("moveintoendzone");
+        // delete player card
 
         if (des.name == "Top")
         {
@@ -148,15 +149,25 @@ public void setPlayerArrows(arrows arrowz)
         // if pressed down
         if (des.name == "Bottom")
         {
+            Debug.Log("moveintoendzone");
             playerManager.point.X = 1;
             playerManager.point.Y = 2;
             playerManager.myLocation = location.bottom;
             playerManager.arrows = arrows.Up | arrows.Left | arrows.Right;
         }
 
+            if (playerManager.myLocation == playerManager.mySide)
+            {
+                Debug.Log("fuck you");
+                playerManager.CaptureKidney(); // capture kidney
+            }
+      
+
+        boardManager.DeleteCard(playerManager.myCardManager);
         yield return new WaitForSeconds(0.5f);
 
         
+
         playerManager.myCardManager = null;
         playerManager.ActionPoints = 0;
 

@@ -44,16 +44,16 @@ public class OneCardManager : MonoBehaviour {
         switch (rand)
         {
             case 0:
-                arrows = arrows.Up | arrows.Left; 
+                arrows = arrows.Up | arrows.Left | arrows.Down | arrows.Right; 
                 break;
             case 1:
-                arrows = arrows.Up | arrows.Right;
+                arrows = arrows.Up | arrows.Left | arrows.Down | arrows.Right;
                 break;
             case 2:
-                arrows = arrows.Down | arrows.Left;
+                arrows = arrows.Up | arrows.Left | arrows.Down | arrows.Right;
                 break;
             case 3:
-                arrows = arrows.Down | arrows.Right;
+                arrows = arrows.Up | arrows.Left | arrows.Down | arrows.Right;
                 break;
         }
     }
@@ -77,10 +77,11 @@ private int adjencyBonus;
         }
         set
         {
-            adjencyBonus = value;
-            DamageText.text = (cardAsset.Damage + adjencyBonus).ToString();
-            if (adjencyBonus > 0)
+           
+            if (adjencyBonus > 0 && adjencyBonus != value)
             {
+                adjencyBonus = value;
+                DamageText.text = (cardAsset.Damage + adjencyBonus).ToString();
                 DamageText.color = Color.green;
                 StartCoroutine(FlipThisCard());
             } 

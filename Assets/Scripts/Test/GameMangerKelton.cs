@@ -133,7 +133,8 @@ public class GameMangerKelton : MonoBehaviour {
     IEnumerator EndLevelRoutine()
     {
         Debug.Log("EndLevelRoutine");
-
+        players[0].playerInput.InputEnabled = false;
+        players[1].playerInput.InputEnabled = false;
         if (endLevelEvent != null)
         {
             endLevelEvent.Invoke();
@@ -244,6 +245,10 @@ public class GameMangerKelton : MonoBehaviour {
                 
                 Debug.Log("YouLoose");
             }
+        } else if (player.patientKidneys.Count == 2)
+        {
+            messageManager.ShowMessage("You Win", 2f);
+            isGameOver = true;
         }
 
         player.playerInput.InputEnabled = true;
