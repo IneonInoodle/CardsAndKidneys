@@ -8,7 +8,7 @@ public class CardSlotManager : MonoBehaviour {
     public int indRow;
     public int indCol;
     
-    // how now brown cow
+    // how now 
 
     public GameObject Card;
     public List<GameObject> Kidneys = new List<GameObject>();
