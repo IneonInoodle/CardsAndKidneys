@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameMangerKelton : MonoBehaviour {
     //switch players turn 
 
     public PlayerManager[] players;
+    public PlayerManager CurrentPlayerTurn;
 
-    public PlayerManager CurrentPlayerTurn; 
+    public SoundManager soundManager;
+    public MessageManager messageManager;
+
+    public GameObject DamagePrefab;
+
+
 
     BoardManager  board;
 
@@ -62,7 +69,6 @@ public class GameMangerKelton : MonoBehaviour {
             PlayLevel();
 
             // for testing
-            PlayPlayerTurn(players[1]);
 
 
         }
@@ -84,9 +90,7 @@ public class GameMangerKelton : MonoBehaviour {
 
         //for testing 
 
-        yield return StartCoroutine(board.UpdateBoard());
-        players[1].playerInput.InputEnabled = true;
-        players[0].playerInput.InputEnabled = false;
+        
         /* while (!hasLevelStarted)
          {   
              //show start screen
@@ -130,11 +134,6 @@ public class GameMangerKelton : MonoBehaviour {
     {
         Debug.Log("EndLevelRoutine");
 
-        foreach (PlayerManager p in players)
-        {
-            p.playerInput.InputEnabled = false;
-        }
-
         if (endLevelEvent != null)
         {
             endLevelEvent.Invoke();
@@ -160,10 +159,22 @@ public class GameMangerKelton : MonoBehaviour {
     public void PlayLevel()
     {
         hasLevelStarted = true;
+        StartCoroutine(UpdateTurn());
     }
-
+    public PlayerManager getOtherPlayer(PlayerManager p)
+    {
+        if (players[0] == p) return players[1];
+        else return players[0];
+    }
     public IEnumerator UpdateTurn()
     {
+        Debug.Log("what");
+        if (CurrentPlayerTurn == null)
+        {
+            //for first round here we do a trick, set the condition as if enemy just finished playing
+            CurrentPlayerTurn = players[0];
+            players[0].IsTurnComplete = true;
+        }
         Debug.Log("update turn");
         //changes player turn 
         if (CurrentPlayerTurn == players[0])
@@ -171,9 +182,19 @@ public class GameMangerKelton : MonoBehaviour {
             if (players[0].IsTurnComplete)
             {
                 players[0].playerInput.InputEnabled = false;
-                yield return StartCoroutine(board.UpdateBoard());    
-                players[1].playerInput.InputEnabled = true;
+                players[0].button.interactable = false;
+                players[0].PortaitGlowImage.enabled = false;
+
+                if (players[0].myCardManager != null)
+                    players[0].myCardManager.CardFaceGlowImage.enabled = false;
+                players[0].EndTurnGlowImage.enabled = false;
+
+                messageManager.ShowMessage("Your Turn", 2f);
+                yield return StartCoroutine(board.UpdateBoard());
+
+                CurrentPlayerTurn = players[1];
                 PlayPlayerTurn(players[1]);
+                
             }
         }
         else if (CurrentPlayerTurn == players[1])
@@ -182,8 +203,18 @@ public class GameMangerKelton : MonoBehaviour {
             {
 
                 players[1].playerInput.InputEnabled = false;
+                players[1].button.interactable = false;
+                players[1].PortaitGlowImage.enabled = false;
+
+                if (players[1].myCardManager != null)
+                    players[1].myCardManager.CardFaceGlowImage.enabled = false;
+                players[1].EndTurnGlowImage.enabled = false;
+
+                messageManager.ShowMessage("Enemy Turn", 2f);
                 yield return StartCoroutine(board.UpdateBoard());
                 players[0].playerInput.InputEnabled = true;
+
+                CurrentPlayerTurn = players[0];
                 PlayPlayerTurn(players[0]);
             }
         }
@@ -200,11 +231,40 @@ public class GameMangerKelton : MonoBehaviour {
         
 
     public void PlayPlayerTurn(PlayerManager player)
-    {
+    {   
+        if (player.patientKidneys.Count  == 0)
+        {
+            player.turnsWithoutKidney++;
+            Debug.Log("TurnWithoutKidney " + player.turnsWithoutKidney);
+            
+            if (player.turnsWithoutKidney == 2)
+            {
+                messageManager.ShowMessage("You Loose Boy", 2f);
+                isGameOver = true;
+                
+                Debug.Log("YouLoose");
+            }
+        }
+
+        player.playerInput.InputEnabled = true;
+        player.button.interactable = true;
+
+
+        
         if (player.myLocation == location.board)
         {
-            player.turnsOnBoard++; 
+            player.turnsOnBoard++;
+            player.myCardManager.CardFaceGlowImage.enabled = true;
+        } else
+        {
+            player.PortaitGlowImage.enabled = true;
         }
+
+        if (player.Hp == 0)
+        {
+            player.Hp = 10;
+        }
+
         player.ActionPoints = player.turnsOnBoard;
         CurrentPlayerTurn = player;
         player.IsTurnComplete = false;

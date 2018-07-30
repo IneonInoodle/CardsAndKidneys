@@ -4,13 +4,47 @@ using DG.Tweening;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System;
+
+
 
 public enum location { top, bottom, board };
+
+[Flags]
+public enum arrows
+{
+    None = 0,
+    Up = 1 << 0,
+    Down = 1 << 1,
+    Left = 1 << 2,
+    Right = 1 << 3
+}
+
+
+
+//
+//            NOTES
+//
+/*
+// same combinations
+UpandDown = Up | Down,
+ OneTwoAndThree = One | Two | Three,
+ */
+/*[Flags]
+public enum arrows
+{
+    up = 1,
+    down = 2,
+    left = 4,
+    right = 8
+}*/
 
 [RequireComponent(typeof(PlayerMover))]
 [RequireComponent(typeof(PlayerInput))]
 
 public class PlayerManager : TurnManager {
+
+    public arrows arrows = arrows.None;
 
     public PlayerMover playerMover;
     public PlayerInput playerInput;
@@ -18,9 +52,6 @@ public class PlayerManager : TurnManager {
     public Text HpText;
     public Text ActionPointsText;
 
-    
-
-    public CardSlotManager mySlot;
     public OneCardManager myCardManager;
     public GameObject myPlayerCard;
     public GameObject PlayerCardPrefab;
@@ -29,11 +60,17 @@ public class PlayerManager : TurnManager {
     public GameObject Doctor;
     public GameObject Patient;
 
+    public Button button;
+
+    private GameMangerKelton gm;
+    public Image PortaitGlowImage;
+    public Image EndTurnGlowImage;
     // Kidneys shit 
     public GameObject KidneyPrefab;
     public List<GameObject> patientKidneys = new List<GameObject>(); //kidneys safe in the patient
     public List<GameObject> playerKidneys = new List<GameObject>();  //kidney on board that player has
 
+    public int turnsWithoutKidney;
     // movement points
     // need to know which side is theirs
     // needs to have connections to card Elements?
@@ -43,12 +80,9 @@ public class PlayerManager : TurnManager {
     public location myLocation;
 
     public int turnsOnBoard;
-
+    public Point point;
     public UnityEvent finishTurnEvent;
     
-
-
-
     public int actionPoints;
     public int ActionPoints
     {
@@ -61,7 +95,10 @@ public class PlayerManager : TurnManager {
             actionPoints = value;
             ActionPointsText.text = (actionPoints.ToString() + " / " + turnsOnBoard.ToString());
             if (actionPoints == 0)
-            {
+            {   
+                if (myLocation == location.board)
+                    myCardManager.CardFaceGlowImage.enabled = false;
+                EndTurnGlowImage.enabled = true;
                 // end turn
             }
         }
@@ -84,68 +121,8 @@ public class PlayerManager : TurnManager {
             }
         }
     }
-    public int drawCards;
     
-    public void spawnPlayerCardAtSlot(CardSlotManager c, GameObject cardPrefab, GameObject initPos)
-    {
-        Debug.Log("ffs");
-        OneCardManager CardManagerToDelete;
-        //TODO Should rename this method to spawn player card at spot 
-        // TODO save damage from card here before delet and apply to playercard
-        // also needs to set arrows 
-        // shares lots in common with move 
-
-        Debug.Log("spawning card at slot " +  c.indCol.ToString() + "  "  + c.indRow.ToString());
-        if (c != null) {
-
-            myPlayerCard = Instantiate(cardPrefab);
-            myCardManager = myPlayerCard.GetComponent<OneCardManager>(); // save card manager
-            myCardManager.myCardSlot = c;   //needed to connect bad programming?
-
-           
-
-            CardManagerToDelete = c.Card.GetComponent<OneCardManager>();
-
-            
-            c.Card = myPlayerCard; // card slot need to know what card it now has
-
-            // c.Card = Instantiate(cardPrefab);
-            // myPlayerCard = c.Card; //save our card here
-
-            mySlot = c; //save slot of our card
-                        //add player to board
-                        // spawn card
-
-            myCardManager = myPlayerCard.GetComponent<OneCardManager>(); // save card manager
-            myCardManager.myCardSlot = c;   //needed to connect bad programming?
-
-            myPlayerCard.transform.position = initPos.transform.position; 
-            myPlayerCard.transform.DOMove(c.transform.position, 1f); //set to correct position
-
-            boardManager.EmptyCardSlots.Remove(mySlot);
-            boardManager.EmptyCardSlots.Remove(mySlot); // remove empty list from list
-
-            if (myLocation != mySide)
-            {
-                Debug.Log("stealkidney");
-            }
-
-            myLocation = location.board; // we spawned player card in, so we can be certain it is on the board
-
-
-            playerMover.setPlayerArrows(CardManagerToDelete);
-
-            PickUpKidneyFromBoard();
-            takeDamage((CardManagerToDelete));  //take damage from field card
-
-            turnsOnBoard = 1;
-            ActionPoints = 0;
-            
-
-            StartCoroutine(CardManagerToDelete.DeleteThisCard()); // Delete Field card
     
-        }  
-    }
 
     public void Die()
     {
@@ -155,9 +132,9 @@ public class PlayerManager : TurnManager {
         DropKidney(); //drops kidney if possible
 
         if (mySide == location.bottom)
+
         StartCoroutine(playerMover.MoveIntoEnzone(boardManager.Bottom));
         else StartCoroutine(playerMover.MoveIntoEnzone(boardManager.Top));
-
 
         turnsOnBoard = 1;
         ActionPoints = 0;
@@ -185,17 +162,20 @@ public class PlayerManager : TurnManager {
 
     public void DropKidney()
     {
-        
+        CardSlotManager cardslot;
+
+        cardslot = boardManager.FindSlotAtPoint(point);
+
         if (playerKidneys.Count > 0)
         {
             Debug.Log("Dropping Kidney");
             //player has a kidney? //the kidney now needs to be dropped onto the card slot 
-            mySlot.Kidneys.Add(playerKidneys[0]); //get first kidney in list
+            cardslot.Kidneys.Add(playerKidneys[0]); //get first kidney in list
 
             // kid.SetParent(b,WorldPositionStayTheSame);
 
             //this should move the kidney to be parented to the cardslot
-            playerKidneys[0].transform.SetParent(mySlot.transform, false);
+            playerKidneys[0].transform.SetParent(cardslot.transform, false);
             playerKidneys.Remove(playerKidneys[0]); // remove kidney from player
         }
         //add kidney to cardslot
@@ -205,31 +185,36 @@ public class PlayerManager : TurnManager {
 
     public void PickUpKidneyFromBoard()
     {
+        CardSlotManager cardslot;
+
+        cardslot = boardManager.FindSlotAtPoint(point);
         
-        if (mySlot.Kidneys.Count > 0 && playerKidneys.Count == 0) // check if kidney on card and if player has room for kidney
+        if (cardslot.Kidneys.Count > 0 && playerKidneys.Count == 0) // check if kidney on card and if player has room for kidney
         {
             Debug.Log("pickupKidney");
-            playerKidneys.Add(mySlot.Kidneys[0]); // give player the kidney
-            
-            mySlot.Kidneys[0].transform.SetParent(myPlayerCard.transform, false); //set kidney to be parentet to playercard
-            mySlot.Kidneys.Remove(mySlot.Kidneys[0]); // remove kidney from cardslot
+            playerKidneys.Add(cardslot.Kidneys[0]); // give player the kidney
+
+            cardslot.Kidneys[0].transform.SetParent(myPlayerCard.transform, false); //set kidney to be parentet to playercard
+            cardslot.Kidneys.Remove(cardslot.Kidneys[0]); // remove kidney from cardslot
         }
         //add kidney to playeer
         //remove kidney from gameboard
         //
     }
 
-    public void PickUpKidneyFromEnemy()
+    public void PickUpKidneyFromEnemyPatient()
     {
-        if (playerKidneys.Count == 0) // && OtherPlayer.patientKidneys != null
-        {   
-            /*
-            playerKidneys.Add(OtherPlayer.patientKidneys[0]); // give player the kidney
+        
+        PlayerManager otherPlayer = gm.getOtherPlayer(this);
 
-            OtherPlayer.patientKidneys[0].transform.SetParent(myPlayerCard.transform, false); //set kidney to be parentet to playercard
-            mySlot.Kidneys.Remove(mySlot.Kidneys[0]); // remove kidney from cardslot
-            OtherPlayer.patientKidneys.Remove(OtherPlayer.patientKidneys[0]);
-            */ 
+        if (playerKidneys.Count == 0 && otherPlayer.patientKidneys != null) // && OtherPlayer.patientKidneys != null
+        {   
+            if (otherPlayer.mySide == myLocation){
+                playerKidneys.Add(otherPlayer.patientKidneys[0]); // give player the kidney
+                otherPlayer.patientKidneys[0].transform.SetParent(myPlayerCard.transform, false); //set kidney to be parentet to playercard
+                
+                otherPlayer.patientKidneys.Remove(playerKidneys[0]);
+            }
         }
     }
 
@@ -262,26 +247,55 @@ public class PlayerManager : TurnManager {
 
     public void takeDamage(OneCardManager c)
     {   
+       
+
         if (c != null)
         {
             int damage = int.Parse(c.DamageText.text);
+            
+            if (myLocation == location.board)
+            {
+                Debug.Log("fuck");
+                DamageEffect.CreateDamageEffect(myPlayerCard, damage);
+
+            } else
+            {
+                Debug.Log("fuck");
+                DamageEffect.CreateDamageEffect(Doctor, damage);
+            }
+            
             Debug.Log(damage);
-           Hp -= damage;
+            
+            Hp -= damage;
 
             if (Hp <= 0) Die();
         }
     }
 
+    
+
+
+    /*public void TakeDamage(int amount, int healthAfter)
+    {
+        if (amount > 0)
+        {
+            Hp -= amount;
+            //DamageEffect.CreateDamageEffect(transform.position, amount);
+
+            if (Hp <= 0) Die();
+        }
+    }*/
 
     protected override void Awake()
     {
         base.Awake();
         boardManager = BoardManager.Instance;
+        gm = UnityEngine.Object.FindObjectOfType<GameMangerKelton>().GetComponent<GameMangerKelton>(); // could 
 
-        turnsOnBoard = 1;
-        ActionPoints = 1;
+        turnsOnBoard = 5;
+        ActionPoints = 5;
         
-        Hp = 20;
+        Hp = 40;
         // for testing // this spawns a player card
 
         // instantate kideny object and assign add it to the list 
@@ -294,9 +308,17 @@ public class PlayerManager : TurnManager {
         if (mySide == location.bottom)
         {
             myLocation = location.bottom;
+            point.X = 1;
+            point.Y = 2;
+            arrows = arrows.Up | arrows.Left | arrows.Right;
+
+
         } else // top player
-        {
+        {   
             myLocation = location.top;
+            point.X = 1;
+            point.Y = -1;
+            arrows = arrows.Down | arrows.Left | arrows.Right;
         }
         
 
@@ -326,39 +348,25 @@ public class PlayerManager : TurnManager {
     // Update is called once per frame
     void Update () {
 
+        if (playerMover.isMoving || gameManager.CurrentPlayerTurn != this) // dont allow second move if already moving 
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.X))
         {
             Debug.Log("kidney");
             //Generate();
-
             Die();
-
-
         }
 
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            Debug.Log("test");
-            //Generate();
-
-           
-
-
-        }
-
-        if (playerMover.isMoving || gameManager.CurrentPlayerTurn !=  this) // dont allow second move if already moving 
-        {
-            //Debug.Log("returning");
-            return;
-        }
+        
 
         playerInput.GetKeyInput(); // get input
        
         // 2 loops so diagonals not possible
         if (playerInput.V == 0)
         {
-            
             if (playerInput.H < 0)
             {
                 playerMover.MoveLeft();

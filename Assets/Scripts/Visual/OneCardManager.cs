@@ -29,25 +29,46 @@ public class OneCardManager : MonoBehaviour {
 
     public Image CardFaceFrameImage;
     public Image CardFaceGlowImage;
-    public Image CardBackGlowImage;
+    public Image CardFaceInnerGlowImage;
 
-    public CardSlotManager myCardSlot;
+    public Point point;
 
-    // field card
-    private int adjencyBonus = 0;
-    private int multiplier;
+    public arrows arrows = arrows.None;
 
-    enum Directions
+    public void setRandomArrows()
     {
-        up=1,
-        dn=2,
-        le=4,
-        ri=8
+        int range = 4;
+
+        int rand = Random.Range(0, range);
+
+        switch (rand)
+        {
+            case 0:
+                arrows = arrows.Up | arrows.Left; 
+                break;
+            case 1:
+                arrows = arrows.Up | arrows.Right;
+                break;
+            case 2:
+                arrows = arrows.Down | arrows.Left;
+                break;
+            case 3:
+                arrows = arrows.Down | arrows.Right;
+                break;
+        }
     }
 
-    //if (flags&up)!=0;
+    public void updateArrows(arrows arrowz) {
 
-    //playerCard
+        CardArrowLeftImage.enabled = (arrowz & arrows.Left) != 0;
+        CardArrowRightImage.enabled = (arrowz & arrows.Right) != 0;
+        CardArrowDownImage.enabled = (arrowz & arrows.Down) != 0;
+        CardArrowUpImage.enabled = (arrowz & arrows.Up) != 0;
+        
+    }
+// field card
+//playerCard
+private int adjencyBonus;
     public int AdjencyBonus
     {
         get
@@ -57,7 +78,7 @@ public class OneCardManager : MonoBehaviour {
         set
         {
             adjencyBonus = value;
-            DamageText.text = (cardAsset.Damage + (adjencyBonus * multiplier)).ToString();
+            DamageText.text = (cardAsset.Damage + adjencyBonus).ToString();
             if (adjencyBonus > 0)
             {
                 DamageText.color = Color.green;
@@ -86,10 +107,16 @@ public class OneCardManager : MonoBehaviour {
     }
 
     void Awake()
-    {
+    {   
         if (cardAsset != null)
             ReadCardFromAsset();
-    }
+
+
+        setRandomArrows();
+        updateArrows(arrows);//meh
+        //CardFaceInnerGlowImage.enabled = false;
+        CardFaceGlowImage.enabled = false; 
+}
 
     private bool isMoveOption = false;
     public bool IsMoveOption
@@ -135,7 +162,6 @@ public class OneCardManager : MonoBehaviour {
             //add text and monster icon
             DamageText.text = cardAsset.Damage.ToString();
             CardTypeImage.sprite = cardAsset.CardTypeImage;
-            multiplier = cardAsset.Multiplyer;//fix case
 
             // set one arrow up/down 50/50 chance
             if (Random.value < 0.5f) { CardArrowUpImage.enabled = false; }
@@ -170,57 +196,8 @@ public class OneCardManager : MonoBehaviour {
     }
 
 
-    public List<CardSlotManager> GetNeighborsSlots()
-    {
-        List<CardSlotManager> nList = new List<CardSlotManager>();
-
-        if (myCardSlot != null)
-        {
-            
-            CardSlotManager FoundNeighbor;
-
-            foreach (Vector2 dir in directions)
-            {
-                //check in board 
-                if (myCardSlot.indRow + (int)dir.x < 2 //BoardManager.Instance.AllSlots.GetLength(0)
-                    && myCardSlot.indRow + (int)dir.x >= 0
-                    && myCardSlot.indCol + (int)dir.y < 3 //BoardManager.Instance.AllSlots.GetLength(1)
-                    && myCardSlot.indCol + (int)dir.y >= 0)
-                {
-                    FoundNeighbor = BoardManager.Instance.AllSlots[myCardSlot.indRow + (int)dir.x,
-                                             myCardSlot.indCol + (int)dir.y];
-                    if (FoundNeighbor != null && !nList.Contains(FoundNeighbor))
-                    {
-                        nList.Add(FoundNeighbor);
-                    }
-                }
-            }
-        }
-        return nList;
-    }
-    public void SetAdjencyBonus()
-    {   // maybe move into field card manager
-        //maybe add check to see if this card itself if fieldcard if this.cardAsset.Damage != 0
-
-        List<CardSlotManager> Neigbors = GetNeighborsSlots();
-        int bonus = 0;
-
-        foreach (CardSlotManager t in Neigbors)
-        {
-            if (t.Card != null)
-            {
-                //had to do three shitty loops here
-                if (t.Card.GetComponent<OneCardManager>() != null)
-                {
-                    if (t.Card.GetComponent<OneCardManager>().cardAsset.Damage != 0) // check if field card
-                    {
-                        bonus += 1;
-                    }
-                }                   
-            }
-        }
-        AdjencyBonus = bonus;
-    }
+    
+   
 
     public IEnumerator FlipThisCard()
     {
@@ -246,11 +223,4 @@ public class OneCardManager : MonoBehaviour {
         Debug.Log("destroy");
         Destroy(this.gameObject);   
     }
-    public static readonly Vector2[] directions =
-    {
-        new Vector2(1,0),  //down
-        new Vector2(-1,0), //up
-        new Vector2(0,1),  //right
-        new Vector2(0,-1)  //left
-    };
 }
