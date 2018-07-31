@@ -201,6 +201,7 @@ private int adjencyBonus;
 
     public IEnumerator FlipThisCard()
     {
+        SoundManager.PlaySound("cardFlip");
         this.GetComponent<DragRotator>().enabled = false;
         this.transform.DORotate(new Vector3(0f, 360f, 0f), 0.5f, RotateMode.FastBeyond360); // why doesnt it work
         yield return null;

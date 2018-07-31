@@ -128,6 +128,7 @@ public class BoardManager : MonoBehaviour {
 
         card.transform.DOMove(AllSlots[p.Y, p.X].transform.position, delay);
 
+        
 
         return card;
     }
@@ -146,6 +147,7 @@ public class BoardManager : MonoBehaviour {
         {
             for (int i = EmptyCardSlots.Count-1; i >= 0; i--)
             {
+                SoundManager.PlaySound("dealCardSound");
                 Vector2 newPos = EmptyCardSlots[i].transform.position;
                 card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, delay);
                  

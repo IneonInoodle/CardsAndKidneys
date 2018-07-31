@@ -241,6 +241,7 @@ public class PlayerManager : TurnManager {
                 otherPlayer.patientKidneys[0].transform.SetParent(myPlayerCard.transform, false); //set kidney to be parentet to playercard
                 
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
+                SoundManager.PlaySound("stealKidneySound");
             }
         }
     }
@@ -262,13 +263,13 @@ public class PlayerManager : TurnManager {
 
 
     public void takeDamage(OneCardManager c)
-    {   
-       
+    {
 
+       
         if (c != null)
         {
             int damage = int.Parse(c.DamageText.text);
-            
+            SoundManager.PlaySound("takeDamageSound");
             if (myLocation == location.board)
             {
                 Debug.Log("fuck");

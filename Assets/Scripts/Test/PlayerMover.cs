@@ -82,13 +82,14 @@ public void setPlayerArrows(arrows arrowz)
     }
 
     IEnumerator MoveOnBoard(Point des, float delay)
-    {
+    {   
         Debug.Log("moveOnBoard");
         OneCardManager desCard;
         Vector2 newPos; 
 
         if (boardManager.FindCardAtPoint(des) != null)
-        {   
+        {
+            SoundManager.PlaySound("dealCardSound");
             desCard = boardManager.FindCardAtPoint(des);
             newPos = desCard.transform.position;
             if (desCard.cardAsset.Damage != 0)
@@ -129,6 +130,7 @@ public void setPlayerArrows(arrows arrowz)
    
     public IEnumerator MoveIntoEndzone(GameObject des)
     {
+        SoundManager.PlaySound("dealCardSound");
         Debug.Log("moveintoendzone");
         //needs to be coroutinetm
         isMoving = true;
@@ -183,6 +185,7 @@ public void setPlayerArrows(arrows arrowz)
         Debug.Log("moveoutofendzone");
         if (boardManager.FindCardAtPoint(des) != null)
         {
+            SoundManager.PlaySound("dealCardSound");
             isMoving = true;
             fieldCardDes = boardManager.FindCardAtPoint(des);
             playerManager.Doctor.SetActive(false);

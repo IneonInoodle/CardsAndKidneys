@@ -39,8 +39,9 @@ public class GameMangerKelton : MonoBehaviour {
     
 
     private void Awake()
-    {   
+    {
 
+        soundManager = Object.FindObjectOfType<SoundManager>().GetComponent<SoundManager>();
         players = Object.FindObjectsOfType<PlayerManager>(); //find player
         board = Object.FindObjectOfType<BoardManager>().GetComponent<BoardManager>(); //find board
 
@@ -169,6 +170,8 @@ public class GameMangerKelton : MonoBehaviour {
     }
     public IEnumerator UpdateTurn() //switches player turns
     {
+        SoundManager.PlaySound("pressEndTurnButtonSound");
+
         Debug.Log("what");
         if (CurrentPlayerTurn == null)
         {
