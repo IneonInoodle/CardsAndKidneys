@@ -112,12 +112,13 @@ public void setPlayerArrows(arrows arrowz)
                 
 
                 playerManager.ActionPoints--;
-                
+                playerManager.PickUpKidneyFromBoard();
+
                 // need this order, dont change
                 boardManager.DeleteCard(desCard);
                 boardManager.RemoveEmptySlot(des);
                 playerManager.takeDamage(desCard); // take damage from deleted card?
-                //playerManager.PickUpKidneyFromBoard();
+                
 
                 yield return new WaitForSeconds(0.5f);
                 isMoving = false;
@@ -158,11 +159,11 @@ public void setPlayerArrows(arrows arrowz)
 
             if (playerManager.myLocation == playerManager.mySide)
             {
-                Debug.Log("fuck you");
+                
                 playerManager.CaptureKidney(); // capture kidney
             }
-      
 
+        Debug.Log("fuck you");
         boardManager.DeleteCard(playerManager.myCardManager);
         yield return new WaitForSeconds(0.5f);
 
@@ -201,7 +202,7 @@ public void setPlayerArrows(arrows arrowz)
 
             if (playerManager.mySide != playerManager.myLocation)
             {
-                playerManager.PickUpKidneyFromEnemyPatient();
+                playerManager.StealKidney();
             }
 
             playerManager.myLocation = location.board;

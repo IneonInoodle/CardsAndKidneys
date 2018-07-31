@@ -77,8 +77,7 @@ private int adjencyBonus;
         }
         set
         {
-           
-            if (adjencyBonus > 0 && adjencyBonus != value)
+            if (value > 0 && adjencyBonus != value)
             {
                 adjencyBonus = value;
                 DamageText.text = (cardAsset.Damage + adjencyBonus).ToString();

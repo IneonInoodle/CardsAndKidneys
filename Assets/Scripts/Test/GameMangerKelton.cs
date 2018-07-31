@@ -167,7 +167,7 @@ public class GameMangerKelton : MonoBehaviour {
         if (players[0] == p) return players[1];
         else return players[0];
     }
-    public IEnumerator UpdateTurn()
+    public IEnumerator UpdateTurn() //switches player turns
     {
         Debug.Log("what");
         if (CurrentPlayerTurn == null)
@@ -235,10 +235,10 @@ public class GameMangerKelton : MonoBehaviour {
     {   
         if (player.patientKidneys.Count  == 0)
         {
-            player.turnsWithoutKidney++;
-            Debug.Log("TurnWithoutKidney " + player.turnsWithoutKidney);
+            player.TurnsWithoutKidney++;
+            Debug.Log("TurnWithoutKidney " + player.TurnsWithoutKidney);
             
-            if (player.turnsWithoutKidney == 2)
+            if (player.TurnsWithoutKidney > 2)
             {
                 messageManager.ShowMessage("You Loose Boy", 2f);
                 isGameOver = true;

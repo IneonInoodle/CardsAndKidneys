@@ -51,6 +51,7 @@ public class PlayerManager : TurnManager {
 
     public Text HpText;
     public Text ActionPointsText;
+    public Text TurnsTilYouLooseText;
 
     public OneCardManager myCardManager;
     public GameObject myPlayerCard;
@@ -70,7 +71,7 @@ public class PlayerManager : TurnManager {
     public List<GameObject> patientKidneys = new List<GameObject>(); //kidneys safe in the patient
     public List<GameObject> playerKidneys = new List<GameObject>();  //kidney on board that player has
 
-    public int turnsWithoutKidney;
+    
     // movement points
     // need to know which side is theirs
     // needs to have connections to card Elements?
@@ -82,7 +83,22 @@ public class PlayerManager : TurnManager {
     public int turnsOnBoard;
     public Point point;
     public UnityEvent finishTurnEvent;
-    
+
+    private int turnsWithoutKidney;
+    public int TurnsWithoutKidney
+    {
+        get
+        {
+            return turnsWithoutKidney;
+        }
+        set
+        {
+            turnsWithoutKidney = value;
+
+            TurnsTilYouLooseText.text = ((2 - turnsWithoutKidney).ToString() + " /2");
+        }
+    }
+
     public int actionPoints;
     public int ActionPoints
     {
@@ -149,25 +165,23 @@ public class PlayerManager : TurnManager {
 
     public void CaptureKidney()
     {
-        Debug.Log("hey");
-        if ((playerKidneys.Count > 0))
+        int count = playerKidneys.Count;
+
+        if (count > 0)
         {
-            Debug.Log("boo");
-            foreach (GameObject t in playerKidneys)
+            for (int i = 0; i < count; i++)
             {
-                patientKidneys.Add(t);
-                t.transform.SetParent(Patient.transform, false);
-                playerKidneys.Remove(t);
+                patientKidneys.Add(playerKidneys[i]);
+                playerKidneys[i].transform.SetParent(Patient.transform, false);
+                playerKidneys.Remove(playerKidneys[i]);
+                TurnsWithoutKidney = 0;
+                if (Hp < 10)
+                {
+                    Hp = 10;
+                    
+                }               
             }
-             // give player the kidney
-             //set kidney to be parentet to playercard
-
-            
         }
-        //check if inside of enemy endzone and enemy has kidney
-        // check if have room for kidney
-
-        // player needs to know if it has kidney or not
     }
 
     public void Loose()
@@ -178,46 +192,44 @@ public class PlayerManager : TurnManager {
     public void DropKidney()
     {
         CardSlotManager cardslot;
-
         cardslot = boardManager.FindSlotAtPoint(point);
+        int count = playerKidneys.Count;
 
-        if (playerKidneys.Count > 0)
+        if (count > 0)
         {
-            Debug.Log("Dropping Kidney");
-            //player has a kidney? //the kidney now needs to be dropped onto the card slot 
-            cardslot.Kidneys.Add(playerKidneys[0]); //get first kidney in list
-
-            // kid.SetParent(b,WorldPositionStayTheSame);
-
-            //this should move the kidney to be parented to the cardslot
-            playerKidneys[0].transform.SetParent(cardslot.transform, false);
-            playerKidneys.Remove(playerKidneys[0]); // remove kidney from player
+            for (int i = 0; i < count; i++)
+            {
+                cardslot.Kidneys.Add(playerKidneys[i]);
+                playerKidneys[i].transform.SetParent(cardslot.transform, false);
+                playerKidneys.Remove(playerKidneys[i]);
+            }
         }
-        //add kidney to cardslot
-        // remove kidney from player 
-
+ 
     }
 
     public void PickUpKidneyFromBoard()
     {
+        Debug.Log("damn");
         CardSlotManager cardslot;
 
         cardslot = boardManager.FindSlotAtPoint(point);
-        
-        if (cardslot.Kidneys.Count > 0 && playerKidneys.Count == 0) // check if kidney on card and if player has room for kidney
-        {
-            Debug.Log("pickupKidney");
-            playerKidneys.Add(cardslot.Kidneys[0]); // give player the kidney
 
-            cardslot.Kidneys[0].transform.SetParent(myPlayerCard.transform, false); //set kidney to be parentet to playercard
-            cardslot.Kidneys.Remove(cardslot.Kidneys[0]); // remove kidney from cardslot
+        int count = cardslot.Kidneys.Count;
+
+        if (count > 0 && playerKidneys.Count == 0)
+        {
+            Debug.Log("damn");
+            for (int i = 0; i < count; i++)
+            {
+                Debug.Log("damn");
+                playerKidneys.Add(cardslot.Kidneys[i]);
+                cardslot.Kidneys[i].transform.SetParent(myPlayerCard.transform, false);
+                cardslot.Kidneys.Remove(cardslot.Kidneys[i]);
+            }
         }
-        //add kidney to playeer
-        //remove kidney from gameboard
-        //
     }
 
-    public void PickUpKidneyFromEnemyPatient()
+    public void StealKidney()
     {
         
         PlayerManager otherPlayer = gm.getOtherPlayer(this);
