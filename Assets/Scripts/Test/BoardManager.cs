@@ -35,6 +35,8 @@ public class BoardManager : MonoBehaviour {
 
     public GameObject FieldCardPrefab; // todo change to decks
 
+    public CardAsset[] fieldCardAssets;
+
     public GameObject InitialFieldCardPos;
     public GameObject RemoveFieldCardPos;
 
@@ -117,10 +119,12 @@ public class BoardManager : MonoBehaviour {
         return null;
     }
     
-    public GameObject CreateCard(Point p, GameObject cardPrefab, float delay)
+    public GameObject CreateCard(Point p, GameObject cardPrefab, CardAsset cardAsset, float delay)
     {
         GameObject card;
         card = Instantiate(cardPrefab);
+        card.GetComponent<OneCardManager>().cardAsset = cardAsset;
+        card.GetComponent<OneCardManager>().ReadCardFromAsset();
         card.GetComponent<OneCardManager>().point = p;
 
         EmptyCardSlots.Remove(AllSlots[p.Y, p.X]); // cannot put it here sadly
@@ -128,10 +132,14 @@ public class BoardManager : MonoBehaviour {
 
         card.transform.DOMove(AllSlots[p.Y, p.X].transform.position, delay);
 
-        
-
         return card;
     }
+
+    public void SetCardAsset(OneCardManager card, CardAsset cardAsset)
+    {
+        card.cardAsset = cardAsset;
+    }
+
 
     public void RemoveEmptySlot(Point p)
     {
@@ -149,7 +157,7 @@ public class BoardManager : MonoBehaviour {
             {
                 SoundManager.PlaySound("dealCardSound");
                 Vector2 newPos = EmptyCardSlots[i].transform.position;
-                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, delay);
+                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, fieldCardAssets[Random.Range(0, fieldCardAssets.Length)], delay);
                  
                 //maybe add some stuff to card deal in animaton
                    

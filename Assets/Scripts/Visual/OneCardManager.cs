@@ -11,16 +11,15 @@ public class OneCardManager : MonoBehaviour {
     public OneCardManager PreviewManager;
     [Header("Text Component References")]
     public Text DamageText;
-    public Text HpText;
-    public Text ActionPointsText;
-
     public Text CardTitleText;
     [Header("Canvas Group")]
     public CanvasGroup cg;
     [Header("Image References")]
     public Image CardTypeImage;
     public Image CardGraphicImage;
+
     public Image CardBodyImage;
+    public Image DamageImage;
 
     public Image CardArrowUpImage;
     public Image CardArrowDownImage;
@@ -28,6 +27,7 @@ public class OneCardManager : MonoBehaviour {
     public Image CardArrowRightImage;
 
     public Image CardFaceFrameImage;
+
     public Image CardFaceGlowImage;
     public Image CardFaceInnerGlowImage;
 
@@ -135,56 +135,33 @@ private int adjencyBonus;
 
     public void ReadCardFromAsset()
     {
-        // universal actions for any Card
-        // 1) apply tint
-        if (cardAsset.characterAsset != null)
-        {
-            CardBodyImage.color = cardAsset.characterAsset.ClassCardTint;
-            CardFaceFrameImage.color = cardAsset.characterAsset.ClassCardTint;
-        }
-        else
-        {
-            //CardBodyImage.color = GlobalSettings.Instance.CardBodyStandardColor;
-            //CardFaceFrameImage.color = Color.white;
-        }
-        // 2) add card name
-
-        // 3) add mana cost
-
-        // 4) add description
 
         // 5) Change the card graphic sprite
 
         CardGraphicImage.sprite = cardAsset.CardImage;
+        CardFaceFrameImage.sprite = cardAsset.FrameImage;
+        CardBodyImage.sprite = cardAsset.CardBodyImage;
 
-        if (cardAsset.Damage != 0) // we have field card
+        CardArrowUpImage.sprite = cardAsset.CardArrowImage;
+        CardArrowDownImage.sprite = cardAsset.CardArrowImage;
+        CardArrowLeftImage.sprite = cardAsset.CardArrowImage;
+        CardArrowRightImage.sprite = cardAsset.CardArrowImage;
+
+        if (cardAsset.Type == CardType.Monster)
         {
-            //add text and monster icon
+            DamageImage.sprite = cardAsset.DamageImage;
             DamageText.text = cardAsset.Damage.ToString();
-            CardTypeImage.sprite = cardAsset.CardTypeImage;
-
-            // set one arrow up/down 50/50 chance
-            if (Random.value < 0.5f) { CardArrowUpImage.enabled = false; }
-            else { CardArrowDownImage.enabled = false; }
-
-            // set one arrow left or right 50/50 chance
-            if (Random.value < 0.5f) { CardArrowLeftImage.enabled = false; }
-            else { CardArrowRightImage.enabled = false; }
-        } else // we have a spell card or player card
+        } else 
         {
-            // test if player card. could you case...
-            if (cardAsset.ActionPoints != 0)
-            {
-                //ActionPoints = cardAsset.ActionPoints;
-                Hp = cardAsset.Hp;
-            } else {
-                //apply spellcard TitelText
-                CardTitleText.text = cardAsset.name;
-            }
-                       
-            
-            
+            DamageImage.enabled = false;
+            DamageText.enabled = false;
         }
+
+        if (cardAsset.Type == CardType.Spell)
+        {
+            CardTitleText.text = cardAsset.name;
+            DamageImage.enabled = false;
+        }      
 
         if (PreviewManager != null)
         {

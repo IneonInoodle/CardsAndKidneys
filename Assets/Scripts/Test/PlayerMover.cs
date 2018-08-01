@@ -194,13 +194,14 @@ public void setPlayerArrows(arrows arrowz)
             temp = fieldCardDes.arrows; // deleting card delete le arrows
 
             //save playermanager things
-            playerManager.myPlayerCard = boardManager.CreateCard(des, playerManager.PlayerCardPrefab, 0.5f);
+            Debug.Log("Should be here");
+            playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab, playerManager.playerCardAsset, 0.5f);
             playerManager.myCardManager = playerManager.myPlayerCard.GetComponent<OneCardManager>();
 
             //last 2 lines removed for testing
             //playerManager.ActionPoints = 0;
             //playerManager.turnsOnBoard = 1;
-            
+
             playerManager.point = des;
 
             if (playerManager.mySide != playerManager.myLocation)

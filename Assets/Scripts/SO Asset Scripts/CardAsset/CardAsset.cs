@@ -12,25 +12,35 @@ public enum TargetingOptions
     YourPlayer
 }
 
+public enum CardType
+{   
+    Spell,
+    Monster,
+    Hp,
+    Neutral,
+    Player
+}
+
 public class CardAsset : ScriptableObject 
 {
     // this object will hold the info about the most general card
     [Header("General info")]
-    public CharacterAsset characterAsset;  // if this is null, it`s a neutral card
+
     //public string Description;  
     // Description for spell or character
 
-    public Sprite CardImage; 
+    public Sprite CardImage;
+    public Sprite CardBodyImage;
+
+    public Sprite CardArrowImage;
+
+    public CardType Type;
+    public Sprite FrameImage;
 
     [Header("Field Card Info")]
+    public Sprite DamageImage;
     public int Damage; //if zero then a spell card
-
-    public Sprite CardTypeImage; //if card damage is 0 spell card
-    public int Multiplyer;
-    public int Hp;
-    public int ActionPoints;
-
-    public string CreatureScriptName;
+    public string MonsterScriptName;
     public int specialCreatureAmount;
 
     [Header("SpellInfo")]

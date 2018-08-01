@@ -55,7 +55,8 @@ public class PlayerManager : TurnManager {
 
     public OneCardManager myCardManager;
     public GameObject myPlayerCard;
-    public GameObject PlayerCardPrefab;
+
+    public CardAsset playerCardAsset;
     private BoardManager boardManager;
 
     public GameObject Doctor;
@@ -272,12 +273,10 @@ public class PlayerManager : TurnManager {
             SoundManager.PlaySound("takeDamageSound");
             if (myLocation == location.board)
             {
-                Debug.Log("fuck");
                 DamageEffect.CreateDamageEffect(myPlayerCard, damage);
 
             } else
             {
-                Debug.Log("fuck");
                 DamageEffect.CreateDamageEffect(Doctor, damage);
             }
             
