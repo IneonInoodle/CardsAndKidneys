@@ -161,9 +161,13 @@ private int adjencyBonus;
         {
             CardTitleText.text = cardAsset.name;
             DamageImage.enabled = false;
-        }      
+        } else if (cardAsset.Type == CardType.Player)
+        {
+            DamageImage.enabled = false;
+            DamageText.enabled = false;
+        }
 
-        if (PreviewManager != null)
+            if (PreviewManager != null)
         {
             // this is a card and not a preview
             // Preview GameObject will have OneCardManager as well, but PreviewManager should be null there
