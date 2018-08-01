@@ -91,7 +91,7 @@ public void setPlayerArrows(arrows arrowz)
         {
             SoundManager.PlaySound("dealCardSound");
             desCard = boardManager.FindCardAtPoint(des);
-            newPos = desCard.transform.position;
+            //newPos = desCard.transform.localosition;
             if (desCard.cardAsset.Type != CardType.Player)
             {
                 isMoving = true;
@@ -103,10 +103,9 @@ public void setPlayerArrows(arrows arrowz)
                 boardManager.AddEmptySlot(playerManager.point);
                 setPlayerArrows(boardManager.FindCardAtPoint(des).arrows);
 
-                
-                
 
-                playerManager.myCardManager.transform.DOMove(newPos, 0.5f);
+
+                playerManager.myCardManager.transform.DOMove(boardManager.AllSlots[des.Y, des.X].transform.position, delay);
                 playerManager.point = des;
                 playerManager.myCardManager.point = des;
 
@@ -195,7 +194,7 @@ public void setPlayerArrows(arrows arrowz)
 
             //save playermanager things
             Debug.Log("Should be here");
-            playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab, playerManager.playerCardAsset, 0.5f);
+            playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab,playerManager.Doctor, playerManager.playerCardAsset, 0.5f);
             playerManager.myCardManager = playerManager.myPlayerCard.GetComponent<OneCardManager>();
 
             //last 2 lines removed for testing

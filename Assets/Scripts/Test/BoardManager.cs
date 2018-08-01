@@ -37,6 +37,8 @@ public class BoardManager : MonoBehaviour {
 
     public CardAsset[] fieldCardAssets;
 
+    public GameObject FieldCardParent; // for Gimbal-Lock, do not fuck with me our else y z rotation stops working
+
     public GameObject InitialFieldCardPos;
     public GameObject RemoveFieldCardPos;
 
@@ -119,17 +121,22 @@ public class BoardManager : MonoBehaviour {
         return null;
     }
     
-    public GameObject CreateCard(Point p, GameObject cardPrefab, CardAsset cardAsset, float delay)
+    public GameObject CreateCard(Point p, GameObject cardPrefab, GameObject initPosition, CardAsset cardAsset,  float delay)
     {
         GameObject card;
-        card = Instantiate(cardPrefab);
+        //card = Instantiate(cardPrefab);
+
+        card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.identity);
+
+        card.transform.SetParent(FieldCardParent.transform, false);
         card.GetComponent<OneCardManager>().cardAsset = cardAsset;
         card.GetComponent<OneCardManager>().ReadCardFromAsset();
         card.GetComponent<OneCardManager>().point = p;
 
         EmptyCardSlots.Remove(AllSlots[p.Y, p.X]); // cannot put it here sadly
-        card.transform.position = InitialFieldCardPos.transform.position;
+        card.transform.position = initPosition.transform.position;
 
+        
         card.transform.DOMove(AllSlots[p.Y, p.X].transform.position, delay);
 
         return card;
@@ -157,7 +164,7 @@ public class BoardManager : MonoBehaviour {
             {
                 SoundManager.PlaySound("dealCardSound");
                 Vector2 newPos = EmptyCardSlots[i].transform.position;
-                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, fieldCardAssets[Random.Range(0, fieldCardAssets.Length)], delay);
+                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[Random.Range(0, fieldCardAssets.Length)], delay);
                  
                 //maybe add some stuff to card deal in animaton
                    
