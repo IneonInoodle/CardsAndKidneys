@@ -28,7 +28,7 @@ public class OneCardManager : MonoBehaviour {
 
     public Image CardFaceFrameImage;
 
-    public Image CardFaceGlowImage;
+    public GameObject CardFaceGlowObject;
     public Image CardFaceInnerGlowImage;
 
     public Point point;
@@ -115,7 +115,7 @@ private int adjencyBonus;
         setRandomArrows();
         updateArrows(arrows);//meh
         //CardFaceInnerGlowImage.enabled = false;
-        CardFaceGlowImage.enabled = false; 
+        CardFaceGlowObject.SetActive(false);
 }
 
     private bool isMoveOption = false;
@@ -129,7 +129,8 @@ private int adjencyBonus;
         set
         {
             isMoveOption = value;
-            CardFaceGlowImage.enabled = value;
+            CardFaceGlowObject.SetActive(value);
+
         }
     }
 

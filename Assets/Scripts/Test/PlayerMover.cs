@@ -189,7 +189,7 @@ public void setPlayerArrows(arrows arrowz)
             isMoving = true;
             fieldCardDes = boardManager.FindCardAtPoint(des);
             playerManager.Doctor.SetActive(false);
-            playerManager.PortaitGlowImage.enabled = false;
+            playerManager.PortaitGlowObject.SetActive(false);
 
             temp = fieldCardDes.arrows; // deleting card delete le arrows
 

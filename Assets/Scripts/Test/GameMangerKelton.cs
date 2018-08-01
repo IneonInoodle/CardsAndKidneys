@@ -185,13 +185,14 @@ public class GameMangerKelton : MonoBehaviour {
         {
             if (players[0].IsTurnComplete)
             {
+                Debug.Log("playerturn0complete");
                 players[0].playerInput.InputEnabled = false;
                 players[0].button.interactable = false;
-                players[0].PortaitGlowImage.enabled = false;
+                players[0].PortaitGlowObject.SetActive(false);
 
                 if (players[0].myCardManager != null)
-                    players[0].myCardManager.CardFaceGlowImage.enabled = false;
-                players[0].EndTurnGlowImage.enabled = false;
+                    players[0].myCardManager.CardFaceGlowObject.SetActive(false);
+                players[0].EndTurnGlowObject.SetActive(false);
 
                 messageManager.ShowMessage("Your Turn", 2f);
                 yield return StartCoroutine(board.UpdateBoard());
@@ -205,14 +206,14 @@ public class GameMangerKelton : MonoBehaviour {
         {
             if (players[1].IsTurnComplete)
             {
-
+                Debug.Log("playerturn1complete");
                 players[1].playerInput.InputEnabled = false;
                 players[1].button.interactable = false;
-                players[1].PortaitGlowImage.enabled = false;
+                players[1].PortaitGlowObject.SetActive(false);
 
                 if (players[1].myCardManager != null)
-                    players[1].myCardManager.CardFaceGlowImage.enabled = false;
-                players[1].EndTurnGlowImage.enabled = false;
+                    players[1].myCardManager.CardFaceGlowObject.SetActive(false);
+                players[1].EndTurnGlowObject.SetActive(false);
 
                 messageManager.ShowMessage("Enemy Turn", 2f);
                 yield return StartCoroutine(board.UpdateBoard());
@@ -262,10 +263,10 @@ public class GameMangerKelton : MonoBehaviour {
         if (player.myLocation == location.board)
         {
             player.turnsOnBoard++;
-            player.myCardManager.CardFaceGlowImage.enabled = true;
+            player.myCardManager.CardFaceGlowObject.SetActive(true);
         } else
         {
-            player.PortaitGlowImage.enabled = true;
+            player.PortaitGlowObject.SetActive(true);
         }
 
         if (player.Hp == 0)

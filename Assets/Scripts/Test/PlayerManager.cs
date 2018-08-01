@@ -65,8 +65,8 @@ public class PlayerManager : TurnManager {
     public Button button;
 
     private GameMangerKelton gm;
-    public Image PortaitGlowImage;
-    public Image EndTurnGlowImage;
+    public GameObject PortaitGlowObject;
+    public GameObject EndTurnGlowObject;
     // Kidneys shit 
     public GameObject KidneyPrefab;
     public List<GameObject> patientKidneys = new List<GameObject>(); //kidneys safe in the patient
@@ -114,8 +114,8 @@ public class PlayerManager : TurnManager {
             if (actionPoints == 0)
             {   
                 if (myLocation == location.board)
-                    myCardManager.CardFaceGlowImage.enabled = false;
-                EndTurnGlowImage.enabled = true;
+                    myCardManager.CardFaceGlowObject.SetActive(false);
+                this.EndTurnGlowObject.SetActive(true);
                 // end turn
             }
         }
