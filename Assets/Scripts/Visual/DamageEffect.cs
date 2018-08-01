@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 /// <summary>
 /// This class will show damage dealt to creatures or payers
@@ -26,7 +27,7 @@ public class DamageEffect : MonoBehaviour {
     void Awake()
     {
         // pick a random image
-        DamageImage.sprite = Splashes[Random.Range(0, Splashes.Length)];  
+        DamageImage.sprite = Splashes[UnityEngine.Random.Range(0, Splashes.Length)];  
     }
 
     // A Coroutine to control the fading of this damage effect
@@ -63,8 +64,19 @@ public class DamageEffect : MonoBehaviour {
 
         // Get DamageEffect component in this new game object
         DamageEffect de = newDamageEffect.GetComponent<DamageEffect>();
-        // Change the amount text to reflect the amount of damage dealt
-        de.AmountText.text = "-" + amount.ToString();
+        Debug.Log("what");
+
+        if (amount < 0) {
+            de.AmountText.color = Color.green;
+            de.AmountText.text = "+" + Math.Abs(amount).ToString();
+        }
+        else if (amount > 0)
+        {
+            Debug.Log("what" + amount);
+            de.AmountText.color = Color.blue;
+            de.AmountText.text = "-" + (amount).ToString();
+        }
+
         // start a coroutine to fade away and delete this effect after a certain time
         de.StartCoroutine(de.ShowDamageEffect());
     }

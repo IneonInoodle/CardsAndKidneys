@@ -151,13 +151,13 @@ private int adjencyBonus;
         {
             DamageImage.sprite = cardAsset.DamageImage;
             DamageText.text = cardAsset.Damage.ToString();
-        } else 
+        } else if (cardAsset.Type == CardType.Hp || cardAsset.Type == CardType.Neutral)
         {
+            DamageText.text = cardAsset.Damage.ToString();
             DamageImage.enabled = false;
             DamageText.enabled = false;
-        }
 
-        if (cardAsset.Type == CardType.Spell)
+        } else if (cardAsset.Type == CardType.Spell)
         {
             CardTitleText.text = cardAsset.name;
             DamageImage.enabled = false;

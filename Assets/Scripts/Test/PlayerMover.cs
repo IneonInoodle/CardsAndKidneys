@@ -92,7 +92,7 @@ public void setPlayerArrows(arrows arrowz)
             SoundManager.PlaySound("dealCardSound");
             desCard = boardManager.FindCardAtPoint(des);
             newPos = desCard.transform.position;
-            if (desCard.cardAsset.Damage != 0)
+            if (desCard.cardAsset.Type != CardType.Player)
             {
                 isMoving = true;
                 

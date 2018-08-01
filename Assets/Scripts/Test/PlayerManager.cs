@@ -271,7 +271,11 @@ public class PlayerManager : TurnManager {
         {
             int damage = int.Parse(c.DamageText.text);
             SoundManager.PlaySound("takeDamageSound");
-            if (myLocation == location.board)
+
+            if (c.cardAsset.Type == CardType.Neutral)
+            {
+
+            } else if (myLocation == location.board)
             {
                 DamageEffect.CreateDamageEffect(myPlayerCard, damage);
 

@@ -265,7 +265,7 @@ public class BoardManager : MonoBehaviour {
 
         foreach (OneCardManager card in AllCards)
         {
-            if (card.cardAsset.Damage != 0) // check if field card
+            if (card.cardAsset.Type == CardType.Monster) // check if field card
             {
                 card.AdjencyBonus = getAdjencyBonus(card);
             }
