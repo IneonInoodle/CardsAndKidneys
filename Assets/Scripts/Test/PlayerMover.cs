@@ -88,12 +88,14 @@ public void setPlayerArrows(arrows arrowz)
         Vector2 newPos; 
 
         if (boardManager.FindCardAtPoint(des) != null)
-        {
-            SoundManager.PlaySound("dealCardSound");
+        {   
+
+            
             desCard = boardManager.FindCardAtPoint(des);
             //newPos = desCard.transform.localosition;
             if (desCard.cardAsset.Type != CardType.Player)
             {
+                SoundManager.PlaySound("dealCardSound");
                 isMoving = true;
                 
 
@@ -134,6 +136,7 @@ public void setPlayerArrows(arrows arrowz)
         //needs to be coroutinetm
         isMoving = true;
         Debug.Log("moveintoendzone");
+        playerManager.myCardManager.CardFaceGlowObject.SetActive(false);
         playerManager.Doctor.transform.position = des.transform.position; // move doctor image
         playerManager.Doctor.SetActive(true); // make visable
 

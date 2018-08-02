@@ -42,11 +42,21 @@ public class DamageEffect : MonoBehaviour {
         cg.alpha = 1f;
         // wait for 1 second before fading
         yield return new WaitForSeconds(0.15f);
-        IceCube.Emit(amount);
-        
-        yield return new WaitForSeconds(1f);
-        // gradually fade the effect by changing its alpha value
-
+        if (amount > 0)
+        {
+            IceCube.Emit(amount);
+            SoundManager.PlaySound("iceCube");
+            yield return new WaitForSeconds(0.5f);
+            // gradually fade the effect by changing its alpha value
+            SoundManager.PlaySound("iceCube");
+            yield return new WaitForSeconds(0.7f);
+            SoundManager.PlaySound("iceCube");
+        }
+        else if (amount < 0)
+        {
+            SoundManager.PlaySound("hpUp");
+            yield return new WaitForSeconds(1.0f);
+        }
         Debug.Log("amount" + amount);
 
         while (cg.alpha > 0)
@@ -99,6 +109,6 @@ public class DamageEffect : MonoBehaviour {
         }
 
         // start a coroutine to fade away and delete this effect after a certain time
-        de.StartCoroutine(de.ShowDamageEffect(Math.Abs(amount)));
+        de.StartCoroutine(de.ShowDamageEffect(amount));
     }
 }

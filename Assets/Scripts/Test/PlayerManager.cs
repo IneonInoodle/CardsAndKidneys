@@ -148,11 +148,13 @@ public class PlayerManager : TurnManager {
 
         DropKidney(); //drops kidney if possible
 
+        myCardManager.CardFaceGlowObject.SetActive(false);
         if (mySide == location.bottom)
 
         StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
         else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
 
+        SoundManager.PlaySound("dieSound");
         turnsOnBoard = 1;
         ActionPoints = 0;
         Hp = 0;
@@ -192,6 +194,7 @@ public class PlayerManager : TurnManager {
 
     public void DropKidney()
     {
+        Vector3 pos;
         CardSlotManager cardslot;
         cardslot = boardManager.FindSlotAtPoint(point);
         int count = playerKidneys.Count;
@@ -199,10 +202,34 @@ public class PlayerManager : TurnManager {
         if (count > 0)
         {
             for (int i = 0; i < count; i++)
-            {
+            {   
                 cardslot.Kidneys.Add(playerKidneys[i]);
                 playerKidneys[i].transform.SetParent(cardslot.transform, false);
+                pos = playerKidneys[i].transform.position;
+
+
+                 Sequence mySequence = DOTween.Sequence();
+
+                 mySequence.Append(playerKidneys[i].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
+                 mySequence.Append(playerKidneys[i].transform.DOMove(pos, 1.2f));
+
+                SoundManager.PlaySound("dropKidney");
+                SoundManager.PlaySound("splat");
+                DOTween.Play(mySequence);
+
                 playerKidneys.Remove(playerKidneys[i]);
+                //mySequence.Insert(0, transform.DORotate(new Vector3(3, 3, 3), mySequence.Duration()));
+                //mySequence.Insert(0, transform.DORotate(new Vector3(3, 3, 3), mySequence.Duration()));
+
+                // move towards camera
+                // rotate a bit 
+
+                //land on card slot
+                // splat
+
+                // mySequence.Append(transform.DOMoveX(45, 1));
+
+
             }
         }
  
@@ -270,7 +297,7 @@ public class PlayerManager : TurnManager {
         if (c != null)
         {
             int damage = int.Parse(c.DamageText.text);
-            SoundManager.PlaySound("takeDamageSound");
+            
 
             if (c.cardAsset.Type == CardType.Neutral)
             {
@@ -315,7 +342,7 @@ public class PlayerManager : TurnManager {
         turnsOnBoard = 5;
         ActionPoints = 5;
         
-        Hp = 40;
+        Hp = 10;
         // for testing // this spawns a player card
 
         // instantate kideny object and assign add it to the list 

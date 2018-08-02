@@ -7,10 +7,18 @@ public class SoundManager : MonoBehaviour {
     public static AudioClip cardPlace1, cardPlace2, cardPlace3, cardPlace4,
         Meat_Slice_1, Meat_Slice_2, Meat_Slice_3, Meat_Slice_4, Meat_Slice_5,
         cardFlip,
+        diceThrow1, diceThrow2, diceThrow3, diceThrow4,
+        dropKidney,
+        kidneySplat1, kidneySplat2, kidneySplat3,
+        hpUp,
+
         dealCardSound, takeDamageSound, moveOnBoardSound, stealKidneySound, dieSound, pressEndTurnButtonSound;
 
     public static AudioClip[] dealCardSounds;
     public static AudioClip[] stealKidneySounds;
+    public static AudioClip[] kidneySplats;
+    public static AudioClip[] iceCubes;
+
     static AudioSource audioSrc;
     // Use this for initialization
 
@@ -20,7 +28,8 @@ public class SoundManager : MonoBehaviour {
     }
     void Start () {
 
-       
+        hpUp = Resources.Load<AudioClip>("dustyroom_multimedia_select_digital_button");  
+        dropKidney = Resources.Load<AudioClip>("cartoon_slide_whistle_ascend_then_descend");
 
         cardPlace1 = Resources.Load<AudioClip>("cardPlace1");
         cardPlace2 = Resources.Load<AudioClip>("cardPlace2");
@@ -37,6 +46,20 @@ public class SoundManager : MonoBehaviour {
 
         stealKidneySounds = new AudioClip[] { Meat_Slice_1, Meat_Slice_2, Meat_Slice_3, Meat_Slice_4, Meat_Slice_5 };
 
+        kidneySplat1 = Resources.Load<AudioClip>("Splat_01");
+        kidneySplat2 = Resources.Load<AudioClip>("Splat_02");
+        kidneySplat3 = Resources.Load<AudioClip>("Splat_03");
+
+        kidneySplats = new AudioClip[] { kidneySplat1, kidneySplat2, kidneySplat3};
+
+        diceThrow1 = Resources.Load<AudioClip>("diceThrow1");
+        diceThrow2 = Resources.Load<AudioClip>("diceThrow2");
+        diceThrow3 = Resources.Load<AudioClip>("diceThrow3");
+        diceThrow4 = Resources.Load<AudioClip>("diceThrow4");
+
+        iceCubes = new AudioClip[] { diceThrow1, diceThrow2, diceThrow3, diceThrow4 };
+
+
         //dealCardSound = Resources.Load<AudioClip>("dealCardSound");
         takeDamageSound = Resources.Load<AudioClip>("Medical_Syringe_06");
         cardFlip = Resources.Load<AudioClip>("cardOpenPackage2");
@@ -46,7 +69,7 @@ public class SoundManager : MonoBehaviour {
 
 
         moveOnBoardSound = Resources.Load<AudioClip>("moveOnBoardSound");
-        dieSound = Resources.Load<AudioClip>("dieSound");
+        dieSound = Resources.Load<AudioClip>("DIE");
         
 
         audioSrc = GetComponent<AudioSource>();
@@ -56,6 +79,20 @@ public class SoundManager : MonoBehaviour {
     {
         switch (clip)
         {
+            case "hpUp":
+                audioSrc.PlayOneShot(hpUp);
+            break;
+
+            case "iceCube":
+                audioSrc.PlayOneShot(iceCubes[Random.Range(0, iceCubes.Length)]);
+                break;
+            case "splat":
+                audioSrc.PlayOneShot(kidneySplats[Random.Range(0, kidneySplats.Length)]);
+                break;
+            case "dropKidney":
+                audioSrc.PlayOneShot(dropKidney);
+                break;
+
             case "dealCardSound":
                 audioSrc.PlayOneShot(dealCardSounds[Random.Range(0, dealCardSounds.Length)]);
                 break;
