@@ -31,8 +31,8 @@ public class DamageEffect : MonoBehaviour {
     
         // pick a random image
         DamageImage.sprite = Splashes[UnityEngine.Random.Range(0, Splashes.Length)];
+        IceCube.Stop();
 
-    
     }
 
     // A Coroutine to control the fading of this damage effect
@@ -43,11 +43,10 @@ public class DamageEffect : MonoBehaviour {
         // wait for 1 second before fading
         yield return new WaitForSeconds(0.15f);
         IceCube.Emit(amount);
-        IceCube.Stop();
+        
         yield return new WaitForSeconds(1f);
         // gradually fade the effect by changing its alpha value
 
- 
         Debug.Log("amount" + amount);
 
         while (cg.alpha > 0)
