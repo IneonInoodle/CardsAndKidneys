@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using DG.Tweening;
 
 
-
+[System.Serializable]
 public struct Point
-{   
-    public int X { get; set; }
-    public int Y { get; set; }
+{
+    public int X; //{ get; set; }
+    public int Y; //{ get; set; }
 
-    public Point(int p1, int p2)
+    public Point(int p1=0, int p2=0)
     {
         X = p1;
         Y = p2;

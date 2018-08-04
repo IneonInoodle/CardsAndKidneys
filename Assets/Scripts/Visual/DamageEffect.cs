@@ -38,13 +38,17 @@ public class DamageEffect : MonoBehaviour {
     // A Coroutine to control the fading of this damage effect
     private IEnumerator ShowDamageEffect(int amount)
     {
+   
         // make this effect non-transparent
         cg.alpha = 1f;
         // wait for 1 second before fading
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.05f);
+
+        
+      
         if (amount > 0)
         {
-            IceCube.Emit(amount);
+            IceCube.Emit(amount - 3);  // Output: 1
             SoundManager.PlaySound("iceCube");
             yield return new WaitForSeconds(0.5f);
             // gradually fade the effect by changing its alpha value

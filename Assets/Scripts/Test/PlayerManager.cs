@@ -342,7 +342,7 @@ public class PlayerManager : TurnManager {
         turnsOnBoard = 5;
         ActionPoints = 5;
         
-        Hp = 10;
+        Hp = 20;
         // for testing // this spawns a player card
 
         // instantate kideny object and assign add it to the list 
