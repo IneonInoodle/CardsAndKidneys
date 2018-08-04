@@ -233,7 +233,22 @@ public class GameMangerKelton : MonoBehaviour {
 
 
     }
-        
+
+    public void DisableInputs() {
+        foreach (PlayerManager p in players)
+        {
+            p.playerInput.InputEnabled = false;
+            p.button.interactable = false;
+        }
+
+    }
+
+    public void EnableInputs()
+    {
+        CurrentPlayerTurn.playerInput.InputEnabled = true;
+        CurrentPlayerTurn.button.interactable = true;
+    }
+
 
     public void PlayPlayerTurn(PlayerManager player)
     {   

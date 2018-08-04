@@ -337,7 +337,7 @@ public class PlayerManager : TurnManager {
     {
         base.Awake();
         boardManager = BoardManager.Instance;
-        gm = UnityEngine.Object.FindObjectOfType<GameMangerKelton>().GetComponent<GameMangerKelton>(); // could 
+        gm = UnityEngine.Object.FindObjectOfType<GameMangerKelton>().GetComponent<GameMangerKelton>(); // could use a singleton
 
         turnsOnBoard = 5;
         ActionPoints = 5;
@@ -350,7 +350,6 @@ public class PlayerManager : TurnManager {
 
         patientKidneys[0].transform.SetParent(Patient.transform, false);  //set kidney to proper place and //parent kidney
         Doctor.SetActive(true);
-        
 
         if (mySide == location.bottom)
         {
@@ -358,8 +357,7 @@ public class PlayerManager : TurnManager {
             point.X = 1;
             point.Y = 2;
             arrows = arrows.Up | arrows.Left | arrows.Right;
-
-
+   
         } else // top player
         {   
             myLocation = location.top;
