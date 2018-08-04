@@ -21,8 +21,8 @@ public struct Point
 public class BoardManager : MonoBehaviour {
 
     private static BoardManager instance;
-
-    public static BoardManager Instance
+        
+        public static BoardManager Instance
     {
         get
         {
@@ -33,6 +33,7 @@ public class BoardManager : MonoBehaviour {
             return instance;
         }
     }
+    
 
     public GameObject FieldCardPrefab; // todo change to decks
 
@@ -45,7 +46,8 @@ public class BoardManager : MonoBehaviour {
 
     public GameObject Top;
     public GameObject Bottom;
-
+    public Vector3 pos1;
+    public Vector3 pos2;
     private int rows = 2;
     public int cols = 3;
 
@@ -73,7 +75,81 @@ public class BoardManager : MonoBehaviour {
         
         
     }
-    
+
+    void SwapCard(Point p1, Point p2)
+    {
+        OneCardManager myCard1 = FindCardAtPoint(p1);
+        OneCardManager myCard2 = FindCardAtPoint(p2);
+        var x1 = UnityEngine.Random.Range(0, 2);
+        var y1 = UnityEngine.Random.Range(0, 1);
+        var x2 = UnityEngine.Random.Range(1, 3);
+        var y2 = UnityEngine.Random.Range(1, 2);
+        //var pos1 = (0,0,0);
+        //var pos2 = (0, 0, 0);
+
+        OneCardManager[] AllCards = GameObject.FindObjectsOfType<OneCardManager>();
+        foreach (OneCardManager card in AllCards)
+        {
+            //DeleteCard(card);
+            Debug.Log("RUN_:"+card.point.X + " " + card.point.Y );
+            if (card.point.X == x1 && card.point.Y == y1)
+            {
+                pos1 = card.transform.position;
+                //Debug.Log(card.transform.position);
+                //card.transform.Translate(Vector3.forward * Time.deltaTime);
+                //DeleteCard(card);
+            }
+            if (card.point.X == x2 && card.point.Y == y2)
+            {
+                pos2 = card.transform.position;
+                //Debug.Log(card.transform.position);
+                //card.transform.Translate(Vector3.forward * Time.deltaTime);
+                //DeleteCard(card);
+            }
+         }
+        foreach (OneCardManager card in AllCards)
+        {
+            if (card.point.X == x1 && card.point.Y == y1)
+            {
+                card.transform.DOMove(pos2, 0.5f);
+                RotateArrows(card.point);
+            }
+            if (card.point.X == x2 && card.point.Y == y2)
+            {
+                card.transform.DOMove(pos1, 0.5f);
+                RotateArrows(card.point);
+            }
+        }
+    }
+
+    void RotateArrows(Point p)
+    {
+        OneCardManager myCard = FindCardAtPoint(p);
+        
+        arrows t = arrows.None;
+
+        if ((myCard.arrows & arrows.Up) == arrows.Up)
+        {
+            t |= arrows.Down;
+        }
+       
+        if ((myCard.arrows & arrows.Down) == arrows.Down)
+        {
+            t |= arrows.Up;
+        }
+
+        if ((myCard.arrows & arrows.Right) == arrows.Right)
+        {
+            t |= arrows.Left;
+        }
+
+        if ((myCard.arrows & arrows.Left) == arrows.Left)
+        {
+            t |= arrows.Right;
+        }
+        myCard.updateArrows(t);
+
+    }
     void RemoveCard(int x, int y)
     {
 
@@ -262,6 +338,15 @@ public class BoardManager : MonoBehaviour {
                     
 
             
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            //For Swapping();
+            //last_fire_time = Time.time;
+            SwapCard();
+
+
+
         }
         if (Input.GetKeyDown(KeyCode.U))
         {

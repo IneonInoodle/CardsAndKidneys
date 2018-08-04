@@ -44,16 +44,16 @@ public class OneCardManager : MonoBehaviour {
         switch (rand)
         {
             case 0:
-                arrows = arrows.Up | arrows.Left | arrows.Down | arrows.Right; 
+                arrows = arrows.Up | arrows.Left ; 
                 break;
             case 1:
-                arrows = arrows.Up | arrows.Left | arrows.Down | arrows.Right;
+                arrows = arrows.Up | arrows.Left;
                 break;
             case 2:
-                arrows = arrows.Up | arrows.Left | arrows.Down | arrows.Right;
+                arrows = arrows.Up | arrows.Left ;
                 break;
             case 3:
-                arrows = arrows.Up | arrows.Left | arrows.Down | arrows.Right;
+                arrows = arrows.Up | arrows.Left ;
                 break;
         }
     }
@@ -64,7 +64,9 @@ public class OneCardManager : MonoBehaviour {
         CardArrowRightImage.enabled = (arrowz & arrows.Right) != 0;
         CardArrowDownImage.enabled = (arrowz & arrows.Down) != 0;
         CardArrowUpImage.enabled = (arrowz & arrows.Up) != 0;
-        
+        this.arrows = arrowz;
+
+
     }
 // field card
 //playerCard
