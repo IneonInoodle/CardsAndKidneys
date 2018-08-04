@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using System;
 
 
 [System.Serializable]
@@ -126,7 +127,9 @@ public class BoardManager : MonoBehaviour {
         GameObject card;
         //card = Instantiate(cardPrefab);
 
-        card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.identity);
+        ; //keep it bewtween 2 and 1
+
+        card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-2, 2)));
 
         card.transform.SetParent(FieldCardParent.transform, false);
         card.GetComponent<OneCardManager>().cardAsset = cardAsset;
@@ -138,9 +141,8 @@ public class BoardManager : MonoBehaviour {
         //Debug.Log("R_"+card.transform.rotation);
         //card.transform.Rotate(new Vector3(1, 2, -1));
 
-        Vector3 v = new Vector3(AllSlots[p.Y, p.X].transform.position.x + Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.y + Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.z);
+        Vector3 v = new Vector3(AllSlots[p.Y, p.X].transform.position.x + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.y + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.z);
         card.transform.DOMove(v, delay); //AllSlots[p.Y, p.X].transform.position
-        card.transform.localRotation = Quaternion.Euler(card.transform.localRotation.eulerAngles.x , card.transform.localRotation.eulerAngles.y, card.transform.localRotation.eulerAngles.z + +Random.Range(-2, 2)); //keep it bewtween 2 and 1
         return card;
     }
 
@@ -166,7 +168,7 @@ public class BoardManager : MonoBehaviour {
             {
                 SoundManager.PlaySound("dealCardSound");
                 Vector2 newPos = EmptyCardSlots[i].transform.position;
-                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[Random.Range(0, fieldCardAssets.Length)], delay);
+                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], delay);
                  
                 //maybe add some stuff to card deal in animaton
                    
