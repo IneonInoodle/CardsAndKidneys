@@ -21,8 +21,8 @@ public struct Point
 public class BoardManager : MonoBehaviour {
 
     private static BoardManager instance;
-        
-        public static BoardManager Instance
+
+    public static BoardManager Instance
     {
         get
         {
@@ -33,7 +33,7 @@ public class BoardManager : MonoBehaviour {
             return instance;
         }
     }
-    
+
 
     public GameObject FieldCardPrefab; // todo change to decks
 
@@ -46,13 +46,12 @@ public class BoardManager : MonoBehaviour {
 
     public GameObject Top;
     public GameObject Bottom;
-    public Vector3 pos1;
-    public Vector3 pos2;
+
     private int rows = 2;
     public int cols = 3;
 
     private CardSlotManager[,] allSlots = new CardSlotManager[2, 3];
-    public CardSlotManager[,] AllSlots { get {return allSlots; } } //no set, set in awake
+    public CardSlotManager[,] AllSlots { get { return allSlots; } } //no set, set in awake
     public List<CardSlotManager> EmptyCardSlots = new List<CardSlotManager>();
 
     void Awake()
@@ -68,59 +67,35 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    
+
     // Use this for initialization
     void Start()
     {
-        
-        
+
+
     }
+
+
+
+    //var pos1 = (0,0,0);
+    //var pos2 = (0, 0, 0);
+
 
     void SwapCard(Point p1, Point p2)
     {
-        OneCardManager myCard1 = FindCardAtPoint(p1);
-        OneCardManager myCard2 = FindCardAtPoint(p2);
-        var x1 = UnityEngine.Random.Range(0, 2);
-        var y1 = UnityEngine.Random.Range(0, 1);
-        var x2 = UnityEngine.Random.Range(1, 3);
-        var y2 = UnityEngine.Random.Range(1, 2);
-        //var pos1 = (0,0,0);
-        //var pos2 = (0, 0, 0);
+        OneCardManager c1 = FindCardAtPoint(p1);
+        OneCardManager c2 = FindCardAtPoint(p2);
 
-        OneCardManager[] AllCards = GameObject.FindObjectsOfType<OneCardManager>();
-        foreach (OneCardManager card in AllCards)
-        {
-            //DeleteCard(card);
-            Debug.Log("RUN_:"+card.point.X + " " + card.point.Y );
-            if (card.point.X == x1 && card.point.Y == y1)
-            {
-                pos1 = card.transform.position;
-                //Debug.Log(card.transform.position);
-                //card.transform.Translate(Vector3.forward * Time.deltaTime);
-                //DeleteCard(card);
-            }
-            if (card.point.X == x2 && card.point.Y == y2)
-            {
-                pos2 = card.transform.position;
-                //Debug.Log(card.transform.position);
-                //card.transform.Translate(Vector3.forward * Time.deltaTime);
-                //DeleteCard(card);
-            }
-         }
-        foreach (OneCardManager card in AllCards)
-        {
-            if (card.point.X == x1 && card.point.Y == y1)
-            {
-                card.transform.DOMove(pos2, 0.5f);
-                RotateArrows(card.point);
-            }
-            if (card.point.X == x2 && card.point.Y == y2)
-            {
-                card.transform.DOMove(pos1, 0.5f);
-                RotateArrows(card.point);
-            }
-        }
+        Vector3 v1 = c1.transform.position;
+        Vector3 v2 = c2.transform.position;
+
+        c1.transform.DOMove(v2, 0.5f);
+        c2.transform.DOMove(v1, 0.5f);
+
+        c1.point = p2;
+        c2.point = p1;
     }
+
 
     void RotateArrows(Point p)
     {
@@ -150,33 +125,7 @@ public class BoardManager : MonoBehaviour {
         myCard.updateArrows(t);
 
     }
-    void RemoveCard(int x, int y)
-    {
-
-        // generates field cards!!
-
-        //card.transform.position = cardsInitialPosition;
-        //card.transform.DOMove(SlotsForCards[i].position, 0.5f);
-
-        //Sequence s = DOTween.Sequence();
-        // 1) raise the pack to opening position
-        //s.Append(transform.DOLocalMoveZ(-2f, 0.5f));
-        //s.Append(transform.DOShakeRotation(1f, 20f, 20));
-
-        //s.OnComplete(() =>
-        //{
-        // 2) add glow, particle system
-
-        // 3): 
-        //ShopManager.Instance.OpeningArea.ShowPackOpening(transform.position);
-        //if (ShopManager.Instance.PacksCreated > 0)
-        //ShopManager.Instance.PacksCreated--;
-        // 4) destroy this pack in the end of the sequence
-        //Destroy(gameObject);
-        //});
-        //Destroy(AllSlots[x, y].Card);
-        //EmptyCardSlots.Add(AllSlots[x, y]);
-    }
+    
     public CardSlotManager FindSlotAtPoint(Point p)
     {
         return AllSlots[p.Y, p.X];
@@ -325,6 +274,8 @@ public class BoardManager : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
+
+            SwapCard(new Point(1, 1), new Point(0, 0));
             //Generate();
             //StartCoroutine(GenerateTest());
         }
@@ -343,7 +294,7 @@ public class BoardManager : MonoBehaviour {
         {
             //For Swapping();
             //last_fire_time = Time.time;
-            SwapCard();
+            
 
 
 
