@@ -188,7 +188,7 @@ public class PlayerManager : TurnManager {
     public void test (string tt)
     {
         Debug.Log("playspellcard");
-        StartCoroutine(PlaySpellCard("swap"));
+        StartCoroutine(PlaySpellCard("rotate"));
         
     }
     public void Die()

@@ -93,10 +93,8 @@ public class SelectionManager : MonoBehaviour {
             }
         }
 
-
-
         fieldCardParent.transform.DOMove(new Vector3(fieldCardParent.transform.position.x, fieldCardParent.transform.position.y + moveDistance, fieldCardParent.transform.position.z), 1.0f);
-
+        yield return new WaitForSeconds(1f);
         while (!selectionComplete) // loop to stay in coroutine until done
         {
 
@@ -117,10 +115,11 @@ public class SelectionManager : MonoBehaviour {
         //
     }
 
-   public void exit()
+   public IEnumerator exit()
     {
 
-        fieldCardParent.transform.DOMove(new Vector3(fieldCardParent.transform.position.x, fieldCardParent.transform.position.y - moveDistance, fieldCardParent.transform.position.z), 0f);
+        fieldCardParent.transform.DOMove(new Vector3(fieldCardParent.transform.position.x, fieldCardParent.transform.position.y - moveDistance, fieldCardParent.transform.position.z), 0.5f);
+        yield return new WaitForSeconds(0.5f);
         selectionComplete = true;
 
         foreach (Selector s in AllSelectors)
@@ -147,13 +146,13 @@ public class SelectionManager : MonoBehaviour {
     public void confirm()
     {
         Debug.Log("confirm");
-        exit();
+        StartCoroutine(exit());
     }
 
     public void cancel()
     {
         Debug.Log("cancle");
         points.Clear();
-        exit();
+        StartCoroutine(exit());
     }
 }
