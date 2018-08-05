@@ -81,7 +81,7 @@ public class BoardManager : MonoBehaviour {
     //var pos2 = (0, 0, 0);
 
 
-    void SwapCard(Point p1, Point p2)
+    public void SwapCard(Point p1, Point p2)
     {
         OneCardManager c1 = FindCardAtPoint(p1);
         OneCardManager c2 = FindCardAtPoint(p2);
@@ -97,7 +97,7 @@ public class BoardManager : MonoBehaviour {
     }
 
 
-    void RotateArrows(Point p)
+    public void RotateArrows(Point p)
     {
         OneCardManager myCard = FindCardAtPoint(p);
         

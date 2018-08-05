@@ -13,6 +13,7 @@ public class GameMangerKelton : MonoBehaviour {
 
     public SoundManager soundManager;
     public MessageManager messageManager;
+    public SelectionManager selectionManager;
 
     public GameObject DamagePrefab;
 

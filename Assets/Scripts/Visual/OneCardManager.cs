@@ -47,13 +47,13 @@ public class OneCardManager : MonoBehaviour {
                 arrows = arrows.Up | arrows.Left ; 
                 break;
             case 1:
-                arrows = arrows.Up | arrows.Left;
+                arrows = arrows.Up | arrows.Right;
                 break;
             case 2:
-                arrows = arrows.Up | arrows.Left ;
+                arrows = arrows.Down | arrows.Left ;
                 break;
             case 3:
-                arrows = arrows.Up | arrows.Left ;
+                arrows = arrows.Down | arrows.Right ;
                 break;
         }
     }

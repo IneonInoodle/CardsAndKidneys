@@ -69,6 +69,7 @@ public class SelectionManager : MonoBehaviour {
 
     public IEnumerator getSelection(int amount)
     {
+        selectionComplete = false;
         gm.DisableInputs();
         blackScreen.SetActive(true);
         ribbon.SetActive(true);
@@ -79,6 +80,7 @@ public class SelectionManager : MonoBehaviour {
         confirmButton.gameObject.SetActive(false);
         points.Clear();
         amountOfCardsRequired = amount;
+        AmountOfCardsSelected = 0;
         AllSelectors = GameObject.FindObjectsOfType<Selector>();
 
         //turn all field cards to be selectable
@@ -87,7 +89,6 @@ public class SelectionManager : MonoBehaviour {
             if (s.gameObject.GetComponent<OneCardManager>().cardAsset.Type != CardType.Player)
             {
                 // here theres a check missing for their card type
-                Debug.Log("so itsss true");
                 s.isSelectable = true;
             }
         }
@@ -118,10 +119,13 @@ public class SelectionManager : MonoBehaviour {
 
    public void exit()
     {
+
+        fieldCardParent.transform.DOMove(new Vector3(fieldCardParent.transform.position.x, fieldCardParent.transform.position.y - moveDistance, fieldCardParent.transform.position.z), 0f);
         selectionComplete = true;
 
         foreach (Selector s in AllSelectors)
         {
+            s.IsSelected = false;
             s.isSelectable = false;
             if (s.gameObject.GetComponent<OneCardManager>().cardAsset.Type != CardType.Player)
             {
@@ -130,7 +134,7 @@ public class SelectionManager : MonoBehaviour {
             }
         }
 
-        fieldCardParent.transform.DOMove(new Vector3(fieldCardParent.transform.position.x, fieldCardParent.transform.position.y - moveDistance, fieldCardParent.transform.position.z), 1.0f);
+        
 
         ribbon.SetActive(false);
         blackScreen.SetActive(false);
@@ -142,11 +146,13 @@ public class SelectionManager : MonoBehaviour {
 
     public void confirm()
     {
+        Debug.Log("confirm");
         exit();
     }
 
     public void cancel()
     {
+        Debug.Log("cancle");
         points.Clear();
         exit();
     }

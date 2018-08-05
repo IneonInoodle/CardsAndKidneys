@@ -12,8 +12,6 @@ public class Selector : MonoBehaviour
     {
         get { return isSelected; }
         set { isSelected = value;
-
-            Debug.Log(value);
             card.CardFaceGlowObject.SetActive(isSelected);           
         }
     }
@@ -37,22 +35,23 @@ public class Selector : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("press");
         if (isSelectable == true)
         {
-            Debug.Log("ok ok");
             if (IsSelected == false) // trying to set it to true
             {
-                Debug.Log("ok ok ok ");
                 if (sm.amountOfCardsRequired > sm.AmountOfCardsSelected)
                 {
+                    Debug.Log("add");
+                    sm.points.Add(card.point);
                     IsSelected = true;
                     sm.AmountOfCardsSelected++;
                 }
-            } else
+            } else if (IsSelected == true)
             {
+                Debug.Log("remove");
                 IsSelected = false;
-                sm.AmountOfCardsSelected--;  
+                sm.points.Remove(card.point);
+                sm.AmountOfCardsSelected--;
             }
         }
     }

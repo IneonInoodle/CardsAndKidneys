@@ -140,7 +140,57 @@ public class PlayerManager : TurnManager {
     }
     
     
+    public IEnumerator PlaySpellCard(string spell)
+    {
+        switch (spell)
+        {
+            case "swap":
+                Debug.Log("starting swap");
+                yield return StartCoroutine(gm.selectionManager.getSelection(2));
 
+                Debug.Log(gm.selectionManager.points.Count);
+                if (gm.selectionManager.points.Count == 2)
+                {
+                    Debug.Log("swapping");
+                    boardManager.SwapCard(gm.selectionManager.points[0], gm.selectionManager.points[1]);
+                } else
+                {
+                    Debug.Log("cancled");
+                }
+                break;
+            case "rotate":
+                yield return StartCoroutine(gm.selectionManager.getSelection(1));
+                if (gm.selectionManager.points.Count == 1)
+                {
+                    boardManager.RotateArrows(gm.selectionManager.points[0]);
+                } else
+                {
+                    Debug.Log("cancled");
+                }
+                break;
+            case "replace2":
+                yield return StartCoroutine(gm.selectionManager.getSelection(2));
+                if (gm.selectionManager.points.Count == 2)
+                {
+
+                } else
+                {
+                    Debug.Log("cancled");
+                }
+                break;
+            case "boost":
+                ActionPoints++;
+                break;
+        }
+        yield return null;
+    }
+
+    public void test (string tt)
+    {
+        Debug.Log("playspellcard");
+        StartCoroutine(PlaySpellCard("swap"));
+        
+    }
     public void Die()
     {
         Debug.Log("dieing");
