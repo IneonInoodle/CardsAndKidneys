@@ -113,9 +113,12 @@ private int adjencyBonus;
         if (cardAsset != null)
             ReadCardFromAsset();
 
-
-        setRandomArrows();
-        updateArrows(arrows);//meh
+        if (cardAsset.Type != CardType.Spell)
+        {
+            setRandomArrows();
+            updateArrows(arrows);//meh
+        }
+       
         //CardFaceInnerGlowImage.enabled = false;
         CardFaceGlowObject.SetActive(false);
 }
@@ -145,13 +148,14 @@ private int adjencyBonus;
         CardFaceFrameImage.sprite = cardAsset.FrameImage;
         CardBodyImage.sprite = cardAsset.CardBodyImage;
 
-        CardArrowUpImage.sprite = cardAsset.CardArrowImage;
-        CardArrowDownImage.sprite = cardAsset.CardArrowImage;
-        CardArrowLeftImage.sprite = cardAsset.CardArrowImage;
-        CardArrowRightImage.sprite = cardAsset.CardArrowImage;
+        
 
         if (cardAsset.Type == CardType.Monster)
         {
+            CardArrowUpImage.sprite = cardAsset.CardArrowImage;
+            CardArrowDownImage.sprite = cardAsset.CardArrowImage;
+            CardArrowLeftImage.sprite = cardAsset.CardArrowImage;
+            CardArrowRightImage.sprite = cardAsset.CardArrowImage;
             DamageImage.sprite = cardAsset.DamageImage;
             DamageText.text = cardAsset.Damage.ToString();
         } else if (cardAsset.Type == CardType.Hp || cardAsset.Type == CardType.Neutral)
@@ -160,10 +164,14 @@ private int adjencyBonus;
             DamageImage.enabled = false;
             DamageText.enabled = false;
 
+            CardArrowUpImage.sprite = cardAsset.CardArrowImage;
+            CardArrowDownImage.sprite = cardAsset.CardArrowImage;
+            CardArrowLeftImage.sprite = cardAsset.CardArrowImage;
+            CardArrowRightImage.sprite = cardAsset.CardArrowImage;
+
         } else if (cardAsset.Type == CardType.Spell)
         {
             CardTitleText.text = cardAsset.name;
-            DamageImage.enabled = false;
         } else if (cardAsset.Type == CardType.Player)
         {
             DamageImage.enabled = false;

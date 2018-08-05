@@ -58,6 +58,9 @@ public class PlayerManager : TurnManager {
 
     public CardAsset playerCardAsset;
     private BoardManager boardManager;
+    public HandVisual handvisual;
+
+    public CardAsset[] Deck;
 
     public GameObject Doctor;
     public GameObject Patient;
@@ -71,6 +74,8 @@ public class PlayerManager : TurnManager {
     public GameObject KidneyPrefab;
     public List<GameObject> patientKidneys = new List<GameObject>(); //kidneys safe in the patient
     public List<GameObject> playerKidneys = new List<GameObject>();  //kidney on board that player has
+
+
 
     
     // movement points
@@ -448,11 +453,11 @@ public class PlayerManager : TurnManager {
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("kidney");
-            //Generate();
-            Die();
+        
+            handvisual.GivePlayerACard(Deck[UnityEngine.Random.Range(0, Deck.Length)], false, true);
+
         }
 
         

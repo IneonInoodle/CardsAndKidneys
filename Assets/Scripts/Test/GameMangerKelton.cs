@@ -17,7 +17,7 @@ public class GameMangerKelton : MonoBehaviour {
 
     public GameObject DamagePrefab;
 
-
+    public GameObject SpellCardPrefab;
 
     BoardManager  board;
 
@@ -71,8 +71,6 @@ public class GameMangerKelton : MonoBehaviour {
             PlayLevel();
 
             // for testing
-
-
         }
     }
 

@@ -30,7 +30,7 @@ public class DragRotator : MonoBehaviour
 
     private void Awake()
     {
-        this.m_originalAngles = this.transform.rotation.eulerAngles;
+        this.m_originalAngles = this.transform.localRotation.eulerAngles;
         Reset();
         this.m_prevPos = this.transform.position;
     }
