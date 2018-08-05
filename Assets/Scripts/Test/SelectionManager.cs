@@ -13,6 +13,7 @@ public class SelectionManager : MonoBehaviour {
     GameMangerKelton gm;
     public GameObject blackScreen;
     public GameObject ribbon;
+    public Text RibbonText;
     public Button confirmButton;
     public Button cancleButton;
     public GameObject fieldCardParent;
@@ -69,6 +70,17 @@ public class SelectionManager : MonoBehaviour {
 
     public IEnumerator getSelection(int amount)
     {
+        String y = "Choose One Card";
+
+        if (amount == 1)
+        {
+            y = "Choose One Card";
+        } else if (amount == 2)
+        {
+            y = "Choose Two Cards";
+        }
+
+        RibbonText.text = y;
         selectionComplete = false;
         gm.DisableInputs();
         blackScreen.SetActive(true);
@@ -133,14 +145,13 @@ public class SelectionManager : MonoBehaviour {
             }
         }
 
-        
-
         ribbon.SetActive(false);
         blackScreen.SetActive(false);
         confirmButton.gameObject.SetActive(false);
         cancleButton.gameObject.SetActive(false);
 
         gm.EnableInputs();
+
     }
 
     public void confirm()

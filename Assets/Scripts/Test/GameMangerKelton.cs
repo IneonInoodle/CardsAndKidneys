@@ -238,6 +238,7 @@ public class GameMangerKelton : MonoBehaviour {
         {
             p.playerInput.InputEnabled = false;
             p.button.interactable = false;
+            p.handvisual.gameObject.SetActive(false);
         }
 
     }
@@ -246,6 +247,11 @@ public class GameMangerKelton : MonoBehaviour {
     {
         CurrentPlayerTurn.playerInput.InputEnabled = true;
         CurrentPlayerTurn.button.interactable = true;
+
+        foreach (PlayerManager p in players) //for testing
+        {
+            p.handvisual.gameObject.SetActive(true);
+        }
     }
 
 
