@@ -118,7 +118,7 @@ public class SelectionManager : MonoBehaviour {
    public IEnumerator exit()
     {
 
-        fieldCardParent.transform.DOMove(new Vector3(fieldCardParent.transform.position.x, fieldCardParent.transform.position.y - moveDistance, fieldCardParent.transform.position.z), 0.5f);
+        fieldCardParent.transform.DOMove(new Vector3(0, 0, 0), 0.5f);
         yield return new WaitForSeconds(0.5f);
         selectionComplete = true;
 
