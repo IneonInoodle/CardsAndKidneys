@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameMangerKelton : MonoBehaviour {
+public class GameManager : MonoBehaviour {
     //switch players turn 
 
     public PlayerManager[] players;
@@ -37,10 +37,29 @@ public class GameMangerKelton : MonoBehaviour {
     public UnityEvent startLevelEvent;
     public UnityEvent playLevelEvent;
     public UnityEvent endLevelEvent;
-    
+
+
+
+    private static GameManager instance;
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType<GameManager>();
+            }
+            return instance;
+        }
+    }
+
 
     private void Awake()
     {
+        Debug.Assert(selectionManager != null);
+        Debug.Assert(messageManager != null);
+        Debug.Assert(soundManager != null);
 
         soundManager = Object.FindObjectOfType<SoundManager>().GetComponent<SoundManager>();
         players = Object.FindObjectsOfType<PlayerManager>(); //find player
