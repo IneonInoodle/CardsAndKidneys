@@ -35,10 +35,15 @@ public class Selector : MonoBehaviour
 
     void OnMouseDown()
     {
+        Debug.Log("what");
         if (isSelectable == true)
         {
+
+            Debug.Log("what");
             if (IsSelected == false) // trying to set it to true
             {
+                Debug.Log(sm.amountOfCardsRequired);
+                Debug.Log(sm.AmountOfCardsSelected);
                 if (sm.amountOfCardsRequired > sm.AmountOfCardsSelected)
                 {
                     Debug.Log("add");

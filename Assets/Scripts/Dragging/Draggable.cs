@@ -8,7 +8,8 @@ using DG.Tweening;
 /// whether the drop was successful or not.
 /// </summary>
 
-public class Draggable : MonoBehaviour {
+public class Draggable : MonoBehaviour
+{
 
     // PRIVATE FIELDS
 
@@ -18,9 +19,6 @@ public class Draggable : MonoBehaviour {
     // distance from the center of this Game Object to the point where we clicked to start dragging 
     private Vector3 pointerDisplacement;
 
-    // distance from camera to mouse on Z axis 
-    private float zDisplacement;
-
     // reference to DraggingActions script. Dragging Actions should be attached to the same GameObject.
     private DraggingActions da;
 
@@ -28,7 +26,7 @@ public class Draggable : MonoBehaviour {
     private static Draggable _draggingThis;
     public static Draggable DraggingThis
     {
-        get{ return _draggingThis;}
+        get { return _draggingThis; }
     }
 
     // MONOBEHAVIOUR METHODS
@@ -39,30 +37,29 @@ public class Draggable : MonoBehaviour {
 
     void OnMouseDown()
     {
-        if (da!=null && da.CanDrag)
+        if (da != null && da.CanDrag)
         {
             dragging = true;
             // when we are dragging something, all previews should be off
             HoverPreview.PreviewsAllowed = false;
             _draggingThis = this;
             da.OnStartDrag();
-            zDisplacement = -Camera.main.transform.position.z + transform.position.z;
-            pointerDisplacement = -transform.position + MouseInWorldCoords();
+            pointerDisplacement =  transform.position - MouseInWorldCoords();
         }
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
         if (dragging)
-        { 
+        {
             Vector3 mousePos = MouseInWorldCoords();
             //Debug.Log(mousePos);
-            transform.position = new Vector3(mousePos.x - pointerDisplacement.x, mousePos.y - pointerDisplacement.y, transform.position.z);   
+            transform.position = new Vector3( mousePos.x + pointerDisplacement.x , transform.position.y,mousePos.z + pointerDisplacement.z);
             da.OnDraggingInUpdate();
         }
     }
-	
+
     void OnMouseUp()
     {
         if (dragging)
@@ -73,15 +70,30 @@ public class Draggable : MonoBehaviour {
             _draggingThis = null;
             da.OnEndDrag();
         }
-    }   
+    }
 
     // returns mouse position in World coordinates for our GameObject to follow. 
     private Vector3 MouseInWorldCoords()
     {
         var screenMousePos = Input.mousePosition;
-        //Debug.Log(screenMousePos);
-        screenMousePos.z = zDisplacement;
-        return Camera.main.ScreenToWorldPoint(screenMousePos);
+        Vector3 res= Camera.main.ScreenToWorldPoint(screenMousePos);
+        Ray ray= Camera.main.ScreenPointToRay(screenMousePos);
+
+
+        Plane hPlane = new Plane(Vector3.up, Vector3.zero);
+        // Plane.Raycast stores the distance from ray.origin to the hit point in this variable:
+        float distance = 0;
+        // if the ray hits the plane...
+        if (hPlane.Raycast(ray, out distance))
+        {
+            // get the hit point:
+            res = ray.GetPoint(distance);
+        }
+
+
+        Debug.Log(screenMousePos + "---"+res+"----"+ ray);
+
+        return res;
     }
-        
+
 }

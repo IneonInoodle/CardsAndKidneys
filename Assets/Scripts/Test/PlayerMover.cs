@@ -97,10 +97,13 @@ public void setPlayerArrows(arrows arrowz)
             {
                 SoundManager.PlaySound("dealCardSound");
                 isMoving = true;
-                
 
-                
-                //setPlayerArrows(desCard);
+
+
+                //setPlayer
+
+
+                //(desCard);
                 
                 boardManager.AddEmptySlot(playerManager.point);
                 setPlayerArrows(boardManager.FindCardAtPoint(des).arrows);

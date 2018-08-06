@@ -16,22 +16,44 @@ public abstract class DraggingActions : MonoBehaviour {
             return true; //GlobalSettings.Instance.CanControlThisPlayer(playerOwner);
         }
     }
-    /*
-    protected virtual Player playerOwner
+
+
+    
+    
+    protected virtual PlayerManager playerOwner
     {
         get{
-            
-            if (tag.Contains("Low"))
-                return GlobalSettings.Instance.LowPlayer;
-            else if (tag.Contains("Top"))
-                return GlobalSettings.Instance.TopPlayer;
+
+            GameManager gm =GameManager.Instance;
+
+            if (tag.Contains("Bottom"))
+            {
+                foreach (PlayerManager pl in gm.players)
+                {
+                    if (pl.mySide == location.bottom)
+                    {
+                        return pl;
+                    }
+                }
+            }     
+            else if (tag.Contains("Top")) {
+                foreach (PlayerManager pl in gm.players)
+                {
+                    if (pl.mySide == location.top)
+                    {
+                        return pl;
+                    }
+                }
+            }   
             else
             {
                 Debug.LogError("Untagged Card or creature " + transform.parent.name);
                 return null;
             }
+
+            return null;
         }
     }
-    */
+    
     protected abstract bool DragSuccessful();
 }

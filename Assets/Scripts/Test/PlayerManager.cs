@@ -67,7 +67,6 @@ public class PlayerManager : TurnManager {
 
     public Button button;
 
-    private GameMangerKelton gm;
     public GameObject PortaitGlowObject;
     public GameObject EndTurnGlowObject;
     // Kidneys shit 
@@ -147,6 +146,7 @@ public class PlayerManager : TurnManager {
     
     public IEnumerator PlaySpellCard(string spell)
     {
+        var gm = GameManager.Instance;
         switch (spell)
         {
             case "swap":
@@ -164,9 +164,12 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "rotate":
+                Debug.Log("starting rotate");
+
                 yield return StartCoroutine(gm.selectionManager.getSelection(1));
                 if (gm.selectionManager.points.Count == 1)
                 {
+                    Debug.Log("here");
                     boardManager.RotateArrows(gm.selectionManager.points[0]);
                 } else
                 {
@@ -315,7 +318,7 @@ public class PlayerManager : TurnManager {
     public void StealKidney()
     {
         
-        PlayerManager otherPlayer = gm.getOtherPlayer(this);
+        PlayerManager otherPlayer = GameManager.Instance.getOtherPlayer(this);
 
         if (playerKidneys.Count == 0 && otherPlayer.patientKidneys != null) // && OtherPlayer.patientKidneys != null
         {   
@@ -392,7 +395,6 @@ public class PlayerManager : TurnManager {
     {
         base.Awake();
         boardManager = BoardManager.Instance;
-        gm = UnityEngine.Object.FindObjectOfType<GameMangerKelton>().GetComponent<GameMangerKelton>(); // could use a singleton
 
         turnsOnBoard = 5;
         ActionPoints = 5;
@@ -448,7 +450,7 @@ public class PlayerManager : TurnManager {
     // Update is called once per frame
     void Update () {
 
-        if (playerMover.isMoving || gameManager.CurrentPlayerTurn != this) // dont allow second move if already moving 
+        if (playerMover.isMoving || GameManager.Instance.CurrentPlayerTurn != this) // dont allow second move if already moving 
         {
             return;
         }

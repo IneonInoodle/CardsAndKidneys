@@ -5,19 +5,18 @@ using DG.Tweening;
 public class DragSpellNoTarget: DraggingActions{
 
     private int savedHandSlot;
-    private WhereIsTheCardOrCreature whereIsCard;
+    //private WhereIsTheCardOrCreature whereIsCard;
 
     void Awake()
     {
-        whereIsCard = GetComponent<WhereIsTheCardOrCreature>();
+        //whereIsCard = GetComponent<WhereIsTheCardOrCreature>();
     }
 
     public override void OnStartDrag()
     {
-        savedHandSlot = whereIsCard.Slot;
+        savedHandSlot = playerOwner.handvisual.GetIndexOfCard(gameObject);
 
-        whereIsCard.VisualState = VisualStates.Dragging;
-        whereIsCard.BringToFront();
+        playerOwner.handvisual.BringToFront(gameObject);
 
     }
 
@@ -32,16 +31,17 @@ public class DragSpellNoTarget: DraggingActions{
         if (DragSuccessful())
         {
             // play this card
-            playerOwner.PlayASpellFromHand(GetComponent<IDHolder>().UniqueID, -1);
+            playerOwner.handvisual.PlayASpellFromHand(gameObject);
         }
         else
         {
             // Set old sorting order 
-            whereIsCard.Slot = savedHandSlot;
-            whereIsCard.VisualState = VisualStates.LowHand;
+            //whereIsCard.Slot = savedHandSlot;
+
             // Move this card back to its slot position
-            HandVisual PlayerHand = TurnManager.Instance.whoseTurn.PArea.handVisual;
-            Vector3 oldCardPos = PlayerHand.slots.Children[savedHandSlot].transform.localPosition;
+
+            Vector3 oldCardPos = playerOwner.handvisual.slots.Children[savedHandSlot].transform.localPosition;
+
             transform.DOLocalMove(oldCardPos, 1f);
         } 
     }
@@ -49,8 +49,8 @@ public class DragSpellNoTarget: DraggingActions{
     protected override bool DragSuccessful()
     {
         //bool TableNotFull = (TurnManager.Instance.whoseTurn.table.CreaturesOnTable.Count < 8);
-
-        return TableVisual.CursorOverSomeTable; //&& TableNotFull;
+        return true;
+        //return TableVisual.CursorOverSomeTable; //&& TableNotFull;
     }
 
 

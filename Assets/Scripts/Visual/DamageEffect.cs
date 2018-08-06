@@ -83,8 +83,7 @@ public class DamageEffect : MonoBehaviour {
     public static void CreateDamageEffect(GameObject go, int amount)
     {
        
-        GameMangerKelton gm;
-        gm = UnityEngine.Object.FindObjectOfType<GameMangerKelton>().GetComponent<GameMangerKelton>(); // could
+        GameManager gm=GameManager.Instance;
         
         GameObject newDamageEffect = Instantiate(gm.DamagePrefab);
         DamageEffect de = newDamageEffect.GetComponent<DamageEffect>();

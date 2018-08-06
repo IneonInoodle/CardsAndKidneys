@@ -26,13 +26,10 @@ public class HandVisual : MonoBehaviour
 
     // PRIVATE : a list of all card visual representations as GameObjects
     private List<GameObject> CardsInHand = new List<GameObject>();
-    private GameMangerKelton gm;
 
     // ADDING OR REMOVING CARDS FROM HAND
     private void Awake()
     {
-        gm = GameObject.FindObjectOfType<GameMangerKelton>();
-        
     }
     // add a new card GameObject to hand
     public void AddCard(GameObject card)
@@ -122,6 +119,11 @@ public class HandVisual : MonoBehaviour
         }    
     }
 
+    public int GetIndexOfCard(GameObject g)
+    {
+        return CardsInHand.IndexOf(g);
+    }
+
     private int HandSortingOrder(int placeInHand)
     {
         return ((placeInHand + 1) * 10);
@@ -137,7 +139,7 @@ public class HandVisual : MonoBehaviour
                     // this is a spell: checking for targeted or non-targeted spell
         if (c.Targets == TargetingOptions.NoTarget)
         {
-            card = GameObject.Instantiate(gm.SpellCardPrefab, position, Quaternion.Euler(eulerAngles)) as GameObject;
+            card = GameObject.Instantiate(GameManager.Instance.SpellCardPrefab, position, Quaternion.Euler(eulerAngles)) as GameObject;
 
             if (card != null)
             {
@@ -181,7 +183,13 @@ public class HandVisual : MonoBehaviour
         AddCard(card);
 
         BringToFront(card);
-
+        if (p.mySide == location.top)
+        {
+            card.tag = "Top";
+        } else if (p.mySide == location.bottom) {
+            card.tag = "Bottom";
+        }
+        
         // move card to the hand;
         Sequence s = DOTween.Sequence();
         if (!fast)
@@ -229,7 +237,7 @@ public class HandVisual : MonoBehaviour
 
         Sequence s = DOTween.Sequence();
         s.Append(CardVisual.transform.DOMove(PlayPreviewSpot.position, 1f));
-        s.Insert(0f, CardVisual.transform.DORotate(Vector3.zero, 1f));
+        //s.Insert(0f, CardVisual.transform.DORotate(new Vector3(0f, 0, 0f), 1f));
         s.AppendInterval(2f);
         s.OnComplete(()=>
             {

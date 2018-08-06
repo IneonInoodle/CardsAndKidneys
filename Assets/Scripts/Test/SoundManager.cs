@@ -113,8 +113,7 @@ public class SoundManager : MonoBehaviour {
                 break;
             case "pressEndTurnButtonSound":
                 //annoying bug here
-                if (pressEndTurnButtonSound != null)
-                audioSrc.PlayOneShot(pressEndTurnButtonSound);
+                
                 break;
         }
     }

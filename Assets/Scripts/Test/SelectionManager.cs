@@ -9,8 +9,7 @@ public class SelectionManager : MonoBehaviour {
 
     //only turn on confirm button when goal of cards selected met
     //only allow certain number of cards to be selected
-
-    GameMangerKelton gm;
+    
     public GameObject blackScreen;
     public GameObject ribbon;
     public Text RibbonText;
@@ -40,12 +39,11 @@ public class SelectionManager : MonoBehaviour {
     public int amountOfCardsRequired = 2;
 
     Selector[] AllSelectors;
-    private void Awake()
+    private void Start()
     {   
         //start of game, this whole thing could be a singleton 
-        gm = UnityEngine.Object.FindObjectOfType<GameMangerKelton>().GetComponent<GameMangerKelton>();
         board = BoardManager.Instance;
- 
+        Debug.Log("whattt"+ blackScreen);
         blackScreen.SetActive(false);
         ribbon.SetActive(false);
         confirmButton.gameObject.SetActive(false);
@@ -53,7 +51,7 @@ public class SelectionManager : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void St_art () {
         
     }
 	
@@ -70,19 +68,22 @@ public class SelectionManager : MonoBehaviour {
 
     public IEnumerator getSelection(int amount)
     {
-        String y = "Choose One Card";
+        Debug.Log(amount);
+        String y = "Choose 1 Card";
 
         if (amount == 1)
         {
-            y = "Choose One Card";
-        } else if (amount == 2)
+            y = "Choose 1 Card";
+        }
+        else if (amount == 2)
         {
-            y = "Choose Two Cards";
+            y = "Choose 2 Cards";
         }
 
         RibbonText.text = y;
+
         selectionComplete = false;
-        gm.DisableInputs();
+        GameManager.Instance.DisableInputs();
         blackScreen.SetActive(true);
         ribbon.SetActive(true);
         confirmButton.gameObject.SetActive(true);
@@ -150,7 +151,7 @@ public class SelectionManager : MonoBehaviour {
         confirmButton.gameObject.SetActive(false);
         cancleButton.gameObject.SetActive(false);
 
-        gm.EnableInputs();
+        GameManager.Instance.EnableInputs();
 
     }
 
