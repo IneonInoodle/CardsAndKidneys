@@ -180,7 +180,10 @@ public class PlayerManager : TurnManager {
                 yield return StartCoroutine(gm.selectionManager.getSelection(2));
                 if (gm.selectionManager.points.Count == 2)
                 {
-
+                    //remove 2 cards
+                    //replace them
+                    Debug.Log("start replacing");
+                    boardManager.replace2(gm.selectionManager.points[0], gm.selectionManager.points[1]);
                 } else
                 {
                     Debug.Log("cancled");
@@ -196,7 +199,7 @@ public class PlayerManager : TurnManager {
     public void test (string tt)
     {
         Debug.Log("playspellcard");
-        StartCoroutine(PlaySpellCard("rotate"));
+        StartCoroutine(PlaySpellCard("replace2")); //rotate //swap //rotate2
         
     }
     public void Die()
