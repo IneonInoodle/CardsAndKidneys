@@ -159,7 +159,7 @@ public class BoardManager : MonoBehaviour {
         foreach (OneCardManager card in AllCards)
         {   
             
-            if (Point.Equals(card.point, p))
+            if (Point.Equals(card.point, p) && card.cardAsset.Type != CardType.Spell)
             {
                 return card;
             }
