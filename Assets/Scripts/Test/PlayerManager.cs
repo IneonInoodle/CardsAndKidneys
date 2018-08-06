@@ -149,7 +149,7 @@ public class PlayerManager : TurnManager {
         var gm = GameManager.Instance;
         switch (spell)
         {
-            case "swap":
+            case "Swap":
                 Debug.Log("starting swap");
                 yield return StartCoroutine(gm.selectionManager.getSelection(2));
 
@@ -163,7 +163,7 @@ public class PlayerManager : TurnManager {
                     Debug.Log("cancled");
                 }
                 break;
-            case "rotate":
+            case "Rotate":
                 Debug.Log("starting rotate");
 
                 yield return StartCoroutine(gm.selectionManager.getSelection(1));
@@ -176,30 +176,27 @@ public class PlayerManager : TurnManager {
                     Debug.Log("cancled");
                 }
                 break;
-            case "replace2":
+            case "Replace2":
                 yield return StartCoroutine(gm.selectionManager.getSelection(2));
                 if (gm.selectionManager.points.Count == 2)
                 {
-                    //remove 2 cards
-                    //replace them
-                    Debug.Log("start replacing");
-                    boardManager.replace2(gm.selectionManager.points[0], gm.selectionManager.points[1]);
+
                 } else
                 {
                     Debug.Log("cancled");
                 }
                 break;
-            case "boost":
+            case "Boost":
                 ActionPoints++;
                 break;
         }
         yield return null;
     }
 
-    public void test (string tt)
+    public void callSpellCard (string tt)
     {
         Debug.Log("playspellcard");
-        StartCoroutine(PlaySpellCard("rotate")); //rotate //swap //replace2
+        StartCoroutine(PlaySpellCard(tt));
         
     }
     public void Die()

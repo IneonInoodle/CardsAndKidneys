@@ -32,9 +32,12 @@ public class DragSpellNoTarget: DraggingActions{
         {
             // play this card
             playerOwner.handvisual.PlayASpellFromHand(gameObject);
+            Debug.Log("fucks");
         }
         else
         {
+            Debug.Log("why");
+            //unsucessful
             // Set old sorting order 
             //whereIsCard.Slot = savedHandSlot;
 

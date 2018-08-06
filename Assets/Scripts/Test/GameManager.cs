@@ -38,6 +38,16 @@ public class GameManager : MonoBehaviour {
     public UnityEvent playLevelEvent;
     public UnityEvent endLevelEvent;
 
+    enum State
+    {
+        Initializing,
+        MainMenu,
+        Game,
+        PauseMenu,
+        Credits
+    }
+    State state=State.Initializing;
+
 
 
     private static GameManager instance;

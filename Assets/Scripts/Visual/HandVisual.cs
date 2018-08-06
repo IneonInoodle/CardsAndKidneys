@@ -175,9 +175,9 @@ public class HandVisual : MonoBehaviour
     {
         GameObject card;
         if (fromDeck)
-            card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(0, 0, 0f));
+            card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(90, 0, 0f));
         else
-            card = CreateACardAtPosition(c, OtherCardDrawSourceTransform.position, new Vector3(0, 0, 0f));
+            card = CreateACardAtPosition(c, OtherCardDrawSourceTransform.position, new Vector3(90, 0, 0f));
 
         // pass this card to HandVisual class
         AddCard(card);
@@ -197,9 +197,9 @@ public class HandVisual : MonoBehaviour
             // Debug.Log ("Not fast!!!");
             s.Append(card.transform.DOMove(DrawPreviewSpot.position, CardTransitionTime));
             if (TakeCardsOpenly)
-                s.Insert(0f, card.transform.DORotate(Vector3.zero, CardTransitionTime)); 
+                s.Insert(0f, card.transform.DORotate(new Vector3(90f, 0, 0), CardTransitionTime)); 
             else 
-                s.Insert(0f, card.transform.DORotate(new Vector3(0f, 179f, 0f), CardTransitionTime)); 
+                s.Insert(0f, card.transform.DORotate(new Vector3(90f, 0, 0), CardTransitionTime)); 
             s.AppendInterval(CardPreviewTime);
             // displace the card so that we can select it in the scene easier.
             s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition, CardTransitionTime));
@@ -237,11 +237,15 @@ public class HandVisual : MonoBehaviour
 
         Sequence s = DOTween.Sequence();
         s.Append(CardVisual.transform.DOMove(PlayPreviewSpot.position, 1f));
-        //s.Insert(0f, CardVisual.transform.DORotate(new Vector3(0f, 0, 0f), 1f));
+        //s.Insert(0f, CardVisual.transform.DORotate(new Vector3(0, 0, 0), 1f));
         s.AppendInterval(2f);
         s.OnComplete(()=>
             {
+                Debug.Log(CardVisual.GetComponent<OneCardManager>().cardAsset.name);
+                p.callSpellCard(CardVisual.GetComponent<OneCardManager>().cardAsset.name);
+                // 
                 //Command.CommandExecutionComplete();
+                
                 Destroy(CardVisual);
             });
     }
