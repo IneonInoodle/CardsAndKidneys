@@ -114,14 +114,14 @@ public class BoardManager : MonoBehaviour {
     public void RotateArrows(Point p)
     {
         OneCardManager myCard = FindCardAtPoint(p);
-
+        
         arrows t = arrows.None;
 
         if ((myCard.arrows & arrows.Up) == arrows.Up)
         {
             t |= arrows.Down;
         }
-
+       
         if ((myCard.arrows & arrows.Down) == arrows.Down)
         {
             t |= arrows.Up;
@@ -139,7 +139,7 @@ public class BoardManager : MonoBehaviour {
         myCard.updateArrows(t);
 
     }
-
+    
     public CardSlotManager FindSlotAtPoint(Point p)
     {
         return AllSlots[p.Y, p.X];
