@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using System;
-
+using UnityEngine.Experimental.UIElements;
 
 [System.Serializable]
 public struct Point
@@ -106,11 +106,22 @@ public class BoardManager : MonoBehaviour {
         StartCoroutine(DealOutFieldCards(0.5f));
     }
 
+    public Image arrowright;
+    public Image arrowleft;
+    public Image arrowdown;
+    public Image arrowup;
 
     public void RotateArrows(Point p)
     {
         OneCardManager myCard = FindCardAtPoint(p);
+       // if (myCard.gameObject.tag == "Arrows")
+        //    Arrow.gameObject.SetActive(false);
+        //arrowss = GameObject.FindGameObjectsWithTag("Arrows");
+        //foreach (GameObject r in arrowss)
+        //   r.transform.Translate(Direction * movespeed * Time.deltaTime);
 
+
+        /*
         arrows t = arrows.None;
 
         if ((myCard.arrows & arrows.Up) == arrows.Up)
@@ -133,7 +144,7 @@ public class BoardManager : MonoBehaviour {
             t |= arrows.Right;
         }
         myCard.updateArrows(t);
-
+        */
     }
 
     public CardSlotManager FindSlotAtPoint(Point p)

@@ -199,7 +199,7 @@ public class PlayerManager : TurnManager {
     public void test (string tt)
     {
         Debug.Log("playspellcard");
-        StartCoroutine(PlaySpellCard("replace2")); //rotate //swap //rotate2
+        StartCoroutine(PlaySpellCard("rotate")); //rotate //swap //replace2
         
     }
     public void Die()
