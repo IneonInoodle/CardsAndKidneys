@@ -50,7 +50,9 @@ public class PlayerManager : TurnManager {
     public PlayerInput playerInput;
 
     public Text HpText;
+    public GameObject HpBar;
     public Text ActionPointsText;
+    public GameObject ApBar;
     public Text TurnsTilYouLooseText;
 
     public OneCardManager myCardManager;
@@ -63,7 +65,7 @@ public class PlayerManager : TurnManager {
     public CardAsset[] Deck;
 
     public GameObject Doctor;
-    public GameObject Patient;
+    public GameObject KidneyLocation;
 
     public Button button;
 
@@ -97,7 +99,7 @@ public class PlayerManager : TurnManager {
         {
             turnsWithoutKidney = value;
 
-            TurnsTilYouLooseText.text = ((2 - turnsWithoutKidney).ToString() + " /2");
+            TurnsTilYouLooseText.text = ((2 - turnsWithoutKidney).ToString() + "/2");
         }
     }
 
@@ -111,7 +113,8 @@ public class PlayerManager : TurnManager {
         set
         {
             actionPoints = value;
-            ActionPointsText.text = (actionPoints.ToString() + " / " + turnsOnBoard.ToString());
+            ApBar.GetComponent<UIHealthAlchemy.PowerBarMaterial>().Value = actionPoints/4f; // need to divide by float here
+            ActionPointsText.text = (actionPoints.ToString() + "/" + turnsOnBoard.ToString());
             if (actionPoints == 0)
             {   
                 if (myLocation == location.board)
@@ -230,7 +233,7 @@ public class PlayerManager : TurnManager {
             for (int i = 0; i < count; i++)
             {
                 patientKidneys.Add(playerKidneys[i]);
-                playerKidneys[i].transform.SetParent(Patient.transform, false);
+                playerKidneys[i].transform.SetParent(KidneyLocation.transform, false);
                 playerKidneys.Remove(playerKidneys[i]);
                 TurnsWithoutKidney = 0;
                 if (Hp < 10)
@@ -381,6 +384,7 @@ public class PlayerManager : TurnManager {
             Debug.Log(damage);
             
             Hp -= damage;
+            HpBar.GetComponent<UIHealthAlchemy.PowerBarMaterial>().Value = Hp/15f;
 
             if (Hp <= 0) Die();
         }
@@ -414,7 +418,8 @@ public class PlayerManager : TurnManager {
         // instantate kideny object and assign add it to the list 
         patientKidneys.Add(Instantiate(KidneyPrefab));
 
-        patientKidneys[0].transform.SetParent(Patient.transform, false);  //set kidney to proper place and //parent kidney
+        patientKidneys[0].transform.position = KidneyLocation.transform.position;
+        patientKidneys[0].transform.rotation = Quaternion.Euler(90f,0f,0f);//set kidney to proper place and //parent kidney
         Doctor.SetActive(true);
 
         if (mySide == location.bottom)

@@ -175,9 +175,9 @@ public class HandVisual : MonoBehaviour
     {
         GameObject card;
         if (fromDeck)
-            card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(90, 0, 0f));
+            card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(90, 0, 0));
         else
-            card = CreateACardAtPosition(c, OtherCardDrawSourceTransform.position, new Vector3(90, 0, 0f));
+            card = CreateACardAtPosition(c, OtherCardDrawSourceTransform.position, new Vector3(90, 0, 0));
 
         // pass this card to HandVisual class
         AddCard(card);
@@ -196,16 +196,31 @@ public class HandVisual : MonoBehaviour
         {
             // Debug.Log ("Not fast!!!");
             s.Append(card.transform.DOMove(DrawPreviewSpot.position, CardTransitionTime));
-            if (TakeCardsOpenly)
-                s.Insert(0f, card.transform.DORotate(new Vector3(90f, 0, 0), CardTransitionTime)); 
-            else 
-                s.Insert(0f, card.transform.DORotate(new Vector3(90f, 0, 0), CardTransitionTime)); 
+            
+                if (p.mySide == location.top)
+                {
+                    s.Insert(0f, card.transform.DORotate(new Vector3(90f, 0, 180f), CardTransitionTime));
+                } else
+                {
+                    s.Insert(0f, card.transform.DORotate(new Vector3(90f, 0, 0f), CardTransitionTime));
+                }
+            
+                 
             s.AppendInterval(CardPreviewTime);
             // displace the card so that we can select it in the scene easier.
             s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition, CardTransitionTime));
         }
         else
         {
+            if (p.mySide == location.top)
+            {
+                s.Insert(0f, card.transform.DORotate(new Vector3(90f, 0, 180f), CardTransitionTimeFast));
+            }
+            else
+            {
+                s.Insert(0f, card.transform.DORotate(new Vector3(90f, 0, 0f), CardTransitionTimeFast));
+            }
+
             // displace the card so that we can select it in the scene easier.
             s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition, CardTransitionTimeFast));
             //if (TakeCardsOpenly)    

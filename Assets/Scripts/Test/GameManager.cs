@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour {
 
     public GameObject SpellCardPrefab;
 
+    public TableCollider TableCollider;
+
     BoardManager  board;
 
     bool hasLevelStarted = false;

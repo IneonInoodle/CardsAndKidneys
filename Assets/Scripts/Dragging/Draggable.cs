@@ -91,7 +91,7 @@ public class Draggable : MonoBehaviour
         }
 
 
-        Debug.Log(screenMousePos + "---"+res+"----"+ ray);
+        //Debug.Log(screenMousePos + "---"+res+"----"+ ray);
 
         return res;
     }
