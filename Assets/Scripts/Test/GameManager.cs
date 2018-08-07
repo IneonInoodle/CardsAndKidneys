@@ -323,10 +323,14 @@ public class GameManager : MonoBehaviour {
             player.Hp = 10;
         }
 
+
+    
         player.ActionPoints = player.turnsOnBoard;
         CurrentPlayerTurn = player;
         player.IsTurnComplete = false;
 
+
+        StartCoroutine(player.DealPlayerCards(player.turnsOnBoard));
         //deal out cards
         //increase turnsonboard
         //increase turnswithout kidney if nessacary

@@ -178,6 +178,7 @@ public void setPlayerArrows(arrows arrowz)
 
         playerManager.myCardManager = null;
         playerManager.ActionPoints = 0;
+        playerManager.turnsOnBoard = 1;
 
         isMoving = false;
     }
@@ -204,8 +205,8 @@ public void setPlayerArrows(arrows arrowz)
             playerManager.myCardManager = playerManager.myPlayerCard.GetComponent<OneCardManager>();
 
             //last 2 lines removed for testing
-            //playerManager.ActionPoints = 0;
-            //playerManager.turnsOnBoard = 1;
+            playerManager.ActionPoints--;
+            playerManager.turnsOnBoard = 1;
 
             playerManager.point = des;
 

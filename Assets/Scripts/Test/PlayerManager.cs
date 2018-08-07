@@ -74,9 +74,6 @@ public class PlayerManager : TurnManager {
     public List<GameObject> patientKidneys = new List<GameObject>(); //kidneys safe in the patient
     public List<GameObject> playerKidneys = new List<GameObject>();  //kidney on board that player has
 
-
-
-    
     // movement points
     // need to know which side is theirs
     // needs to have connections to card Elements?
@@ -345,7 +342,19 @@ public class PlayerManager : TurnManager {
         //
     }
 
+    public IEnumerator DealPlayerCards(int amount)
+    {
+        playerInput.InputEnabled = false;
 
+        for (int i = 0; i < amount; i++)
+        {
+            handvisual.GivePlayerACard(Deck[UnityEngine.Random.Range(0, Deck.Length)], false, true);
+            yield return new WaitForSeconds(1.5f);
+        }
+
+        playerInput.InputEnabled = true;
+        yield return null;
+    }
 
 
     public void takeDamage(OneCardManager c)
@@ -396,10 +405,10 @@ public class PlayerManager : TurnManager {
         base.Awake();
         boardManager = BoardManager.Instance;
 
-        turnsOnBoard = 5;
-        ActionPoints = 5;
+        turnsOnBoard = 1;
+        ActionPoints = 1;
         
-        Hp = 20;
+        Hp = 10;
         // for testing // this spawns a player card
 
         // instantate kideny object and assign add it to the list 
@@ -458,7 +467,7 @@ public class PlayerManager : TurnManager {
         if (Input.GetKeyDown(KeyCode.Q))
         {
         
-            handvisual.GivePlayerACard(Deck[UnityEngine.Random.Range(0, Deck.Length)], false, true);
+           
 
         }
 
