@@ -97,7 +97,7 @@ public class BoardManager : MonoBehaviour {
     }
 
 
-    public void replace2(Point p1, Point p2)
+    public void Replace2(Point p1, Point p2)
     {
         OneCardManager c1 = FindCardAtPoint(p1);
         OneCardManager c2 = FindCardAtPoint(p2);

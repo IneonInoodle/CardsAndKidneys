@@ -14,7 +14,7 @@ public class SelectionManager : MonoBehaviour {
     public GameObject ribbon;
     public Text RibbonText;
     public Button confirmButton;
-    public Button cancleButton;
+
     public GameObject fieldCardParent;
 
     public List<Point> points = new List<Point>();
@@ -47,7 +47,7 @@ public class SelectionManager : MonoBehaviour {
         blackScreen.SetActive(false);
         ribbon.SetActive(false);
         confirmButton.gameObject.SetActive(false);
-        cancleButton.gameObject.SetActive(false);
+
     }
 
     // Use this for initialization
@@ -87,7 +87,7 @@ public class SelectionManager : MonoBehaviour {
         blackScreen.SetActive(true);
         ribbon.SetActive(true);
         confirmButton.gameObject.SetActive(true);
-        cancleButton.gameObject.SetActive(true);
+
 
         // setting things at start here 
         confirmButton.gameObject.SetActive(false);
@@ -149,7 +149,7 @@ public class SelectionManager : MonoBehaviour {
         ribbon.SetActive(false);
         blackScreen.SetActive(false);
         confirmButton.gameObject.SetActive(false);
-        cancleButton.gameObject.SetActive(false);
+
 
         GameManager.Instance.EnableInputs();
 

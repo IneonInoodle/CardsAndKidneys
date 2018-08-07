@@ -177,7 +177,7 @@ public class PlayerManager : TurnManager {
                 yield return StartCoroutine(gm.selectionManager.getSelection(2));
                 if (gm.selectionManager.points.Count == 2)
                 {
-
+                    boardManager.Replace2(gm.selectionManager.points[0], gm.selectionManager.points[1]);
                 } else
                 {
                     Debug.Log("cancled");
