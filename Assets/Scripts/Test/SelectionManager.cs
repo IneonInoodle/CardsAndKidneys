@@ -84,9 +84,8 @@ public class SelectionManager : MonoBehaviour {
 
         selectionComplete = false;
         GameManager.Instance.DisableInputs();
-        blackScreen.SetActive(true);
-        ribbon.SetActive(true);
-        confirmButton.gameObject.SetActive(true);
+        
+   
 
 
         // setting things at start here 
@@ -100,14 +99,23 @@ public class SelectionManager : MonoBehaviour {
         foreach (Selector s in AllSelectors)
         {   
             if (s.gameObject.GetComponent<OneCardManager>().cardAsset.Type != CardType.Player)
-            {
+            {   
+                s.GetComponentInChildren<Canvas>().sortingLayerName = "Selection";
+                s.GetComponentInChildren<Canvas>().sortingOrder = 10;
                 // here theres a check missing for their card type
                 s.isSelectable = true;
+                
             }
         }
 
-        fieldCardParent.transform.DOMove(new Vector3(fieldCardParent.transform.position.x, fieldCardParent.transform.position.y + moveDistance, fieldCardParent.transform.position.z), 1.0f);
-        yield return new WaitForSeconds(1f);
+        
+        blackScreen.SetActive(true);
+        ribbon.SetActive(true);
+
+        fieldCardParent.transform.DOMove(new Vector3(fieldCardParent.transform.position.x, fieldCardParent.transform.position.y + moveDistance, fieldCardParent.transform.position.z), 0.5f);
+        yield return new WaitForSeconds(0.5f);
+
+        
         while (!selectionComplete) // loop to stay in coroutine until done
         {
 
@@ -143,6 +151,10 @@ public class SelectionManager : MonoBehaviour {
             {
                 // extra check to disable all glowing field cards
                 s.gameObject.GetComponent<OneCardManager>().CardFaceGlowObject.SetActive(false);
+
+                s.GetComponentInChildren<Canvas>().sortingLayerName = "FieldCard";
+                s.GetComponentInChildren<Canvas>().sortingOrder = 0;
+
             }
         }
 
