@@ -121,7 +121,7 @@ public class BoardManager : MonoBehaviour {
         //   r.transform.Translate(Direction * movespeed * Time.deltaTime);
 
 
-        /*
+        
         arrows t = arrows.None;
 
         if ((myCard.arrows & arrows.Up) == arrows.Up)
@@ -144,7 +144,7 @@ public class BoardManager : MonoBehaviour {
             t |= arrows.Right;
         }
         myCard.updateArrows(t);
-        */
+        
     }
 
     public CardSlotManager FindSlotAtPoint(Point p)
