@@ -108,7 +108,6 @@ public class BoardManager : MonoBehaviour {
 
     public void damage(Point p1)
     {
-        GameObject card;
         OneCardManager c = BoardManager.Instance.FindCardAtPoint(p1);
         int i = Int32.Parse(c.DamageText.text);
         i = i - 3;
@@ -124,9 +123,8 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    public void heil(Point p1)
+    public void heal(Point p1)
     {
-        GameObject card;
         OneCardManager c = BoardManager.Instance.FindCardAtPoint(p1);
         int i = Int32.Parse(c.DamageText.text);
         i = i - 3;

@@ -186,7 +186,7 @@ public class PlayerManager : TurnManager {
                     Debug.Log("cancled");
                 }
                 break;
-            case "damage":
+            case "Damage":
                 yield return StartCoroutine(gm.selectionManager.getSelection(1));
                 if (gm.selectionManager.points.Count == 1)
                 {
@@ -204,7 +204,7 @@ public class PlayerManager : TurnManager {
                     Debug.Log("cancled");
                 }
                 break;
-            case "heil":
+            case "Heal":
                 yield return StartCoroutine(gm.selectionManager.getSelection(1));
                 if (gm.selectionManager.points.Count == 1)
                 {
@@ -213,7 +213,7 @@ public class PlayerManager : TurnManager {
                     if (heileMeCard.cardAsset.Type == CardType.Hp)
                     {
                         Debug.Log("start heiling");
-                        boardManager.heil(gm.selectionManager.points[0]);
+                        boardManager.heal(gm.selectionManager.points[0]);
                     }
 
                 }
