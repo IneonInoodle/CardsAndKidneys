@@ -234,6 +234,7 @@ public class HandVisual : MonoBehaviour
     {
 
         SetHandSortingOrder(g);
+        g.GetComponent<HoverPreview>().ThisPreviewEnabled = true;
 
         
     }
