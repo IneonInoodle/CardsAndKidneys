@@ -186,6 +186,42 @@ public class PlayerManager : TurnManager {
                     Debug.Log("cancled");
                 }
                 break;
+            case "damage":
+                yield return StartCoroutine(gm.selectionManager.getSelection(1));
+                if (gm.selectionManager.points.Count == 1)
+                {
+                    OneCardManager damageMeCard = boardManager.FindCardAtPoint(gm.selectionManager.points[0]);
+
+                    if (damageMeCard.cardAsset.Type == CardType.Monster)
+                    {
+                        Debug.Log("start damaging");
+                        boardManager.damage(gm.selectionManager.points[0]);
+                    }
+
+                }
+                else
+                {
+                    Debug.Log("cancled");
+                }
+                break;
+            case "heil":
+                yield return StartCoroutine(gm.selectionManager.getSelection(1));
+                if (gm.selectionManager.points.Count == 1)
+                {
+                    OneCardManager heileMeCard = boardManager.FindCardAtPoint(gm.selectionManager.points[0]);
+
+                    if (heileMeCard.cardAsset.Type == CardType.Hp)
+                    {
+                        Debug.Log("start heiling");
+                        boardManager.heil(gm.selectionManager.points[0]);
+                    }
+
+                }
+                else
+                {
+                    Debug.Log("cancled");
+                }
+                break;
             case "Boost":
                 ActionPoints++;
                 break;

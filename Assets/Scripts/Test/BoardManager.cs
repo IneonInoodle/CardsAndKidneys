@@ -106,6 +106,33 @@ public class BoardManager : MonoBehaviour {
         StartCoroutine(DealOutFieldCards(0.5f));
     }
 
+    public void damage(Point p1)
+    {
+        GameObject card;
+        OneCardManager c = BoardManager.Instance.FindCardAtPoint(p1);
+        int i = Int32.Parse(c.DamageText.text);
+        i = i - 3;
+
+        if (i <= 0)
+        {
+            DeleteCard(c);
+            //StartCoroutine(damagePart(0.5f, p1));
+        }
+        else
+        {
+            c.DamageText.text = i.ToString();
+        }
+    }
+
+    public void heil(Point p1)
+    {
+        GameObject card;
+        OneCardManager c = BoardManager.Instance.FindCardAtPoint(p1);
+        int i = Int32.Parse(c.DamageText.text);
+        i = i - 3;
+        c.DamageText.text = i.ToString();
+    }
+
     public Image arrowright;
     public Image arrowleft;
     public Image arrowdown;
