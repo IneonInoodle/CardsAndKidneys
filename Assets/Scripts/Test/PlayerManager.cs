@@ -417,7 +417,7 @@ public class PlayerManager : TurnManager {
 
         // instantate kideny object and assign add it to the list 
         patientKidneys.Add(Instantiate(KidneyPrefab));
-
+        
         patientKidneys[0].transform.position = KidneyLocation.transform.position;
         patientKidneys[0].transform.rotation = Quaternion.Euler(90f,0f,0f);//set kidney to proper place and //parent kidney
         Doctor.SetActive(true);

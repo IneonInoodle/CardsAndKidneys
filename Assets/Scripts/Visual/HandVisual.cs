@@ -92,33 +92,32 @@ public class HandVisual : MonoBehaviour
         foreach (GameObject g in CardsInHand)
         {
             // tween this card to a new Slot
-            g.transform.DOLocalMoveX(slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.x, 0.3f);
-
+            //g.transform.DOLocalMoveX(slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.x, 0.3f);
+            g.transform.DOLocalMove(new Vector3(slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.x, slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.y, slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.z), 0.3f);
             // apply correct sorting order and HandSlot value for later 
-            SetHandSortingOrder();
+            SetHandSortingOrder(g);
         }
+
     }
 
     public void BringToFront(GameObject g)
     {
+        Debug.Log("bringtofront");
         canvas = g.GetComponentInChildren<Canvas>();
 
-        canvas.sortingOrder = 10;
+        canvas.sortingOrder = 1000;
         canvas.sortingLayerName = "SpellCards"; //todo create another layer
     }
 
-    public void SetHandSortingOrder()
+    public void SetHandSortingOrder(GameObject g)
     {
-        foreach (GameObject g in CardsInHand)
-        {
+
             canvas = g.GetComponentInChildren<Canvas>();
 
-            canvas.sortingOrder = HandSortingOrder(CardsInHand.IndexOf(g));
+            canvas.sortingOrder = HandSortingOrder(-CardsInHand.IndexOf(g));
+            //Debug.Log(CardsInHand.IndexOf(g));
             canvas.sortingLayerName = "SpellCards";
-
-        }    
     }
-
     public int GetIndexOfCard(GameObject g)
     {
         return CardsInHand.IndexOf(g);
@@ -126,7 +125,7 @@ public class HandVisual : MonoBehaviour
 
     private int HandSortingOrder(int placeInHand)
     {
-        return ((placeInHand + 1) * 10);
+        return ((placeInHand - 1) * 10);
     }
     // CARD DRAW METHODS
 
@@ -178,11 +177,11 @@ public class HandVisual : MonoBehaviour
             card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(90, 0, 0));
         else
             card = CreateACardAtPosition(c, OtherCardDrawSourceTransform.position, new Vector3(90, 0, 0));
-
+        BringToFront(card);
         // pass this card to HandVisual class
         AddCard(card);
 
-        BringToFront(card);
+        
         if (p.mySide == location.top)
         {
             card.tag = "Top";
@@ -226,18 +225,18 @@ public class HandVisual : MonoBehaviour
             //if (TakeCardsOpenly)    
                 //s.Insert(0f,card.transform.DORotate(Vector3.zero, CardTransitionTimeFast)); 
         }
-
-        //s.OnComplete(()=>ChangeLastCardStatusToInHand(card, w));
+        
+        s.OnComplete(()=>ChangeLastCardStatusToInHand(card));
     }
 
     // this method will be called when the card arrived to hand 
-    void ChangeLastCardStatusToInHand()
+    void ChangeLastCardStatusToInHand(GameObject g)
     {
+
+        SetHandSortingOrder(g);
+
         
-        SetHandSortingOrder();
-
     }
-
 
     // PLAYING SPELLS
 
