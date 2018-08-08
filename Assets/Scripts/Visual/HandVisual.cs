@@ -110,13 +110,24 @@ public class HandVisual : MonoBehaviour
             SetHandSortingOrder(g);
 
             Vector3 targetPosition = slots.Children[CardsInHand.IndexOf(g)].transform.localPosition;
-            Vector3 targetRotation = Vector3.zero;
+            Vector3 targetRotation;
+            if (p.mySide == location.top)
+            {
+                Debug.Log("ok then");
+                targetRotation = new Vector3(0,0,180);
+            } else
+            {
+                targetRotation = new Vector3(0, 0, 0);
+            }
+             //problem here for top hand
 
             if (UseFanSetings)
             {
                 targetPosition += FanSettings[CardsInHand.Count - 1].displacementFromSlot[CardsInHand.IndexOf(g)];
                 targetRotation += new Vector3(0f, 0f, FanSettings[CardsInHand.Count - 1].zRotation[CardsInHand.IndexOf(g)]);
             }
+
+            Debug.Log(targetRotation);
             // tween this card to a new Slot
             g.transform.DOLocalMove(targetPosition, 0.3f);
 

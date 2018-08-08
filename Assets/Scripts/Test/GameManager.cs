@@ -11,6 +11,12 @@ public class GameManager : MonoBehaviour {
     public PlayerManager[] players;
     public PlayerManager CurrentPlayerTurn;
 
+    public Sprite BottomPortrait;
+    public Sprite TopPortrait;
+
+    public Sprite BottomPortraitHalf;
+    public Sprite TopPortraitHalf;
+
     public SoundManager soundManager;
     public MessageManager messageManager;
     public SelectionManager selectionManager;
@@ -119,17 +125,22 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("StartLevelRoutine");
 
-        //for testing 
+        foreach (PlayerManager p in players)
+        {
+            p.button.interactable = false;
+        }
 
-        
-        /* while (!hasLevelStarted)
-         {   
-             //show start screen
-             // user will press a button here to start
-             // HasLevelStarted = true
-             yield return null;
-         }*/
-        yield return null;
+            //for testing 
+
+
+            /* while (!hasLevelStarted)
+             {   
+                 //show start screen
+                 // user will press a button here to start
+                 // HasLevelStarted = true
+                 yield return null;
+             }*/
+            yield return null;
         if (startLevelEvent != null)
         {
             startLevelEvent.Invoke();
@@ -215,20 +226,34 @@ public class GameManager : MonoBehaviour {
         {
             if (players[0].IsTurnComplete)
             {
-                Debug.Log("playerturn0complete");
-                players[0].playerInput.InputEnabled = false;
-                players[0].button.interactable = false;
-                players[0].PortaitGlowObject.SetActive(false);
+                if (players[0].TurnsWithoutKidney >= 2)
+                {
+                    messageManager.ShowMessage("You Loose Boy", 2f);
+                    isGameOver = true;
+                    Debug.Log("YouLoose");
+                }
+                else if (players[0].patientKidneys.Count == 2)
+                {
+                    messageManager.ShowMessage("You Win", 2f);
+                    isGameOver = true;
+                }
+                else
+                {
+                    Debug.Log("playerturn0complete");
+                    players[0].playerInput.InputEnabled = false;
+                    players[0].button.interactable = false;
+                    players[0].PortaitGlowObject.SetActive(false);
 
-                if (players[0].myCardManager != null)
-                    players[0].myCardManager.CardFaceGlowObject.SetActive(false);
-                players[0].EndTurnGlowObject.SetActive(false);
+                    if (players[0].myCardManager != null)
+                        players[0].myCardManager.CardFaceGlowObject.SetActive(false);
+                    players[0].EndTurnGlowObject.SetActive(false);
 
-                messageManager.ShowMessage("Your Turn", 2f);
-                yield return StartCoroutine(board.UpdateBoard());
+                    messageManager.ShowMessage("Your Turn", 2f);
+                    yield return StartCoroutine(board.UpdateBoard());
 
-                CurrentPlayerTurn = players[1];
-                PlayPlayerTurn(players[1]);
+                    CurrentPlayerTurn = players[1];
+                    PlayPlayerTurn(players[1]);
+                }
                 
             }
         }
@@ -236,21 +261,36 @@ public class GameManager : MonoBehaviour {
         {
             if (players[1].IsTurnComplete)
             {
-                Debug.Log("playerturn1complete");
-                players[1].playerInput.InputEnabled = false;
-                players[1].button.interactable = false;
-                players[1].PortaitGlowObject.SetActive(false);
 
-                if (players[1].myCardManager != null)
-                    players[1].myCardManager.CardFaceGlowObject.SetActive(false);
-                players[1].EndTurnGlowObject.SetActive(false);
+                if (players[1].TurnsWithoutKidney >= 2)
+                {
+                    messageManager.ShowMessage("You Loose Boy", 2f);
+                    isGameOver = true;
+                    Debug.Log("YouLoose");
+                } else if (players[1].patientKidneys.Count == 2)
+                {
+                    messageManager.ShowMessage("You Win", 2f);
+                    isGameOver = true;
+                } else
+                {
+                    Debug.Log("playerturn1complete");
+                    players[1].playerInput.InputEnabled = false;
+                    players[1].button.interactable = false;
+                    players[1].PortaitGlowObject.SetActive(false);
 
-                messageManager.ShowMessage("Enemy Turn", 2f);
-                yield return StartCoroutine(board.UpdateBoard());
-                players[0].playerInput.InputEnabled = true;
+                    if (players[1].myCardManager != null)
+                        players[1].myCardManager.CardFaceGlowObject.SetActive(false);
+                    players[1].EndTurnGlowObject.SetActive(false);
 
-                CurrentPlayerTurn = players[0];
-                PlayPlayerTurn(players[0]);
+                    messageManager.ShowMessage("Enemy Turn", 2f);
+                    yield return StartCoroutine(board.UpdateBoard());
+                    players[0].playerInput.InputEnabled = true;
+
+                    CurrentPlayerTurn = players[0];
+                    PlayPlayerTurn(players[0]);
+                }
+
+                
             }
         }
     }
@@ -291,25 +331,10 @@ public class GameManager : MonoBehaviour {
         if (player.patientKidneys.Count  == 0)
         {
             player.TurnsWithoutKidney++;
-            Debug.Log("TurnWithoutKidney " + player.TurnsWithoutKidney);
-            
-            if (player.TurnsWithoutKidney > 2)
-            {
-                messageManager.ShowMessage("You Loose Boy", 2f);
-                isGameOver = true;
-                
-                Debug.Log("YouLoose");
-            }
-        } else if (player.patientKidneys.Count == 2)
-        {
-            messageManager.ShowMessage("You Win", 2f);
-            isGameOver = true;
-        }
+            Debug.Log("TurnWithoutKidney " + player.TurnsWithoutKidney); 
+        } 
 
         player.playerInput.InputEnabled = true;
-        player.button.interactable = true;
-
-
         
         if (player.myLocation == location.board)
         {

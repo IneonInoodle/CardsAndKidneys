@@ -97,6 +97,7 @@ public void setPlayerArrows(arrows arrowz)
             {
                 SoundManager.PlaySound("dealCardSound");
                 isMoving = true;
+                playerManager.button.interactable = true;
 
 
 
@@ -104,7 +105,7 @@ public void setPlayerArrows(arrows arrowz)
 
 
                 //(desCard);
-                
+
                 boardManager.AddEmptySlot(playerManager.point);
                 setPlayerArrows(boardManager.FindCardAtPoint(des).arrows);
 
@@ -140,9 +141,10 @@ public void setPlayerArrows(arrows arrowz)
         isMoving = true;
         Debug.Log("moveintoendzone");
         playerManager.myCardManager.CardFaceGlowObject.SetActive(false);
+
         playerManager.Doctor.transform.position = des.transform.position; // move doctor image
         playerManager.Doctor.SetActive(true); // make visable
-
+       
 
         Debug.Log("moveintoendzone");
         // delete player card
@@ -170,6 +172,36 @@ public void setPlayerArrows(arrows arrowz)
                 playerManager.CaptureKidney(); // capture kidney
             }
 
+
+        Sprite sp;
+        // if 2 players in one Endzone
+        if (GameManager.Instance.getOtherPlayer(playerManager).myLocation == playerManager.myLocation)
+        {
+            Debug.Log("lol");
+            //check which half sprite to apply
+            if (playerManager.myLocation == location.top)
+            {
+                this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.TopPortraitHalf;
+            }
+            else
+            {
+                this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.BottomPortraitHalf;
+            }
+        }
+        else
+        {
+            Debug.Log("lol");
+            if (playerManager.myLocation == location.top)
+            {
+                this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.TopPortrait;
+            }
+            else
+            {
+                this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.BottomPortrait;
+            }
+        }
+
+
         Debug.Log("fuck you");
         boardManager.DeleteCard(playerManager.myCardManager);
         yield return new WaitForSeconds(0.5f);
@@ -179,6 +211,7 @@ public void setPlayerArrows(arrows arrowz)
         playerManager.myCardManager = null;
         playerManager.ActionPoints = 0;
         playerManager.turnsOnBoard = 1;
+        playerManager.button.interactable = true;
 
         isMoving = false;
     }
@@ -191,41 +224,45 @@ public void setPlayerArrows(arrows arrowz)
         Debug.Log("moveoutofendzone");
         if (boardManager.FindCardAtPoint(des) != null)
         {
-            SoundManager.PlaySound("dealCardSound");
-            isMoving = true;
-            fieldCardDes = boardManager.FindCardAtPoint(des);
-            playerManager.Doctor.SetActive(false);
-            playerManager.PortaitGlowObject.SetActive(false);
-
-            temp = fieldCardDes.arrows; // deleting card delete le arrows
-
-            //save playermanager things
-            Debug.Log("Should be here");
-            playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab,playerManager.Doctor, playerManager.playerCardAsset, 0.5f);
-            playerManager.myCardManager = playerManager.myPlayerCard.GetComponent<OneCardManager>();
-
-            //last 2 lines removed for testing
-            playerManager.ActionPoints--;
-            playerManager.turnsOnBoard = 1;
-
-            playerManager.point = des;
-
-            if (playerManager.mySide != playerManager.myLocation)
+            if (boardManager.FindCardAtPoint(des).cardAsset.Type != CardType.Player)
             {
-                playerManager.StealKidney();
+                playerManager.button.interactable = true;
+                SoundManager.PlaySound("dealCardSound");
+                isMoving = true;
+                fieldCardDes = boardManager.FindCardAtPoint(des);
+                playerManager.Doctor.SetActive(false);
+                playerManager.PortaitGlowObject.SetActive(false);
+
+                temp = fieldCardDes.arrows; // deleting card delete le arrows
+
+                //save playermanager things
+                Debug.Log("Should be here");
+                playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab, playerManager.Doctor, playerManager.playerCardAsset, 0.5f);
+                playerManager.myCardManager = playerManager.myPlayerCard.GetComponent<OneCardManager>();
+
+                //last 2 lines removed for testing
+                playerManager.ActionPoints--;
+                playerManager.turnsOnBoard = 1;
+
+                playerManager.point = des;
+
+                if (playerManager.mySide != playerManager.myLocation)
+                {
+                    playerManager.StealKidney();
+                }
+
+                playerManager.myLocation = location.board;
+
+
+
+
+                setPlayerArrows(temp);
+                boardManager.DeleteCard(fieldCardDes);
+                boardManager.RemoveEmptySlot(playerManager.point);
+                playerManager.takeDamage(fieldCardDes);
+
+                yield return new WaitForSeconds(0.5f);
             }
-
-            playerManager.myLocation = location.board;
-
-
-            
-
-            setPlayerArrows(temp);
-            boardManager.DeleteCard(fieldCardDes);
-            boardManager.RemoveEmptySlot(playerManager.point);
-            playerManager.takeDamage(fieldCardDes);
-
-            yield return new WaitForSeconds(0.5f);
         }
 
         isMoving = false; // card finished moving now can take input

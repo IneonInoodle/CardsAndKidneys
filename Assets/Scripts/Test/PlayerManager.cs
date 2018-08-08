@@ -111,8 +111,10 @@ public class PlayerManager : TurnManager {
             return actionPoints;
         }
         set
-        {
+        {   
             actionPoints = value;
+            if (actionPoints > 4)
+                actionPoints = 4;
             ApBar.GetComponent<UIHealthAlchemy.PowerBarMaterial>().Value = actionPoints/4f; // need to divide by float here
             ActionPointsText.text = (actionPoints.ToString() + "/" + turnsOnBoard.ToString());
             if (actionPoints == 0)
@@ -135,6 +137,9 @@ public class PlayerManager : TurnManager {
         set
         {
             hp = value;
+
+            if (hp > 15)
+                hp = 15;
             HpText.text = hp.ToString();
             if (hp <= 0)
             {
@@ -360,7 +365,13 @@ public class PlayerManager : TurnManager {
         {   
             if (otherPlayer.mySide == myLocation){
                 playerKidneys.Add(otherPlayer.patientKidneys[0]); // give player the kidney
+
+                otherPlayer.patientKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
+                otherPlayer.patientKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
                 otherPlayer.patientKidneys[0].transform.SetParent(myPlayerCard.transform, false); //set kidney to be parentet to playercard
+
+
+                Debug.Log("FUCUCUCU");
                 
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
                 SoundManager.PlaySound("stealKidneySound");
