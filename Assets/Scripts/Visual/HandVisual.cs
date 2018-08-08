@@ -3,6 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 
+[System.Serializable]
+public class PositionAndRotationOfCardsDependingOnNumberOfCardsInHand
+{
+    public Vector3[] displacementFromSlot;
+    public float[] zRotation;
+}
+
 public class HandVisual : MonoBehaviour
 {
     // PUBLIC FIELDS
@@ -23,6 +30,15 @@ public class HandVisual : MonoBehaviour
     public float CardPreviewTime = 1;
     public float CardTransitionTime = 1;
     public float CardTransitionTimeFast = 0.5f;
+
+    public bool UseFanSetings = false;
+    // next array works like this:
+    // Element 0 - how to place cards if you have only one card in hand
+    // Element 1 - how to place cards if you have 2 cards in hand
+    // ...
+    // Element 9 - how to place cards if you have 10 cards in hand
+    public PositionAndRotationOfCardsDependingOnNumberOfCardsInHand[] FanSettings;
+
 
     // PRIVATE : a list of all card visual representations as GameObjects
     private List<GameObject> CardsInHand = new List<GameObject>();
@@ -86,19 +102,39 @@ public class HandVisual : MonoBehaviour
         slots.gameObject.transform.DOLocalMoveX(posX, 0.3f);  
     }
 
-    // shift all cards to their new slots
-    void PlaceCardsOnNewSlots()
+    // shift all cards to their new slots and rotates those bad boys
+    public void PlaceCardsOnNewSlots()
     {
         foreach (GameObject g in CardsInHand)
         {
+            SetHandSortingOrder(g);
+
+            Vector3 targetPosition = slots.Children[CardsInHand.IndexOf(g)].transform.localPosition;
+            Vector3 targetRotation = Vector3.zero;
+
+            if (UseFanSetings)
+            {
+                targetPosition += FanSettings[CardsInHand.Count - 1].displacementFromSlot[CardsInHand.IndexOf(g)];
+                targetRotation += new Vector3(0f, 0f, FanSettings[CardsInHand.Count - 1].zRotation[CardsInHand.IndexOf(g)]);
+            }
+            // tween this card to a new Slot
+            g.transform.DOLocalMove(targetPosition, 0.3f);
+
+            g.transform.DOLocalRotate(targetRotation, 0.3f);
+
             // tween this card to a new Slot
             //g.transform.DOLocalMoveX(slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.x, 0.3f);
-            g.transform.DOLocalMove(new Vector3(slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.x, slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.y, slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.z), 0.3f);
+            //g.transform.DOLocalMove(new Vector3(slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.x, slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.y, slots.Children[CardsInHand.IndexOf(g)].transform.localPosition.z), 0.3f);
             // apply correct sorting order and HandSlot value for later 
-            SetHandSortingOrder(g);
+            
         }
 
     }
+
+   
+
+
+
 
     public void BringToFront(GameObject g)
     {
@@ -173,22 +209,73 @@ public class HandVisual : MonoBehaviour
     public void GivePlayerACard(CardAsset c, bool fast = false, bool fromDeck = true)
     {
         GameObject card;
-        if (fromDeck)
-            card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(90, 0, 0));
+        float baseRotation;
+        string tag;
+
+        if (p.mySide == location.top)
+        {
+            tag = "Top";
+            baseRotation = 180;
+        }
         else
-            card = CreateACardAtPosition(c, OtherCardDrawSourceTransform.position, new Vector3(90, 0, 0));
+        {
+            tag = "Bottom";
+            baseRotation = 0;
+        }
+
+        if (fromDeck)
+            card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(0, 0, baseRotation));
+        else
+            card = CreateACardAtPosition(c, OtherCardDrawSourceTransform.position, new Vector3(0, 0, baseRotation));
+
+        card.tag = tag;
+
         BringToFront(card);
         // pass this card to HandVisual class
         AddCard(card);
 
         
-        if (p.mySide == location.top)
+
+        // move card to the hand;
+        Sequence s = DOTween.Sequence();
+        if (!fast)
         {
-            card.tag = "Top";
-        } else if (p.mySide == location.bottom) {
-            card.tag = "Bottom";
+            // Debug.Log ("Not fast!!!");
+            s.Append(card.transform.DOMove(DrawPreviewSpot.position, CardTransitionTime));
+            
+            if (UseFanSetings)
+                s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0, FanSettings[CardsInHand.Count - 1].zRotation[0] + baseRotation), CardTransitionTime));
+            else
+                s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0f, baseRotation), CardTransitionTime)); //correct?
+            
+            s.AppendInterval(CardPreviewTime);
+            // displace the card so that we can select it in the scene easier.
+            if (UseFanSetings)
+                s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition + FanSettings[CardsInHand.Count - 1].displacementFromSlot[0], CardTransitionTime));
+            else
+                s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition, CardTransitionTime));
         }
-        
+        else
+        {
+            // displace the card so that we can select it in the scene easier.
+            if (UseFanSetings)
+                s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0, FanSettings[CardsInHand.Count - 1].zRotation[0] + baseRotation), CardTransitionTimeFast));
+            else
+                s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0f, baseRotation), CardTransitionTimeFast)); //correct?
+
+            // displace the card so that we can select it in the scene easier.
+            if (UseFanSetings)
+                s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition + FanSettings[CardsInHand.Count - 1].displacementFromSlot[0], CardTransitionTimeFast));
+            else
+                s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition, CardTransitionTimeFast));
+
+        }
+        s.OnComplete(()=>ChangeLastCardStatusToInHand(card));
+    }
+
+
+
+        /*
         // move card to the hand;
         Sequence s = DOTween.Sequence();
         if (!fast)
@@ -228,7 +315,7 @@ public class HandVisual : MonoBehaviour
         
         s.OnComplete(()=>ChangeLastCardStatusToInHand(card));
     }
-
+    */
     // this method will be called when the card arrived to hand 
     void ChangeLastCardStatusToInHand(GameObject g)
     {

@@ -43,9 +43,11 @@ public class DragSpellNoTarget: DraggingActions{
 
             // Move this card back to its slot position
 
-            Vector3 oldCardPos = playerOwner.handvisual.slots.Children[savedHandSlot].transform.localPosition;
-
-            transform.DOLocalMove(oldCardPos, 1f);
+            //old code
+            //Vector3 oldCardPos = playerOwner.handvisual.slots.Children[savedHandSlot].transform.localPosition;
+            //transform.DOLocalMove(oldCardPos, 1f);
+      
+            playerOwner.handvisual.PlaceCardsOnNewSlots();
         } 
     }
 

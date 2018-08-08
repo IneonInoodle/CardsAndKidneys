@@ -68,6 +68,21 @@ public class HoverPreview: MonoBehaviour
     // OTHER METHODS
     void PreviewThisObject()
     {
+        if (gameObject.tag == "Top")
+        {
+            previewGameObject.transform.localPosition = Vector3.zero;
+            previewGameObject.transform.localScale = Vector3.one;
+            // NEW line:
+            previewGameObject.transform.eulerAngles = new Vector3(90,0,180);
+        } else
+        {
+            previewGameObject.transform.localPosition = Vector3.zero;
+            previewGameObject.transform.localScale = Vector3.one;
+            // NEW line:
+            previewGameObject.transform.eulerAngles = new Vector3(90, 0, 0);
+        }
+        
+
         // 1) clone this card 
         // first disable the previous preview if there is one already
         StopAllPreviews();

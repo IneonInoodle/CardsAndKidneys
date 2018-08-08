@@ -45,6 +45,15 @@ public class Draggable : MonoBehaviour
             _draggingThis = this;
             da.OnStartDrag();
             pointerDisplacement =  transform.position - MouseInWorldCoords();
+
+            if (gameObject.tag == "Top")
+            {
+                transform.DORotate(new Vector3(90, 0, 180), 0.3f);
+            } else
+            {
+                transform.DORotate(new Vector3(90,0,0), 0.3f);
+            }
+            
         }
     }
 
