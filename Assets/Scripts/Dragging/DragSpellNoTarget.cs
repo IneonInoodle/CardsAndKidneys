@@ -36,7 +36,7 @@ public class DragSpellNoTarget: DraggingActions{
         }
         else
         {
-            Debug.Log("why");
+            
             //unsucessful
             // Set old sorting order 
             //whereIsCard.Slot = savedHandSlot;

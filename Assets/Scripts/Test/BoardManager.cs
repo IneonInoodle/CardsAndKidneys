@@ -106,7 +106,7 @@ public class BoardManager : MonoBehaviour {
         StartCoroutine(DealOutFieldCards(0.5f));
     }
 
-    public void damage(Point p1)
+    public void Damage(Point p1)
     {
         OneCardManager c = BoardManager.Instance.FindCardAtPoint(p1);
         int i = Int32.Parse(c.DamageText.text);
@@ -121,14 +121,6 @@ public class BoardManager : MonoBehaviour {
         {
             c.DamageText.text = i.ToString();
         }
-    }
-
-    public void heal(Point p1)
-    {
-        OneCardManager c = BoardManager.Instance.FindCardAtPoint(p1);
-        int i = Int32.Parse(c.DamageText.text);
-        i = i - 3;
-        c.DamageText.text = i.ToString();
     }
 
     public Image arrowright;

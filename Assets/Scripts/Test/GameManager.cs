@@ -11,11 +11,8 @@ public class GameManager : MonoBehaviour {
     public PlayerManager[] players;
     public PlayerManager CurrentPlayerTurn;
 
-    public Sprite BottomPortrait;
-    public Sprite TopPortrait;
-
-    public Sprite BottomPortraitHalf;
-    public Sprite TopPortraitHalf;
+    public Sprite BottomPortraitMask;
+    public Sprite TopPortraitMask;
 
     public SoundManager soundManager;
     public MessageManager messageManager;

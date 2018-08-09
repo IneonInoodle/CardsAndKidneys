@@ -127,7 +127,7 @@ public class HandVisual : MonoBehaviour
                 targetRotation += new Vector3(0f, 0f, FanSettings[CardsInHand.Count - 1].zRotation[CardsInHand.IndexOf(g)]);
             }
 
-            Debug.Log(targetRotation);
+            //Debug.Log(targetRotation);
             // tween this card to a new Slot
             g.transform.DOLocalMove(targetPosition, 0.3f);
 
@@ -234,54 +234,61 @@ public class HandVisual : MonoBehaviour
             baseRotation = 0;
         }
 
-        if (fromDeck)
-            card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(0, 0, baseRotation));
-        else
-            card = CreateACardAtPosition(c, OtherCardDrawSourceTransform.position, new Vector3(0, 0, baseRotation));
 
-        card.tag = tag;
-
-        BringToFront(card);
-        // pass this card to HandVisual class
-        AddCard(card);
-
-        
-
-        // move card to the hand;
-        Sequence s = DOTween.Sequence();
-        if (!fast)
+        if (CardsInHand.Count  < 7)
         {
-            // Debug.Log ("Not fast!!!");
-            s.Append(card.transform.DOMove(DrawPreviewSpot.position, CardTransitionTime));
-            
-            if (UseFanSetings)
-                s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0, FanSettings[CardsInHand.Count - 1].zRotation[0] + baseRotation), CardTransitionTime));
+            if (fromDeck)
+                card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(0, 0, baseRotation));
             else
-                s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0f, baseRotation), CardTransitionTime)); //correct?
-            
-            s.AppendInterval(CardPreviewTime);
-            // displace the card so that we can select it in the scene easier.
-            if (UseFanSetings)
-                s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition + FanSettings[CardsInHand.Count - 1].displacementFromSlot[0], CardTransitionTime));
+                card = CreateACardAtPosition(c, OtherCardDrawSourceTransform.position, new Vector3(0, 0, baseRotation));
+
+            card.tag = tag;
+
+            BringToFront(card);
+            // pass this card to HandVisual class
+            AddCard(card);
+
+
+
+            // move card to the hand;
+            Sequence s = DOTween.Sequence();
+            if (!fast)
+            {
+                // Debug.Log ("Not fast!!!");
+                s.Append(card.transform.DOMove(DrawPreviewSpot.position, CardTransitionTime));
+
+                if (UseFanSetings)
+                    s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0, FanSettings[CardsInHand.Count - 1].zRotation[0] + baseRotation), CardTransitionTime));
+                else
+                    s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0f, baseRotation), CardTransitionTime)); //correct?
+
+                s.AppendInterval(CardPreviewTime);
+                // displace the card so that we can select it in the scene easier.
+                if (UseFanSetings)
+                    s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition + FanSettings[CardsInHand.Count - 1].displacementFromSlot[0], CardTransitionTime));
+                else
+                    s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition, CardTransitionTime));
+            }
             else
-                s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition, CardTransitionTime));
-        }
-        else
+            {
+                // displace the card so that we can select it in the scene easier.
+                if (UseFanSetings)
+                    s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0, FanSettings[CardsInHand.Count - 1].zRotation[0] + baseRotation), CardTransitionTimeFast));
+                else
+                    s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0f, baseRotation), CardTransitionTimeFast)); //correct?
+
+                // displace the card so that we can select it in the scene easier.
+                if (UseFanSetings)
+                    s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition + FanSettings[CardsInHand.Count - 1].displacementFromSlot[0], CardTransitionTimeFast));
+                else
+                    s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition, CardTransitionTimeFast));
+
+            }
+            s.OnComplete(() => ChangeLastCardStatusToInHand(card));
+        } else
         {
-            // displace the card so that we can select it in the scene easier.
-            if (UseFanSetings)
-                s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0, FanSettings[CardsInHand.Count - 1].zRotation[0] + baseRotation), CardTransitionTimeFast));
-            else
-                s.Insert(0f, card.transform.DOLocalRotate(new Vector3(0f, 0f, baseRotation), CardTransitionTimeFast)); //correct?
-
-            // displace the card so that we can select it in the scene easier.
-            if (UseFanSetings)
-                s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition + FanSettings[CardsInHand.Count - 1].displacementFromSlot[0], CardTransitionTimeFast));
-            else
-                s.Append(card.transform.DOLocalMove(slots.Children[0].transform.localPosition, CardTransitionTimeFast));
-
+            Debug.Log("Full Hand");
         }
-        s.OnComplete(()=>ChangeLastCardStatusToInHand(card));
     }
 
 

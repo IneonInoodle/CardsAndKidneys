@@ -177,28 +177,27 @@ public void setPlayerArrows(arrows arrowz)
         // if 2 players in one Endzone
         if (GameManager.Instance.getOtherPlayer(playerManager).myLocation == playerManager.myLocation)
         {
-            Debug.Log("lol");
-            //check which half sprite to apply
-            if (playerManager.myLocation == location.top)
-            {
-                this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.TopPortraitHalf;
-            }
-            else
-            {
-                this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.BottomPortraitHalf;
-            }
+            //other player has full portait
+
+            //lay ontop of their portait our half image, need to change out image to half image
+            playerManager.Doctor.GetComponent<SpriteRenderer>().sprite = playerManager.PortraitHalf;
+            playerManager.Doctor.GetComponent<SpriteRenderer>().sortingOrder = 2;
+
+
         }
         else
         {
-            Debug.Log("lol");
-            if (playerManager.myLocation == location.top)
-            {
-                this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.TopPortrait;
-            }
-            else
-            {
-                this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.BottomPortrait;
-            }
+            //make sure out image is full image
+            playerManager.Doctor.GetComponent<SpriteRenderer>().sprite = playerManager.PortraitFull;
+            playerManager.Doctor.GetComponent<SpriteRenderer>().sortingOrder = 0;
+        }
+
+        if (playerManager.myLocation == location.top)
+        {
+            this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.TopPortraitMask;
+        } else
+        {
+            this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.BottomPortraitMask;
         }
 
 

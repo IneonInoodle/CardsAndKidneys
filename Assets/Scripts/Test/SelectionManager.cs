@@ -104,11 +104,17 @@ public class SelectionManager : MonoBehaviour {
                 s.GetComponentInChildren<Canvas>().sortingOrder = 10;
                 // here theres a check missing for their card type
                 s.isSelectable = true;
-                
+
+                ParticleSystemRenderer[] psr = s.GetComponentsInChildren<ParticleSystemRenderer>(true);
+
+                foreach (ParticleSystemRenderer p in psr)
+                {
+                    p.sortingLayerName = "Selection";
+                    p.sortingOrder = 2;
+                }
             }
         }
 
-        
         blackScreen.SetActive(true);
         ribbon.SetActive(true);
 
@@ -154,6 +160,15 @@ public class SelectionManager : MonoBehaviour {
 
                 s.GetComponentInChildren<Canvas>().sortingLayerName = "FieldCard";
                 s.GetComponentInChildren<Canvas>().sortingOrder = 0;
+
+                ParticleSystemRenderer[] psr = s.GetComponentsInChildren<ParticleSystemRenderer>(true);
+
+                foreach (ParticleSystemRenderer p in psr)
+                {
+                    p.sortingLayerName = "Default";
+                    p.sortingOrder = 0;
+                }
+
 
             }
         }

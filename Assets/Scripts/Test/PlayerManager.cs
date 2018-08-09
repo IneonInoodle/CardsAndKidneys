@@ -71,6 +71,9 @@ public class PlayerManager : TurnManager {
 
     public GameObject PortaitGlowObject;
     public GameObject EndTurnGlowObject;
+
+    public Sprite PortraitFull;
+    public Sprite PortraitHalf;
     // Kidneys shit 
     public GameObject KidneyPrefab;
     public List<GameObject> patientKidneys = new List<GameObject>(); //kidneys safe in the patient
@@ -197,10 +200,10 @@ public class PlayerManager : TurnManager {
                 {
                     OneCardManager damageMeCard = boardManager.FindCardAtPoint(gm.selectionManager.points[0]);
 
-                    if (damageMeCard.cardAsset.Type == CardType.Monster)
+                    if (damageMeCard.cardAsset.Type != CardType.Player)
                     {
                         Debug.Log("start damaging");
-                        boardManager.damage(gm.selectionManager.points[0]);
+                        boardManager.Damage(gm.selectionManager.points[0]);
                     }
 
                 }
@@ -210,22 +213,7 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Heal":
-                yield return StartCoroutine(gm.selectionManager.getSelection(1));
-                if (gm.selectionManager.points.Count == 1)
-                {
-                    OneCardManager heileMeCard = boardManager.FindCardAtPoint(gm.selectionManager.points[0]);
-
-                    if (heileMeCard.cardAsset.Type == CardType.Hp)
-                    {
-                        Debug.Log("start heiling");
-                        boardManager.heal(gm.selectionManager.points[0]);
-                    }
-
-                }
-                else
-                {
-                    Debug.Log("cancled");
-                }
+                Hp += 5;              
                 break;
             case "Boost":
                 ActionPoints++;
@@ -467,6 +455,15 @@ public class PlayerManager : TurnManager {
         
         patientKidneys[0].transform.position = KidneyLocation.transform.position;
         patientKidneys[0].transform.rotation = Quaternion.Euler(90f,0f,0f);//set kidney to proper place and //parent kidney
+
+        if (mySide == location.top)
+        {
+            Doctor.transform.position = BoardManager.Instance.Top.transform.position;
+        } else
+        {
+            Doctor.transform.position = BoardManager.Instance.Bottom.transform.position;
+        }
+        
         Doctor.SetActive(true);
 
         if (mySide == location.bottom)
