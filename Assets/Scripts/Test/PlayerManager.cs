@@ -49,11 +49,9 @@ public class PlayerManager : TurnManager {
     public PlayerMover playerMover;
     public PlayerInput playerInput;
 
-    public Text HpText;
-    public GameObject HpBar;
-    public Text ActionPointsText;
-    public GameObject ApBar;
-    public Text TurnsTilYouLooseText;
+    public HPVisual hpvis;
+    public APVisual apvis;
+    public KidneyVisual kvis;
 
     public OneCardManager myCardManager;
     public GameObject myPlayerCard;
@@ -102,7 +100,7 @@ public class PlayerManager : TurnManager {
         {
             turnsWithoutKidney = value;
 
-            TurnsTilYouLooseText.text = ((2 - turnsWithoutKidney).ToString() + "/2");
+            kvis.TurnsTilyouLoose = 2 - turnsWithoutKidney;
         }
     }
 
@@ -118,8 +116,8 @@ public class PlayerManager : TurnManager {
             actionPoints = value;
             if (actionPoints > 4)
                 actionPoints = 4;
-            ApBar.GetComponent<UIHealthAlchemy.PowerBarMaterial>().Value = actionPoints/4f; // need to divide by float here
-            ActionPointsText.text = (actionPoints.ToString() + "/" + turnsOnBoard.ToString());
+            apvis.AvailableAp = actionPoints;
+
             if (actionPoints == 0)
             {   
                 if (myLocation == location.board)
@@ -143,11 +141,9 @@ public class PlayerManager : TurnManager {
 
             if (hp > 15)
                 hp = 15;
-            HpText.text = hp.ToString();
-            if (hp <= 0)
-            {
-                //die
-            }
+
+            hpvis.AvailableHp = hp;
+
         }
     }
     
@@ -419,7 +415,6 @@ public class PlayerManager : TurnManager {
             Debug.Log(damage);
             
             Hp -= damage;
-            HpBar.GetComponent<UIHealthAlchemy.PowerBarMaterial>().Value = Hp/15f;
 
             if (Hp <= 0) Die();
         }
@@ -453,8 +448,9 @@ public class PlayerManager : TurnManager {
         // instantate kideny object and assign add it to the list 
         patientKidneys.Add(Instantiate(KidneyPrefab));
         
-        patientKidneys[0].transform.position = KidneyLocation.transform.position;
+        //patientKidneys[0].transform.position = KidneyLocation.transform.position;
         patientKidneys[0].transform.rotation = Quaternion.Euler(90f,0f,0f);//set kidney to proper place and //parent kidney
+        patientKidneys[0].SetActive(false);
 
         if (mySide == location.top)
         {
