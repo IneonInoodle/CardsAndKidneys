@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class KidneyVisual : MonoBehaviour {
     public Text TurnsTilYouLooseText;
 
-    private int turnsTilyouLoose;
+    private int turnsTilyouLoose = 2;
     public int TurnsTilyouLoose
     {
         get { return turnsTilyouLoose; }

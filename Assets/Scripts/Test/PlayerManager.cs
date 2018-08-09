@@ -259,7 +259,10 @@ public class PlayerManager : TurnManager {
             {
                 patientKidneys.Add(playerKidneys[i]);
                 playerKidneys[i].transform.SetParent(KidneyLocation.transform, false);
+                playerKidneys[i].SetActive(false);
                 playerKidneys.Remove(playerKidneys[i]);
+                Debug.Log("captureKidney");
+                kvis.AvailableKidneys++;
                 TurnsWithoutKidney = 0;
                 if (Hp < 10)
                 {
@@ -350,11 +353,12 @@ public class PlayerManager : TurnManager {
             if (otherPlayer.mySide == myLocation){
                 playerKidneys.Add(otherPlayer.patientKidneys[0]); // give player the kidney
 
+                otherPlayer.kvis.AvailableKidneys--;
                 otherPlayer.patientKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
                 otherPlayer.patientKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
                 otherPlayer.patientKidneys[0].transform.SetParent(myPlayerCard.transform, false); //set kidney to be parentet to playercard
 
-
+                otherPlayer.patientKidneys[0].SetActive(true);
                 Debug.Log("FUCUCUCU");
                 
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
