@@ -70,8 +70,7 @@ public class PlayerInput : MonoBehaviour {
                 }
 
             } else if(toucht == false)
-            {
-                Debug.Log("ok");
+            {      
                 if (inputEnabled)
                 {
                     h = Input.GetAxisRaw("Horizontal");

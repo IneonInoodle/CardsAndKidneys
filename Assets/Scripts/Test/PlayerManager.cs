@@ -442,7 +442,7 @@ public class PlayerManager : TurnManager {
     {
         base.Awake();
         boardManager = BoardManager.Instance;
-
+        kvis.AvailableKidneys = 1;
         turnsOnBoard = 1;
         ActionPoints = 1;
         
