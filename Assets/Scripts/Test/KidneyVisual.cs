@@ -35,7 +35,7 @@ public class KidneyVisual : MonoBehaviour {
                 availableKidneys = value;
 
 
-            for (int i = 0; i < KidneyAmount.Length; i++)
+            for (int i = 0; i < 2; i++)
             {
                 if (i < availableKidneys)
                 {

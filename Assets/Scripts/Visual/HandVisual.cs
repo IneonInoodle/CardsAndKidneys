@@ -217,7 +217,7 @@ public class HandVisual : MonoBehaviour
     }
 
     // gives player a new card from a given position
-    public void GivePlayerACard(CardAsset c, bool fast = false, bool fromDeck = true)
+    public void GivePlayerACard(CardAsset c, bool fast = true, bool fromDeck = true)
     {
         GameObject card;
         float baseRotation;
@@ -356,9 +356,9 @@ public class HandVisual : MonoBehaviour
         CardVisual.transform.SetParent(null);
 
         Sequence s = DOTween.Sequence();
-        s.Append(CardVisual.transform.DOMove(PlayPreviewSpot.position, 1f));
+        s.Append(CardVisual.transform.DOMove(PlayPreviewSpot.position, 0.5f));
         //s.Insert(0f, CardVisual.transform.DORotate(new Vector3(0, 0, 0), 1f));
-        s.AppendInterval(2f);
+        s.AppendInterval(1f);
         s.OnComplete(()=>
             {
                 Debug.Log(CardVisual.GetComponent<OneCardManager>().cardAsset.name);

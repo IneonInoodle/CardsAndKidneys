@@ -386,8 +386,8 @@ public class PlayerManager : TurnManager {
 
         for (int i = 0; i < amount; i++)
         {
-            handvisual.GivePlayerACard(Deck[UnityEngine.Random.Range(0, Deck.Length)], false, true);
-            yield return new WaitForSeconds(1.5f);
+            handvisual.GivePlayerACard(Deck[UnityEngine.Random.Range(0, Deck.Length)], true, true);
+            yield return new WaitForSeconds(0.4f);
         }
 
         playerInput.InputEnabled = true;

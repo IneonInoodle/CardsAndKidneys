@@ -46,6 +46,11 @@ public class Draggable : MonoBehaviour
             da.OnStartDrag();
             pointerDisplacement =  transform.position - MouseInWorldCoords();
 
+            foreach (PlayerManager p in GameManager.Instance.players)
+            {
+                p.playerInput.InputEnabled = false;
+            }
+            
             if (gameObject.tag == "Top")
             {
                 transform.DORotate(new Vector3(90, 0, -180), 0.1f);
@@ -73,6 +78,10 @@ public class Draggable : MonoBehaviour
     {
         if (dragging)
         {
+            foreach (PlayerManager p in GameManager.Instance.players)
+            {
+                p.playerInput.InputEnabled = true;
+            }
             dragging = false;
             // turn all previews back on
             HoverPreview.PreviewsAllowed = true;

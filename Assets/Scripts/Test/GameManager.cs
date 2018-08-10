@@ -225,13 +225,13 @@ public class GameManager : MonoBehaviour {
             {
                 if (players[0].TurnsWithoutKidney >= 2)
                 {
-                    messageManager.ShowMessage("You Loose Boy", 2f);
+                    messageManager.ShowMessage("You Loose Boy", 1f);
                     isGameOver = true;
                     Debug.Log("YouLoose");
                 }
                 else if (players[0].patientKidneys.Count == 2)
                 {
-                    messageManager.ShowMessage("You Win", 2f);
+                    messageManager.ShowMessage("You Win", 1f);
                     isGameOver = true;
                 }
                 else
@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour {
                         players[0].myCardManager.CardFaceGlowObject.SetActive(false);
                     players[0].EndTurnGlowObject.SetActive(false);
 
-                    messageManager.ShowMessage("Your Turn", 2f);
+                    messageManager.ShowMessage("Your Turn", 1f);
                     yield return StartCoroutine(board.UpdateBoard());
 
                     CurrentPlayerTurn = players[1];
@@ -261,12 +261,12 @@ public class GameManager : MonoBehaviour {
 
                 if (players[1].TurnsWithoutKidney >= 2)
                 {
-                    messageManager.ShowMessage("You Loose Boy", 2f);
+                    messageManager.ShowMessage("You Loose Boy", 1f);
                     isGameOver = true;
                     Debug.Log("YouLoose");
                 } else if (players[1].patientKidneys.Count == 2)
                 {
-                    messageManager.ShowMessage("You Win", 2f);
+                    messageManager.ShowMessage("You Win", 1f);
                     isGameOver = true;
                 } else
                 {
@@ -279,7 +279,7 @@ public class GameManager : MonoBehaviour {
                         players[1].myCardManager.CardFaceGlowObject.SetActive(false);
                     players[1].EndTurnGlowObject.SetActive(false);
 
-                    messageManager.ShowMessage("Enemy Turn", 2f);
+                    messageManager.ShowMessage("Enemy Turn", 1f);
                     yield return StartCoroutine(board.UpdateBoard());
                     players[0].playerInput.InputEnabled = true;
 

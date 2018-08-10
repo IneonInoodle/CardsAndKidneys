@@ -5,10 +5,7 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 public class APVisual : MonoBehaviour {
 
-    public int TestFullAp = 4;
-    public int TestTotalApThisTurn;
-
-    private int totalAp;
+    private int totalAp = 4;
     public int TotalAp
     {
         get { return totalAp; }
@@ -77,7 +74,6 @@ public class APVisual : MonoBehaviour {
     void Start () {
 		
 	}
-
     // Update is called once per frame
- 
+
 }
