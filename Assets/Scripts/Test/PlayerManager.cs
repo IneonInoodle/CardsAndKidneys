@@ -236,8 +236,7 @@ public class PlayerManager : TurnManager {
 
         StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
         else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
-
-        SoundManager.PlaySound("dieSound");
+        AudioManager.instance.Play("dieSound");
         turnsOnBoard = 1;
         ActionPoints = 0;
         Hp = 0;
@@ -298,9 +297,8 @@ public class PlayerManager : TurnManager {
 
                  mySequence.Append(playerKidneys[i].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
                  mySequence.Append(playerKidneys[i].transform.DOMove(pos, 1.2f));
-
-                SoundManager.PlaySound("dropKidney");
-                SoundManager.PlaySound("splat");
+                AudioManager.instance.Play("dropKidney");
+                AudioManager.instance.Play("splat");
                 DOTween.Play(mySequence);
 
                 playerKidneys.Remove(playerKidneys[i]);
@@ -362,7 +360,8 @@ public class PlayerManager : TurnManager {
                 Debug.Log("FUCUCUCU");
                 
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
-                SoundManager.PlaySound("stealKidneySound");
+                AudioManager.instance.Play("stealKidneySound");
+
             }
         }
     }

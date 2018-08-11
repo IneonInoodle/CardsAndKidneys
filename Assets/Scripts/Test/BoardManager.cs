@@ -71,8 +71,7 @@ public class BoardManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
-
+        AudioManager.instance.Play("GameStart");
     }
 
 
@@ -228,8 +227,10 @@ public class BoardManager : MonoBehaviour {
         if (count > 0)
         {
             for (int i = EmptyCardSlots.Count-1; i >= 0; i--)
-            {
-                SoundManager.PlaySound("dealCardSound");
+            {                
+                AudioManager.instance.Play("dealCardSound");
+                //FindObjectOfType<AudioManager>().Play("cardPlace1");
+                
                 Vector2 newPos = EmptyCardSlots[i].transform.position;
                 card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], delay);
                  

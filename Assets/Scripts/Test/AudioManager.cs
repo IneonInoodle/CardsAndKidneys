@@ -1,6 +1,11 @@
 ﻿using UnityEngine.Audio;
 using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
+using UnityEngine.Experimental.UIElements;
+
 
 public class AudioManager : MonoBehaviour {
     public Sound[] OneOffsounds;
@@ -52,23 +57,54 @@ public class AudioManager : MonoBehaviour {
                 AllSounds[i][j].source.loop = AllSounds[i][j].loop;
             }
         }
-
-
-        
-
-
-       
     }
 
     // Update is called once per frame
     public void Play(string name)
     {
         Sound s = null;
-        for (int i = 0; i < AllSounds.Length; i++)
+
+        switch (name)
         {
-            s = Array.Find(AllSounds[i], sound => sound.name == name);
-            if (s != null) break;
+            case "dealCardSound"://done
+                s = AllSounds[1][UnityEngine.Random.Range(0, dealCardSounds.Length)];
+                break;
+            //"hpUp": addme
+            case "iceCube"://done
+                s = AllSounds[1][UnityEngine.Random.Range(0, iceCubesSounds.Length)];
+                break;
+            case "splat"://done
+                s = AllSounds[2][UnityEngine.Random.Range(4, splatSounds.Length)];
+                break;
+            //"dropKidney" addme          
+            //"stealKidneySound" addme
+            //"pressEndTurnButtonSound"  addme
+            default:
+                for (int i = 0; i < AllSounds.Length; i++)
+                {
+                    s = Array.Find(AllSounds[i], sound => sound.name == name);
+                    if (s != null) break;
+                }
+                break;
         }
+
+        /*
+        if (name = "dealCardSound")
+        {
+            s = dealCardSounds[0, Random.Range.dealcardsounds.length];
+            
+        } else
+        {
+            for (int i = 0; i < AllSounds.Length; i++)
+            {
+                s = Array.Find(AllSounds[i], sound => sound.name == name);
+                if (s != null) break;
+            }
+
+        }*/
+
+
+
 
         if (s == null) return;
         s.source.Play();

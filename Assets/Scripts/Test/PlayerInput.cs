@@ -18,7 +18,7 @@ public class PlayerInput : MonoBehaviour {
     private bool eventSent = false;
     private Vector2 lastPosition;
 
-    public bool toucht = true;
+    public bool toucht = false;
 
     public void GetKeyInput()
     {

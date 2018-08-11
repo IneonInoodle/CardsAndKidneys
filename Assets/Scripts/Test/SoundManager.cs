@@ -24,53 +24,53 @@ public class SoundManager : MonoBehaviour {
 
     private void Awake()
     {
-        pressEndTurnButtonSound = Resources.Load<AudioClip>("Slam_05");
+        pressEndTurnButtonSound = Resources.Load<AudioClip>("Slam_05");//added
     }
     void Start () {
 
-        hpUp = Resources.Load<AudioClip>("dustyroom_multimedia_select_digital_button");  
-        dropKidney = Resources.Load<AudioClip>("cartoon_slide_whistle_ascend_then_descend");
+        hpUp = Resources.Load<AudioClip>("dustyroom_multimedia_select_digital_button");  //added
+        dropKidney = Resources.Load<AudioClip>("cartoon_slide_whistle_ascend_then_descend");//added
 
-        cardPlace1 = Resources.Load<AudioClip>("cardPlace1");
-        cardPlace2 = Resources.Load<AudioClip>("cardPlace2");
-        cardPlace3 = Resources.Load<AudioClip>("cardPlace3");
-        cardPlace4 = Resources.Load<AudioClip>("cardPlace4");
+        cardPlace1 = Resources.Load<AudioClip>("cardPlace1"); //added
+        cardPlace2 = Resources.Load<AudioClip>("cardPlace2"); //added
+        cardPlace3 = Resources.Load<AudioClip>("cardPlace3"); //added
+        cardPlace4 = Resources.Load<AudioClip>("cardPlace4"); //added
 
         dealCardSounds = new AudioClip[] { cardPlace1, cardPlace2, cardPlace3, cardPlace4 };
 
-        Meat_Slice_1 = Resources.Load<AudioClip>("Meat_Slice_01");
-        Meat_Slice_2 = Resources.Load<AudioClip>("Meat_Slice_02");
-        Meat_Slice_3 = Resources.Load<AudioClip>("Meat_Slice_03");
-        Meat_Slice_4 = Resources.Load<AudioClip>("Meat_Slice_04");
-        Meat_Slice_5 = Resources.Load<AudioClip>("Meat_Slice_05");
+        Meat_Slice_1 = Resources.Load<AudioClip>("Meat_Slice_01");//added
+        Meat_Slice_2 = Resources.Load<AudioClip>("Meat_Slice_02");//added
+        Meat_Slice_3 = Resources.Load<AudioClip>("Meat_Slice_03");//added
+        Meat_Slice_4 = Resources.Load<AudioClip>("Meat_Slice_04");//added
+        Meat_Slice_5 = Resources.Load<AudioClip>("Meat_Slice_05");//added
 
         stealKidneySounds = new AudioClip[] { Meat_Slice_1, Meat_Slice_2, Meat_Slice_3, Meat_Slice_4, Meat_Slice_5 };
 
-        kidneySplat1 = Resources.Load<AudioClip>("Splat_01");
-        kidneySplat2 = Resources.Load<AudioClip>("Splat_02");
-        kidneySplat3 = Resources.Load<AudioClip>("Splat_03");
+        kidneySplat1 = Resources.Load<AudioClip>("Splat_01");//added
+        kidneySplat2 = Resources.Load<AudioClip>("Splat_02");//added
+        kidneySplat3 = Resources.Load<AudioClip>("Splat_03");//added
 
         kidneySplats = new AudioClip[] { kidneySplat1, kidneySplat2, kidneySplat3};
 
-        diceThrow1 = Resources.Load<AudioClip>("diceThrow1");
-        diceThrow2 = Resources.Load<AudioClip>("diceThrow2");
-        diceThrow3 = Resources.Load<AudioClip>("diceThrow3");
-        diceThrow4 = Resources.Load<AudioClip>("diceThrow4");
+        diceThrow1 = Resources.Load<AudioClip>("diceThrow1");//added
+        diceThrow2 = Resources.Load<AudioClip>("diceThrow2");//added
+        diceThrow3 = Resources.Load<AudioClip>("diceThrow3");//added
+        diceThrow4 = Resources.Load<AudioClip>("diceThrow4");//added
 
         iceCubes = new AudioClip[] { diceThrow1, diceThrow2, diceThrow3, diceThrow4 };
 
 
         //dealCardSound = Resources.Load<AudioClip>("dealCardSound");
-        takeDamageSound = Resources.Load<AudioClip>("Medical_Syringe_06");
-        cardFlip = Resources.Load<AudioClip>("cardOpenPackage2");
+        takeDamageSound = Resources.Load<AudioClip>("Medical_Syringe_06");//added
+        cardFlip = Resources.Load<AudioClip>("cardOpenPackage2");//added
 
 
 
 
 
-        moveOnBoardSound = Resources.Load<AudioClip>("moveOnBoardSound");
-        dieSound = Resources.Load<AudioClip>("DIE");
-        
+        moveOnBoardSound = Resources.Load<AudioClip>("moveOnBoardSound");//added
+        dieSound = Resources.Load<AudioClip>("DIE");//added
+
 
         audioSrc = GetComponent<AudioSource>();
 	}

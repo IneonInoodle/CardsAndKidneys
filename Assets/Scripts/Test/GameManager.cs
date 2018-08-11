@@ -13,8 +13,7 @@ public class GameManager : MonoBehaviour {
 
     public Sprite BottomPortraitMask;
     public Sprite TopPortraitMask;
-
-    public SoundManager soundManager;
+    
     public MessageManager messageManager;
     public SelectionManager selectionManager;
 
@@ -74,9 +73,6 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Assert(selectionManager != null);
         Debug.Assert(messageManager != null);
-        Debug.Assert(soundManager != null);
-
-        soundManager = Object.FindObjectOfType<SoundManager>().GetComponent<SoundManager>();
         players = Object.FindObjectsOfType<PlayerManager>(); //find player
         board = Object.FindObjectOfType<BoardManager>().GetComponent<BoardManager>(); //find board
 
@@ -208,8 +204,7 @@ public class GameManager : MonoBehaviour {
     }
     public IEnumerator UpdateTurn() //switches player turns
     {
-        SoundManager.PlaySound("pressEndTurnButtonSound");
-
+        AudioManager.instance.Play("pressEndTurnButtonSound");
         Debug.Log("what");
         if (CurrentPlayerTurn == null)
         {
