@@ -100,7 +100,7 @@ public class PlayerManager : TurnManager {
         {
             turnsWithoutKidney = value;
 
-            kvis.TurnsTilyouLoose = 2 - turnsWithoutKidney;
+            kvis.TurnsTilyouLoose = 3 - turnsWithoutKidney;
         }
     }
 
@@ -215,6 +215,8 @@ public class PlayerManager : TurnManager {
                 ActionPoints++;
                 break;
         }
+        Debug.Log("update cards");
+        BoardManager.Instance.UpdateCards();
         yield return null;
     }
 
@@ -257,7 +259,11 @@ public class PlayerManager : TurnManager {
             for (int i = 0; i < count; i++)
             {
                 patientKidneys.Add(playerKidneys[i]);
-                playerKidneys[i].transform.SetParent(KidneyLocation.transform, false);
+
+                playerKidneys[i].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                playerKidneys[i].transform.position = new Vector3(0f, 0f, 0f);
+
+                playerKidneys[i].transform.SetParent(KidneyLocation.transform, true);
                 playerKidneys[i].SetActive(false);
                 playerKidneys.Remove(playerKidneys[i]);
                 Debug.Log("captureKidney");
@@ -352,11 +358,13 @@ public class PlayerManager : TurnManager {
                 playerKidneys.Add(otherPlayer.patientKidneys[0]); // give player the kidney
 
                 otherPlayer.kvis.AvailableKidneys--;
-                otherPlayer.patientKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
-                otherPlayer.patientKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-                otherPlayer.patientKidneys[0].transform.SetParent(myPlayerCard.transform, false); //set kidney to be parentet to playercard
-
                 otherPlayer.patientKidneys[0].SetActive(true);
+
+                otherPlayer.patientKidneys[0].transform.SetParent(myPlayerCard.transform, false);
+
+                otherPlayer.patientKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                otherPlayer.patientKidneys[0].transform.localPosition = new Vector3(0f, 0f, 0f);
+                otherPlayer.patientKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
                 Debug.Log("FUCUCUCU");
                 
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
@@ -414,9 +422,7 @@ public class PlayerManager : TurnManager {
             {
                 DamageEffect.CreateDamageEffect(Doctor, damage);
             }
-            
-            Debug.Log(damage);
-            
+            Debug.Log("add in max AP increase here");
             Hp -= damage;
 
             if (Hp <= 0) Die();

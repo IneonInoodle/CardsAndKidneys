@@ -218,7 +218,7 @@ public class GameManager : MonoBehaviour {
         {
             if (players[0].IsTurnComplete)
             {
-                if (players[0].TurnsWithoutKidney >= 2)
+                if (players[0].TurnsWithoutKidney >= 3)
                 {
                     messageManager.ShowMessage("You Loose Boy", 1f);
                     isGameOver = true;
@@ -241,9 +241,6 @@ public class GameManager : MonoBehaviour {
                     players[0].EndTurnGlowObject.SetActive(false);
 
                     messageManager.ShowMessage("Your Turn", 1f);
-                    yield return StartCoroutine(board.UpdateBoard());
-
-                    CurrentPlayerTurn = players[1];
                     PlayPlayerTurn(players[1]);
                 }
                 
@@ -254,7 +251,7 @@ public class GameManager : MonoBehaviour {
             if (players[1].IsTurnComplete)
             {
 
-                if (players[1].TurnsWithoutKidney >= 2)
+                if (players[1].TurnsWithoutKidney >= 3)
                 {
                     messageManager.ShowMessage("You Loose Boy", 1f);
                     isGameOver = true;
@@ -274,17 +271,12 @@ public class GameManager : MonoBehaviour {
                         players[1].myCardManager.CardFaceGlowObject.SetActive(false);
                     players[1].EndTurnGlowObject.SetActive(false);
 
-                    messageManager.ShowMessage("Enemy Turn", 1f);
-                    yield return StartCoroutine(board.UpdateBoard());
-                    players[0].playerInput.InputEnabled = true;
-
-                    CurrentPlayerTurn = players[0];
+                    messageManager.ShowMessage("Enemy Turn", 1f);                   
                     PlayPlayerTurn(players[0]);
-                }
-
-                
+                }  
             }
         }
+        yield return null;
     }
 
     public void initPlayerBoard()
@@ -319,15 +311,14 @@ public class GameManager : MonoBehaviour {
 
 
     public void PlayPlayerTurn(PlayerManager player)
-    {   
+    {
+
         if (player.patientKidneys.Count  == 0)
         {
-            player.TurnsWithoutKidney++;
+            //player.TurnsWithoutKidney++;
             Debug.Log("TurnWithoutKidney " + player.TurnsWithoutKidney); 
         } 
 
-        player.playerInput.InputEnabled = true;
-        
         if (player.myLocation == location.board)
         {
             player.turnsOnBoard++;
@@ -348,8 +339,11 @@ public class GameManager : MonoBehaviour {
         CurrentPlayerTurn = player;
         player.IsTurnComplete = false;
 
-
+        StartCoroutine(board.UpdateBoard());
         StartCoroutine(player.DealPlayerCards(player.turnsOnBoard));
+
+
+        player.playerInput.InputEnabled = true;
         //deal out cards
         //increase turnsonboard
         //increase turnswithout kidney if nessacary

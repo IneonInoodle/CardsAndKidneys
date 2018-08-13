@@ -35,28 +35,36 @@ public class Selector : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("what");
+        Debug.Log("mouseDown");
+        Debug.Log(isSelectable);
+
         if (isSelectable == true)
         {
+            if (sm.isSelectingForSpellCards == true) // selecting for a spell
+            {
 
-            Debug.Log("what");
-            if (IsSelected == false) // trying to set it to true
-            {
-                Debug.Log(sm.amountOfCardsRequired);
-                Debug.Log(sm.AmountOfCardsSelected);
-                if (sm.amountOfCardsRequired > sm.AmountOfCardsSelected)
+                if (IsSelected == false) // trying to set it to true
                 {
-                    Debug.Log("add");
-                    sm.points.Add(card.point);
-                    IsSelected = true;
-                    sm.AmountOfCardsSelected++;
+                    if (sm.amountOfCardsRequired > sm.AmountOfCardsSelected)
+                    {
+                        Debug.Log("add");
+                        sm.points.Add(card.point);
+                        IsSelected = true;
+                        sm.AmountOfCardsSelected++;
+                    }
                 }
-            } else if (IsSelected == true)
+                else if (IsSelected == true)
+                {
+                    Debug.Log("remove");
+                    IsSelected = false;
+                    sm.points.Remove(card.point);
+                    sm.AmountOfCardsSelected--;
+                }
+            }
+            else //Selecting a for a move
             {
-                Debug.Log("remove");
-                IsSelected = false;
-                sm.points.Remove(card.point);
-                sm.AmountOfCardsSelected--;
+                Debug.Log("click to move");
+                GameManager.Instance.CurrentPlayerTurn.playerMover.MoveToPoint(card.point);
             }
         }
     }

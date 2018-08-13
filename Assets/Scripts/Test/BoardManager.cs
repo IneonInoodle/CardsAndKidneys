@@ -109,7 +109,7 @@ public class BoardManager : MonoBehaviour {
     {
         OneCardManager c = BoardManager.Instance.FindCardAtPoint(p1);
         int i = Int32.Parse(c.DamageText.text);
-        i = i - 3;
+        i = i - 100;
 
         if (i <= 0)
         {
@@ -184,6 +184,84 @@ public class BoardManager : MonoBehaviour {
         return null;
     }
     
+    public List<OneCardManager> HighlightArrows(OneCardManager card) // highlight arrows and save all player moves found 
+    {
+        List<OneCardManager> nList = new List<OneCardManager>();
+
+        if (card != null)
+        {
+            Point p;
+            arrows t = arrows.None;
+
+            if ((card.arrows & arrows.Up) == arrows.Up)
+            {
+                p = new Point(card.point.X, card.point.Y - 1);
+                if (FindCardAtPoint(p) != null)
+                {
+                    t |= arrows.Up;
+                    nList.Add(FindCardAtPoint(p));
+
+                } else if (card.point.Y == 0)
+                {
+                    t |= arrows.Up;
+                    // highlight endzone
+                }
+            }
+
+            if ((card.arrows & arrows.Down) == arrows.Down)
+            {
+                p = new Point(card.point.X, card.point.Y + 1);
+                if (FindCardAtPoint(p) != null) // can always move into endzone extra arrows here
+                {
+
+
+                    t |= arrows.Down; //terrible programming this whole fucking thing, but hey ce la vie
+                    nList.Add(FindCardAtPoint(p));
+
+                }   
+                else if (card.point.Y == 1)
+                {
+                    t |= arrows.Down;
+                    
+                }
+
+        }
+
+            if ((card.arrows & arrows.Right) == arrows.Right)
+            {
+                p = new Point(card.point.X + 1, card.point.Y);
+                if (FindCardAtPoint(p) != null)
+                {
+                    t |= arrows.Right;
+                    nList.Add(FindCardAtPoint(p));
+
+                }
+            }
+
+            if ((card.arrows & arrows.Left) == arrows.Left)
+            {
+                p = new Point(card.point.X - 1, card.point.Y);
+                if (FindCardAtPoint(p) != null)
+                {
+                    t |= arrows.Left;
+                    nList.Add(FindCardAtPoint(p));
+
+                }
+            }
+
+            // extra check here to add all 3 cards if player is in the endzone
+           
+
+            card.updateArrowsGlow(t);
+
+        }
+       
+        return nList;      
+    }
+
+   
+
+
     public GameObject CreateCard(Point p, GameObject cardPrefab, GameObject initPosition, CardAsset cardAsset,  float delay)
     {
         GameObject card;
@@ -340,21 +418,85 @@ public class BoardManager : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
-            SetAdjencyBonuses();
+            UpdateCards();
         }
         
     }
 
-    public void SetAdjencyBonuses()
+    public void UpdateCards() // responsible for adjecny bonus and arrow glow
     {
         OneCardManager[] AllCards = GameObject.FindObjectsOfType<OneCardManager>();
+
+        List<OneCardManager> SelectableCards = new List<OneCardManager>();
 
         foreach (OneCardManager card in AllCards)
         {
             if (card.cardAsset.Type == CardType.Monster) // check if field card
             {
                 card.AdjencyBonus = getAdjencyBonus(card);
+                
             }
+            if (card.cardAsset.Type != CardType.Spell) // check if field card
+            {
+                card.gameObject.GetComponent<Selector>().isSelectable = false;
+                HighlightArrows(card);
+            }
+            if (card.cardAsset.Type == CardType.Player)
+            {   
+                if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card)
+                {         
+                    SelectableCards = HighlightArrows(card);
+                }
+                
+            }
+            //resets dont delete
+            card.CardFaceInnerGlowImage.enabled = false;
+            
+        }
+        
+        // special case, if player is in the endzones, highlight all 3 cards
+        if (GameManager.Instance.CurrentPlayerTurn.myLocation == location.top)
+        {
+            foreach (OneCardManager card in AllCards)
+            {
+                if (card.cardAsset.Type != CardType.Player && card.point.Y == 0)
+                {
+                    SelectableCards.Add(card);
+                }
+            }
+        } else if (GameManager.Instance.CurrentPlayerTurn.myLocation == location.bottom)
+        {
+            foreach (OneCardManager card in AllCards)
+            {
+                if (card.cardAsset.Type != CardType.Player && card.point.Y == 1)
+                {
+                    SelectableCards.Add(card);
+                }
+            }
+        }
+
+
+
+        if (GameManager.Instance.CurrentPlayerTurn.ActionPoints == 0)
+        {
+            Debug.Log("clear");
+            SelectableCards.Clear();
+        }
+            
+
+
+        foreach (OneCardManager c in SelectableCards)
+        {
+            Selector s; 
+            Debug.Log(c.name);
+            if (c.cardAsset.Type == CardType.Hp ||
+                c.cardAsset.Type == CardType.Monster ||
+                c.cardAsset.Type == CardType.Neutral)
+            {
+                c.CardFaceInnerGlowImage.enabled = true;
+                s = c.gameObject.GetComponent<Selector>();
+                s.isSelectable = true;
+            }  
         }
     }
 
@@ -362,8 +504,8 @@ public class BoardManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(1f); // very strage behavor if I delete this
         yield return StartCoroutine(DealOutFieldCards(0.2f));
-        
-        SetAdjencyBonuses();
+
+        UpdateCards();
 
         // todo set glows
         yield return new WaitForSeconds(1);

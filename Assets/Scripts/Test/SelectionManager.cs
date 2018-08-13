@@ -15,6 +15,7 @@ public class SelectionManager : MonoBehaviour {
     public Text RibbonText;
     public Button confirmButton;
 
+    public bool isSelectingForSpellCards = false;
     public GameObject fieldCardParent;
 
     public List<Point> points = new List<Point>();
@@ -48,6 +49,7 @@ public class SelectionManager : MonoBehaviour {
         ribbon.SetActive(false);
         confirmButton.gameObject.SetActive(false);
 
+
     }
 
     // Use this for initialization
@@ -55,6 +57,11 @@ public class SelectionManager : MonoBehaviour {
         
     }
 	
+
+   public void HighlightValidMoves(PlayerManager p)
+    {
+        
+    }
 	// Update is called once per frame
 	void Update () {
 		
@@ -68,7 +75,7 @@ public class SelectionManager : MonoBehaviour {
 
     public IEnumerator getSelection(int amount)
     {
-        Debug.Log(amount);
+        isSelectingForSpellCards = true;
         String y = "Choose 1 Card";
 
         if (amount == 1)
@@ -144,7 +151,7 @@ public class SelectionManager : MonoBehaviour {
 
    public IEnumerator exit()
     {
-
+        isSelectingForSpellCards = false;
         fieldCardParent.transform.DOMove(new Vector3(0, 0, 0), 0.5f);
         yield return new WaitForSeconds(0.5f);
         selectionComplete = true;

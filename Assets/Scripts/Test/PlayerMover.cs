@@ -36,7 +36,37 @@ public void setPlayerArrows(arrows arrowz)
         }
     }
 
-    public void Move(Vector2 direction, float delayTime = 0.25f) //checks arrows, and then decides what type of move (3 choices) to make
+    public void MoveToPoint(Point des, float delayTime = 0.25f)
+    {
+        // check if we are in the endzone
+        if (playerManager.point.Y == -1) // moving out of endzone top
+        {
+            des.Y = 0; // if we pressed left or right, need to manually fixed our des.y value 
+            Debug.Log(des.X + " " + des.Y);
+            StartCoroutine(MoveOutOfEndzone(des));
+
+        }
+        else if (playerManager.point.Y == 2) //moving out of endzone bottom
+        {
+            des.Y = 1; // if we pressed left or right, need to manually fixed our des.y value
+            StartCoroutine(MoveOutOfEndzone(des));
+        }
+        else if (des.Y == -1) // check if move endzone top
+        {
+            StartCoroutine(MoveIntoEndzone(boardManager.Top));
+        }
+        else if (des.Y == 2) // ,move to endzone bottom
+        {
+            StartCoroutine(MoveIntoEndzone(boardManager.Bottom));
+        }
+        else // move on board
+        {
+            Debug.Log(des.X + " " + des.Y);
+            StartCoroutine(MoveOnBoard(des, 0.2f));
+        }
+
+    }
+    public void MoveKeyBoard(Vector2 direction) //checks arrows, and then decides what type of move (3 choices) to make
     {
         
         if (playerManager.ActionPoints == 0)
@@ -51,33 +81,9 @@ public void setPlayerArrows(arrows arrowz)
             return;
         }  
 
-        Debug.Log(playerManager.point.X + " " + playerManager.point.Y);
-        Debug.Log((int)direction.x + " " + (int)direction.y);
-
         Point des = new Point(playerManager.point.X + (int)direction.x, playerManager.point.Y + (int)direction.y);
-        
-        // check if we are in the endzone
-        if (playerManager.point.Y == -1) // moving out of endzone top
-        {
-            des.Y = 0; // if we pressed left or right, need to manually fixed our des.y value 
-            Debug.Log(des.X + " " + des.Y);
-            StartCoroutine(MoveOutOfEndzone(des));
 
-        } else if (playerManager.point.Y == 2) //moving out of endzone bottom
-        {
-            des.Y = 1; // if we pressed left or right, need to manually fixed our des.y value
-            StartCoroutine(MoveOutOfEndzone(des));
-        } else if (des.Y == -1) // check if move endzone top
-        {
-            StartCoroutine(MoveIntoEndzone(boardManager.Top));
-        } else if (des.Y == 2) // ,move to endzone bottom
-        {
-            StartCoroutine(MoveIntoEndzone(boardManager.Bottom));
-        } else // move on board
-        {
-            Debug.Log(des.X + " " + des.Y);
-            StartCoroutine(MoveOnBoard(des, 0.2f));
-        }
+        MoveToPoint(des, 0.25f);
 
     }
 
@@ -127,6 +133,7 @@ public void setPlayerArrows(arrows arrowz)
                 
 
                 yield return new WaitForSeconds(0.5f);
+                BoardManager.Instance.UpdateCards();
                 isMoving = false;
                 
             }
@@ -211,7 +218,7 @@ public void setPlayerArrows(arrows arrowz)
         playerManager.ActionPoints = 0;
         playerManager.turnsOnBoard = 1;
         playerManager.button.interactable = true;
-
+        BoardManager.Instance.UpdateCards();
         isMoving = false;
     }
 
@@ -253,8 +260,6 @@ public void setPlayerArrows(arrows arrowz)
                 playerManager.myLocation = location.board;
 
 
-
-
                 setPlayerArrows(temp);
                 boardManager.DeleteCard(fieldCardDes);
                 boardManager.RemoveEmptySlot(playerManager.point);
@@ -265,6 +270,7 @@ public void setPlayerArrows(arrows arrowz)
         }
 
         isMoving = false; // card finished moving now can take input
+        BoardManager.Instance.UpdateCards();
         Debug.Log("Done move outof endzone");
         yield return null;
     }
@@ -279,21 +285,21 @@ public void setPlayerArrows(arrows arrowz)
     public void MoveLeft()
     {   //
             Vector2 newPos = new Vector2(-1, 0);
-            Move(newPos,0);
+        MoveKeyBoard(newPos);
       
     }
     public void MoveRight()
     {
 
             Vector2 newPos = new Vector2(1, 0);
-            Move(newPos,0);
+        MoveKeyBoard(newPos);
 
     }
     public void MoveUp()
     {
 
             Vector2 newPos = new Vector2(0,-1);
-            Move(newPos, 0);
+        MoveKeyBoard(newPos);
 
     }
     public void MoveDown()
@@ -304,7 +310,7 @@ public void setPlayerArrows(arrows arrowz)
         // need to check that card exists// move from endzone
         
             Vector2 newPos = new Vector2(0, 1);
-            Move(newPos, 0);
+        MoveKeyBoard(newPos);
         
     }
     // Use this for initialization

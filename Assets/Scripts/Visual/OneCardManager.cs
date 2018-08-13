@@ -68,9 +68,44 @@ public class OneCardManager : MonoBehaviour {
 
 
     }
+
+    public void updateArrowsGlow(arrows arrowz)
+    {
+        if ((arrowz & arrows.Left) != 0)
+        {
+            CardArrowLeftImage.color = Color.white;
+        } else
+        {
+            CardArrowLeftImage.color = Color.black;
+        }
+        if ((arrowz & arrows.Right) != 0)
+        {
+            CardArrowRightImage.color = Color.white;
+        }
+        else
+        {
+            CardArrowRightImage.color = Color.black;
+        }
+        if ((arrowz & arrows.Up) != 0)
+        {
+            CardArrowUpImage.color = Color.white;
+        }
+        else
+        {
+            CardArrowUpImage.color = Color.black;
+        }
+        if ((arrowz & arrows.Down) != 0)
+        {
+            CardArrowDownImage.color = Color.white;
+        }
+        else
+        {
+            CardArrowDownImage.color = Color.black;
+        }
+    }
 // field card
 //playerCard
-private int adjencyBonus;
+    private int adjencyBonus;
     public int AdjencyBonus
     {
         get
@@ -119,7 +154,7 @@ private int adjencyBonus;
             updateArrows(arrows);//meh
         }
        
-        //CardFaceInnerGlowImage.enabled = false;
+        CardFaceInnerGlowImage.enabled = false;
         CardFaceGlowObject.SetActive(false);
 }
 

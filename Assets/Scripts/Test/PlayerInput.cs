@@ -24,8 +24,9 @@ public class PlayerInput : MonoBehaviour {
     {
         v = 0;
         h = 0;
+
         if (inputEnabled)
-        {   
+        {
             if (toucht == true) {
                 if (Input.touchCount == 0)
                     return;
@@ -70,12 +71,10 @@ public class PlayerInput : MonoBehaviour {
                 }
 
             } else if(toucht == false)
-            {      
-                if (inputEnabled)
-                {
+            {
                     h = Input.GetAxisRaw("Horizontal");
                     v = Input.GetAxisRaw("Vertical");
-                }
+                
             }
         }
     }
