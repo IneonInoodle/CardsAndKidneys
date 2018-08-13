@@ -208,7 +208,7 @@ public class BoardManager : MonoBehaviour {
                     Debug.Log("errrrr");
 
 
-                    if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card)
+                    if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card && GameManager.Instance.CurrentPlayerTurn.ActionPoints > 0)
                     {
                         BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = true;
                         BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
@@ -232,8 +232,9 @@ public class BoardManager : MonoBehaviour {
                 {
                     t |= arrows.Down;
 
-                    if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card)
-                    {
+                    if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card && GameManager.Instance.CurrentPlayerTurn.ActionPoints > 0)
+                    {   
+
                         BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
                         BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true; //bad 
                     }
