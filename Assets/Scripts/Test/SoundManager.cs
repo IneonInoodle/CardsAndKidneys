@@ -94,7 +94,7 @@ public class SoundManager : MonoBehaviour {
                 break;
 
             case "dealCardSound":
-                audioSrc.PlayOneShot(dealCardSounds[Random.Range(0, dealCardSounds.Length)]);
+                //audioSrc.PlayOneShot(dealCardSounds[Random.Range(0, dealCardSounds.Length)]);
                 break;
             case "takeDamageSound":
                 audioSrc.PlayOneShot(takeDamageSound);

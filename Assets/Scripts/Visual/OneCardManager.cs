@@ -228,7 +228,7 @@ public class OneCardManager : MonoBehaviour {
 
     public IEnumerator FlipThisCard()
     {
-        AudioManager.instance.Play("cardFlip");
+        //AudioManager.instance.Play("cardFlip");
         this.GetComponent<DragRotator>().enabled = false;
         this.transform.DOLocalRotate(new Vector3(0f, 360f, this.transform.localRotation.eulerAngles.z), 0.5f, RotateMode.FastBeyond360); // why doesnt it work
        
