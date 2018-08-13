@@ -188,6 +188,7 @@ public class BoardManager : MonoBehaviour {
     {
         List<OneCardManager> nList = new List<OneCardManager>();
 
+
         if (card != null)
         {
             Point p;
@@ -204,6 +205,14 @@ public class BoardManager : MonoBehaviour {
                 } else if (card.point.Y == 0)
                 {
                     t |= arrows.Up;
+                    Debug.Log("errrrr");
+
+
+                    if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card)
+                    {
+                        BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = true;
+                        BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+                    }
                     // highlight endzone
                 }
             }
@@ -222,7 +231,12 @@ public class BoardManager : MonoBehaviour {
                 else if (card.point.Y == 1)
                 {
                     t |= arrows.Down;
-                    
+
+                    if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card)
+                    {
+                        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
+                        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true; //bad 
+                    }
                 }
 
         }
@@ -429,6 +443,11 @@ public class BoardManager : MonoBehaviour {
 
         List<OneCardManager> SelectableCards = new List<OneCardManager>();
 
+        BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = false;
+        BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
+        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = false;
+        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
+
         foreach (OneCardManager card in AllCards)
         {
             if (card.cardAsset.Type == CardType.Monster) // check if field card
@@ -444,7 +463,9 @@ public class BoardManager : MonoBehaviour {
             if (card.cardAsset.Type == CardType.Player)
             {   
                 if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card)
-                {         
+                {
+
+
                     SelectableCards = HighlightArrows(card);
                 }
                 

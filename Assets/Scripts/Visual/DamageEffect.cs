@@ -49,16 +49,16 @@ public class DamageEffect : MonoBehaviour {
         if (amount > 0)
         {
             IceCube.Emit(amount - 3);  // Output: 1
-            SoundManager.PlaySound("iceCube");
+            //SoundManager.PlaySound("iceCube");
             yield return new WaitForSeconds(0.5f);
             // gradually fade the effect by changing its alpha value
-            SoundManager.PlaySound("iceCube");
+            //SoundManager.PlaySound("iceCube");
             yield return new WaitForSeconds(0.7f);
-            SoundManager.PlaySound("iceCube");
+            //SoundManager.PlaySound("iceCube");
         }
         else if (amount < 0)
         {
-            SoundManager.PlaySound("hpUp");
+            //SoundManager.PlaySound("hpUp");
             yield return new WaitForSeconds(1.0f);
         }
         Debug.Log("amount" + amount);
