@@ -5,6 +5,8 @@ using UnityEngine;
 public class Selector : MonoBehaviour
 {
 
+    public List<OneCardManager> PathToMe = new List<OneCardManager>();
+
     public bool isSelectable;
 
     private bool isSelected;

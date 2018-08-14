@@ -53,6 +53,7 @@ public class BoardManager : MonoBehaviour {
     private CardSlotManager[,] allSlots = new CardSlotManager[2, 3];
     public CardSlotManager[,] AllSlots { get { return allSlots; } } //no set, set in awake
     public List<CardSlotManager> EmptyCardSlots = new List<CardSlotManager>();
+    public List<OneCardManager> AllCards = new List<OneCardManager>();
 
     void Awake()
     {
@@ -170,12 +171,10 @@ public class BoardManager : MonoBehaviour {
         
     public OneCardManager FindCardAtPoint(Point p)
     {
-        OneCardManager[] AllCards = GameObject.FindObjectsOfType<OneCardManager>();
-
         foreach (OneCardManager card in AllCards)
         {   
             
-            if (Point.Equals(card.point, p) && card.cardAsset.Type != CardType.Spell)
+            if (Point.Equals(card.point, p) && card.cardAsset.Type != CardType.Spell && card.cardAsset.Type != CardType.Player)
             {
                 return card;
             }
@@ -183,113 +182,162 @@ public class BoardManager : MonoBehaviour {
         }
         return null;
     }
-    
-    public List<OneCardManager> HighlightArrows(OneCardManager card) // highlight arrows and save all player moves found 
+
+    public void HighlightArrows() // highlight arrows and save all player moves found 
+    {
+        foreach(OneCardManager card in AllCards)
+        {   
+            if (card.cardAsset.Type != CardType.Spell)
+            {
+                arrows t = arrows.None;
+                if (FindCardAtPoint(new Point(card.point.X, card.point.Y - 1)) != null) t |= arrows.Up;
+                if (FindCardAtPoint(new Point(card.point.X - 1, card.point.Y)) != null) t |= arrows.Left;
+                if (FindCardAtPoint(new Point(card.point.X, card.point.Y + 1)) != null) t |= arrows.Down;
+                if (FindCardAtPoint(new Point(card.point.X + 1, card.point.Y)) != null) t |= arrows.Right;
+
+                if (card.point.Y == 0) t |= arrows.Up;
+                if (card.point.Y == 1) t |= arrows.Down;
+
+                card.updateArrowsGlow(t);
+            }
+
+
+            
+        }
+
+        /*if(IsEndzoneValid(location.top))
+        {
+            BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = true;
+            BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+        }
+        if (IsEndzoneValid(location.bottom))
+        {
+            BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
+            BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+        }*/
+    }
+
+    public bool IsEndzoneValid(location loc)
+    {
+        if (GameManager.Instance.CurrentPlayerTurn.ActionPoints <= 0) return false;
+
+        int y = loc == location.top ? 0 : 1;
+        arrows check= loc == location.top ? arrows.Up : arrows.Down;
+
+        for(int x=0; x<3;x++)
+        {
+            OneCardManager card = FindCardAtPoint(new Point(x, y));
+            if (card == null) continue;
+            if ((card.arrows & check) != 0) return true;
+        }
+
+        return false;
+    }
+
+    public List<OneCardManager> GetValidMoves(OneCardManager card) // highlight arrows and save all player moves found 
     {
         List<OneCardManager> nList = new List<OneCardManager>();
 
-
         if (card != null)
         {
-            Point p;
-            arrows t = arrows.None;
-
-            if ((card.arrows & arrows.Up) == arrows.Up)
-            {
-                p = new Point(card.point.X, card.point.Y - 1);
-                if (FindCardAtPoint(p) != null)
-                {
-                    t |= arrows.Up;
-                    nList.Add(FindCardAtPoint(p));
-
-                } else if (card.point.Y == 0)
-                {
-                    t |= arrows.Up;
-                    Debug.Log("errrrr");
-
-
-                    if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card && GameManager.Instance.CurrentPlayerTurn.ActionPoints > 0)
-                    {
-                        BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = true;
-                        BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
-                    }
-                    // highlight endzone
-                }
-            }
-
-            if ((card.arrows & arrows.Down) == arrows.Down)
-            {
-                p = new Point(card.point.X, card.point.Y + 1);
-                if (FindCardAtPoint(p) != null) // can always move into endzone extra arrows here
-                {
-
-
-                    t |= arrows.Down; //terrible programming this whole fucking thing, but hey ce la vie
-                    nList.Add(FindCardAtPoint(p));
-
-                }   
-                else if (card.point.Y == 1)
-                {
-                    t |= arrows.Down;
-
-                    if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card && GameManager.Instance.CurrentPlayerTurn.ActionPoints > 0)
-                    {   
-
-                        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
-                        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true; //bad 
-                    }
-                }
-
-        }
-
-            if ((card.arrows & arrows.Right) == arrows.Right)
-            {
-                p = new Point(card.point.X + 1, card.point.Y);
-                if (FindCardAtPoint(p) != null)
-                {
-                    t |= arrows.Right;
-                    nList.Add(FindCardAtPoint(p));
-
-                }
-            }
-
-            if ((card.arrows & arrows.Left) == arrows.Left)
-            {
-                p = new Point(card.point.X - 1, card.point.Y);
-                if (FindCardAtPoint(p) != null)
-                {
-                    t |= arrows.Left;
-                    nList.Add(FindCardAtPoint(p));
-
-                }
-            }
-
-            // extra check here to add all 3 cards if player is in the endzone
-           
-
-            card.updateArrowsGlow(t);
-
+            nList.AddRange(GetValidMoves(card.point, card.arrows));
         }
        
         return nList;      
     }
 
-   
-
-
-    public GameObject CreateCard(Point p, GameObject cardPrefab, GameObject initPosition, CardAsset cardAsset,  float delay)
+    public List<OneCardManager> GetValidMoves(Point pos,arrows arr)
     {
-        GameObject card;
+        List<OneCardManager> nList = new List<OneCardManager>();
+
+        Point p;
+
+        if ((arr & arrows.Up) != 0)
+        {
+            p = new Point(pos.X, pos.Y - 1);
+            if (FindCardAtPoint(p) != null)
+            {
+                nList.Add(FindCardAtPoint(p));
+            }
+        }
+
+        if ((arr & arrows.Down) == arrows.Down)
+        {
+            p = new Point(pos.X, pos.Y + 1);
+            if (FindCardAtPoint(p) != null) // can always move into endzone extra arrows here
+            {
+                nList.Add(FindCardAtPoint(p));
+            }
+        }
+
+        if ((arr & arrows.Right) == arrows.Right)
+        {
+            p = new Point(pos.X + 1, pos.Y);
+            if (FindCardAtPoint(p) != null)
+            {
+                nList.Add(FindCardAtPoint(p));
+            }
+        }
+
+        if ((arr & arrows.Left) == arrows.Left)
+        {
+            p = new Point(pos.X - 1, pos.Y);
+            if (FindCardAtPoint(p) != null)
+            {
+                nList.Add(FindCardAtPoint(p));
+            }
+        }
+
+        if (pos.Y == 2)
+        {
+            foreach (OneCardManager card in AllCards)
+            {
+                if (card.point.Y == 1)
+                    nList.Add(card);
+            }
+        }
+        else if (pos.Y == -1)
+        {
+            foreach (OneCardManager card in AllCards)
+            {
+                if (card.point.Y == 0)
+                    nList.Add(card);
+            }
+        }
+        return nList;
+    }
+
+    public List<OneCardManager> GetValidMovesDist(Point pos, arrows arr,int dist)
+    {
+        if (dist == 0) return new List<OneCardManager>();
+
+        List<OneCardManager> nList = GetValidMoves(pos, arr);
+        foreach(OneCardManager card in nList)
+        {
+            List<OneCardManager> nSub = GetValidMovesDist(card.point, card.arrows,dist -1);
+            foreach (OneCardManager card2 in nSub)
+            {
+                if (!nList.Contains(card2)) nList.Add(card2);
+            }
+        }
+
+        return nList;
+    }
+
+
+    public OneCardManager CreateCard(Point p, GameObject cardPrefab, GameObject initPosition, CardAsset cardAsset,  float delay)
+    {
         //card = Instantiate(cardPrefab);
 
         ; //keep it bewtween 2 and 1
 
-        card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-2, 2)));
+        OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-2, 2))).GetComponent<OneCardManager>();
+        AllCards.Add(card);
 
         card.transform.SetParent(FieldCardParent.transform, false);
-        card.GetComponent<OneCardManager>().cardAsset = cardAsset;
-        card.GetComponent<OneCardManager>().ReadCardFromAsset();
-        card.GetComponent<OneCardManager>().point = p;
+        card.cardAsset = cardAsset;
+        card.ReadCardFromAsset();
+        card.point = p;
 
         EmptyCardSlots.Remove(AllSlots[p.Y, p.X]); // cannot put it here sadly
         card.transform.position = initPosition.transform.position;
@@ -314,7 +362,7 @@ public class BoardManager : MonoBehaviour {
     public IEnumerator DealOutFieldCards(float delay)
     {   // itterates through the emptycardslot list and spawns cards at each.
         // coud convert list to array, go through array and delte list.
-        GameObject card;
+        OneCardManager card;
         int count = EmptyCardSlots.Count;
 
         if (count > 0)
@@ -338,17 +386,16 @@ public class BoardManager : MonoBehaviour {
         yield return null;
     }
     public void DeleteAllCards(){
-        OneCardManager[] AllCards = GameObject.FindObjectsOfType<OneCardManager>();
-
-        foreach (OneCardManager card in AllCards)
+        while (AllCards.Count>0)
         {
-            DeleteCard(card);
+            DeleteCard(AllCards[0]);
         }
 
     } 
     public void DeleteCard(OneCardManager card)
     {
         //Debug.Log(card.point.X + " " + card.point.Y);
+
         AddEmptySlot(card.point);
         StartCoroutine(card.DeleteThisCard());
     }
@@ -438,17 +485,74 @@ public class BoardManager : MonoBehaviour {
         
     }
 
+    public void HighlightPaths(OneCardManager card)
+    {
+        /*
+        var allWays = new List<List<OneCardManager>>();
+
+        List<OneCardManager> SelectableCards1 = new List<OneCardManager>();
+        List<OneCardManager> SelectableCards2 = new List<OneCardManager>();
+        List<OneCardManager> SelectableCards3 = new List<OneCardManager>();
+        List<OneCardManager> SelectableCards4 = new List<OneCardManager>();
+
+        SelectableCards1 = HighlightArrows(card); // 1 AP
+        foreach (OneCardManager s in SelectableCards1)
+        {
+            allWays.Add(new List<OneCardManager> {card});
+        }
+
+        if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 2)
+        {
+            foreach (OneCardManager ss in SelectableCards1) //2 AP
+            {
+                SelectableCards2 = HighlightArrows(ss);
+                allWays.Add(new List<OneCardManager> { card, ss});
+
+
+                if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
+                {
+                    foreach (OneCardManager sss in SelectableCards2) //3 AP
+                    {
+                        SelectableCards3 = HighlightArrows(sss);
+                        allWays.Add(new List<OneCardManager> { card, ss, sss});
+
+                        if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
+                        {
+                            foreach (OneCardManager ssss in SelectableCards3) //4 AP
+                            {
+                                SelectableCards4 = HighlightArrows(ssss);
+                                allWays.Add(new List<OneCardManager> { card, ss, sss,ssss});
+
+                            }
+                        } 
+                    }
+                }
+            }
+        }
+
+        Debug.Log(allWays);
+        foreach (List<OneCardManager> l in allWays)
+        {
+            Debug.Log(l.Point.X);
+        }       
+        */
+    }
+
     public void UpdateCards() // responsible for adjecny bonus and arrow glow
     {
-        OneCardManager[] AllCards = GameObject.FindObjectsOfType<OneCardManager>();
 
         List<OneCardManager> SelectableCards = new List<OneCardManager>();
+        List<OneCardManager> HighlightableCards = new List<OneCardManager>();
+        List<OneCardManager>[] a = new List<OneCardManager>[100];
 
         BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = false;
         BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
         BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = false;
         BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
-
+        foreach (OneCardManager card in AllCards)
+        {
+            card.CardFaceInnerGlowImage.enabled = false;
+        }
         foreach (OneCardManager card in AllCards)
         {
             if (card.cardAsset.Type == CardType.Monster) // check if field card
@@ -459,46 +563,13 @@ public class BoardManager : MonoBehaviour {
             if (card.cardAsset.Type != CardType.Spell) // check if field card
             {
                 card.gameObject.GetComponent<Selector>().isSelectable = false;
-                HighlightArrows(card);
             }
-            if (card.cardAsset.Type == CardType.Player)
-            {   
-                if (GameManager.Instance.CurrentPlayerTurn.myCardManager == card)
-                {
-
-
-                    SelectableCards = HighlightArrows(card);
-                }
-                
-            }
-            //resets dont delete
-            card.CardFaceInnerGlowImage.enabled = false;
-            
-        }
-        
-        // special case, if player is in the endzones, highlight all 3 cards
-        if (GameManager.Instance.CurrentPlayerTurn.myLocation == location.top)
-        {
-            foreach (OneCardManager card in AllCards)
-            {
-                if (card.cardAsset.Type != CardType.Player && card.point.Y == 0)
-                {
-                    SelectableCards.Add(card);
-                }
-            }
-        } else if (GameManager.Instance.CurrentPlayerTurn.myLocation == location.bottom)
-        {
-            foreach (OneCardManager card in AllCards)
-            {
-                if (card.cardAsset.Type != CardType.Player && card.point.Y == 1)
-                {
-                    SelectableCards.Add(card);
-                }
-            }
+           
         }
 
+        SelectableCards = GetValidMoves(GameManager.Instance.CurrentPlayerTurn.point, GameManager.Instance.CurrentPlayerTurn.arrows);
 
-
+       
         if (GameManager.Instance.CurrentPlayerTurn.ActionPoints == 0)
         {
             Debug.Log("clear");
@@ -520,6 +591,8 @@ public class BoardManager : MonoBehaviour {
                 s.isSelectable = true;
             }  
         }
+
+        HighlightArrows();
     }
 
     public IEnumerator UpdateBoard()

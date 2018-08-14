@@ -243,7 +243,7 @@ public void setPlayerArrows(arrows arrowz)
 
                 //save playermanager things
                 Debug.Log("Should be here");
-                playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab, playerManager.Doctor, playerManager.playerCardAsset, 0.5f);
+                playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab, playerManager.Doctor, playerManager.playerCardAsset, 0.5f).gameObject;
                 playerManager.myCardManager = playerManager.myPlayerCard.GetComponent<OneCardManager>();
 
                 //last 2 lines removed for testing

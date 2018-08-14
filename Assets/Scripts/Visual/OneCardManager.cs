@@ -237,7 +237,8 @@ public class OneCardManager : MonoBehaviour {
 
     public IEnumerator DeleteThisCard()
     {
-        
+        BoardManager.Instance.AllCards.Remove(this);
+
         // make this effect non-transparent
         cg.alpha = 1f;
 
