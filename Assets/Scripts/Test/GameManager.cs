@@ -321,7 +321,7 @@ public class GameManager : MonoBehaviour {
 
         if (player.myLocation == location.board)
         {
-            player.turnsOnBoard++;
+            //player.MaxAp++;
             player.myCardManager.CardFaceGlowObject.SetActive(true);
         } else
         {
@@ -335,12 +335,12 @@ public class GameManager : MonoBehaviour {
 
 
     
-        player.ActionPoints = player.turnsOnBoard;
+        player.ActionPoints = player.MaxAp;
         CurrentPlayerTurn = player;
         player.IsTurnComplete = false;
 
         StartCoroutine(board.UpdateBoard());
-        StartCoroutine(player.DealPlayerCards(player.turnsOnBoard));
+        StartCoroutine(player.DealPlayerCards(1));
 
 
         player.playerInput.InputEnabled = true;

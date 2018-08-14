@@ -216,7 +216,7 @@ public void setPlayerArrows(arrows arrowz)
 
         playerManager.myCardManager = null;
         playerManager.ActionPoints = 0;
-        playerManager.turnsOnBoard = 1;
+        playerManager.MaxAp = 1;
         playerManager.button.interactable = true;
         BoardManager.Instance.UpdateCards();
         isMoving = false;
@@ -248,7 +248,7 @@ public void setPlayerArrows(arrows arrowz)
 
                 //last 2 lines removed for testing
                 playerManager.ActionPoints--;
-                playerManager.turnsOnBoard = 1;
+                playerManager.MaxAp = 1;
 
                 playerManager.point = des;
 

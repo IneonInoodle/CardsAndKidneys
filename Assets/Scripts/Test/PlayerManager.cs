@@ -85,7 +85,7 @@ public class PlayerManager : TurnManager {
     public location mySide; //top or bottom
     public location myLocation;
 
-    public int turnsOnBoard;
+    public int MaxAp;
     public Point point;
     public UnityEvent finishTurnEvent;
 
@@ -239,7 +239,8 @@ public class PlayerManager : TurnManager {
         StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
         else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
         //AudioManager.instance.Play("dieSound");
-        turnsOnBoard = 1;
+        MaxAp = 1;
+        apvis.TotalAp = MaxAp;
         ActionPoints = 0;
         Hp = 0;
 
@@ -391,7 +392,7 @@ public class PlayerManager : TurnManager {
     {
         playerInput.InputEnabled = false;
 
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < 1; i++)
         {
             handvisual.GivePlayerACard(Deck[UnityEngine.Random.Range(0, Deck.Length)], true, true);
             yield return new WaitForSeconds(0.4f);
@@ -422,6 +423,13 @@ public class PlayerManager : TurnManager {
             {
                 DamageEffect.CreateDamageEffect(Doctor, damage);
             }
+
+            if (c.cardAsset.Type == CardType.Monster)
+            {
+                MaxAp++;
+                apvis.TotalAp = MaxAp;
+            }
+               
             Debug.Log("add in max AP increase here");
             Hp -= damage;
 
@@ -448,7 +456,8 @@ public class PlayerManager : TurnManager {
         base.Awake();
         boardManager = BoardManager.Instance;
         kvis.AvailableKidneys = 1;
-        turnsOnBoard = 1;
+        MaxAp = 1;
+        apvis.TotalAp = MaxAp;
         ActionPoints = 1;
         
         Hp = 10;
