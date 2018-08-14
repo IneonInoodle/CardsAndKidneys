@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour {
     }
     public IEnumerator UpdateTurn() //switches player turns
     {
-        //AudioManager.instance.Play("pressEndTurnButtonSound");
+        AudioManager.instance.Play("pressEndTurnButtonSound");
         Debug.Log("what");
         if (CurrentPlayerTurn == null)
         {

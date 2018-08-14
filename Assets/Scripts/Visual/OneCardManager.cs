@@ -71,16 +71,17 @@ public class OneCardManager : MonoBehaviour {
 
     public void updateArrowsGlow(arrows arrowz)
     {
+        Color normalColor = CardArrowLeftImage.color;
         if ((arrowz & arrows.Left) != 0)
         {
-            CardArrowLeftImage.color = Color.white;
+            CardArrowLeftImage.color = normalColor;
         } else
         {
             CardArrowLeftImage.color = Color.black;
         }
         if ((arrowz & arrows.Right) != 0)
         {
-            CardArrowRightImage.color = Color.white;
+            CardArrowRightImage.color = normalColor;
         }
         else
         {
@@ -88,7 +89,7 @@ public class OneCardManager : MonoBehaviour {
         }
         if ((arrowz & arrows.Up) != 0)
         {
-            CardArrowUpImage.color = Color.white;
+            CardArrowUpImage.color = normalColor;
         }
         else
         {
@@ -96,7 +97,7 @@ public class OneCardManager : MonoBehaviour {
         }
         if ((arrowz & arrows.Down) != 0)
         {
-            CardArrowDownImage.color = Color.white;
+            CardArrowDownImage.color = normalColor;
         }
         else
         {
@@ -228,7 +229,7 @@ public class OneCardManager : MonoBehaviour {
 
     public IEnumerator FlipThisCard()
     {
-        //AudioManager.instance.Play("cardFlip");
+        AudioManager.instance.Play("cardFlip");
         this.GetComponent<DragRotator>().enabled = false;
         this.transform.DOLocalRotate(new Vector3(0f, 360f, this.transform.localRotation.eulerAngles.z), 0.5f, RotateMode.FastBeyond360); // why doesnt it work
        
