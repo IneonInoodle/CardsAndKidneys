@@ -194,7 +194,7 @@ public class PlayerManager : TurnManager {
                 yield return StartCoroutine(gm.selectionManager.getSelection(1));
                 if (gm.selectionManager.points.Count == 1)
                 {
-                    OneCardManager damageMeCard = boardManager.FindCardAtPoint(gm.selectionManager.points[0]);
+                    OneCardManager damageMeCard = boardManager.FindFieldCardAtPoint(gm.selectionManager.points[0]);
 
                     if (damageMeCard.cardAsset.Type != CardType.Player)
                     {
@@ -219,7 +219,18 @@ public class PlayerManager : TurnManager {
         BoardManager.Instance.UpdateCards();
         yield return null;
     }
+    public void MoveKidneyFromCardToDoctor()
+    {
 
+        if (playerKidneys.Count > 0) // check if kidney on card and if player has room for kidney
+        {
+            Debug.Log("MoveKidneyFromDoctorToCard");
+            playerKidneys[0].transform.SetParent(Doctor.transform, false);
+            playerKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+            playerKidneys[0].transform.localPosition = new Vector3(0f, 0f, 0f);
+            playerKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+    }
     public void callSpellCard (string tt)
     {
         Debug.Log("playspellcard");
@@ -382,11 +393,16 @@ public class PlayerManager : TurnManager {
         {
             Debug.Log("MoveKidneyFromDoctorToCard");
             playerKidneys[0].transform.SetParent(myPlayerCard.transform, false);
+            playerKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+            playerKidneys[0].transform.localPosition = new Vector3(0f, 0f, 0f);
+            playerKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
         }
         //add kidney to playeer
         //remove kidney from gameboard
         //
     }
+
+ 
 
     public IEnumerator DealPlayerCards(int amount)
     {

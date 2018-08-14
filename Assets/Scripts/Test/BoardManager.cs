@@ -83,8 +83,8 @@ public class BoardManager : MonoBehaviour {
 
     public void SwapCard(Point p1, Point p2)
     {
-        OneCardManager c1 = FindCardAtPoint(p1);
-        OneCardManager c2 = FindCardAtPoint(p2);
+        OneCardManager c1 = FindFieldCardAtPoint(p1);
+        OneCardManager c2 = FindFieldCardAtPoint(p2);
 
         Vector3 v1 = c1.transform.position;
         Vector3 v2 = c2.transform.position;
@@ -99,8 +99,8 @@ public class BoardManager : MonoBehaviour {
 
     public void Replace2(Point p1, Point p2)
     {
-        OneCardManager c1 = FindCardAtPoint(p1);
-        OneCardManager c2 = FindCardAtPoint(p2);
+        OneCardManager c1 = FindFieldCardAtPoint(p1);
+        OneCardManager c2 = FindFieldCardAtPoint(p2);
         DeleteCard(c1);
         DeleteCard(c2);
         StartCoroutine(DealOutFieldCards(0.5f));
@@ -108,7 +108,7 @@ public class BoardManager : MonoBehaviour {
 
     public void Damage(Point p1)
     {
-        OneCardManager c = BoardManager.Instance.FindCardAtPoint(p1);
+        OneCardManager c = BoardManager.Instance.FindFieldCardAtPoint(p1);
         int i = Int32.Parse(c.DamageText.text);
         i = i - 100;
 
@@ -130,7 +130,7 @@ public class BoardManager : MonoBehaviour {
 
     public void RotateArrows(Point p)
     {
-        OneCardManager myCard = FindCardAtPoint(p);
+        OneCardManager myCard = FindFieldCardAtPoint(p);
        // if (myCard.gameObject.tag == "Arrows")
         //    Arrow.gameObject.SetActive(false);
         //arrowss = GameObject.FindGameObjectsWithTag("Arrows");
@@ -169,12 +169,26 @@ public class BoardManager : MonoBehaviour {
         return AllSlots[p.Y, p.X];
     }
         
-    public OneCardManager FindCardAtPoint(Point p)
+    public OneCardManager FindFieldCardAtPoint(Point p)
     {
         foreach (OneCardManager card in AllCards)
         {   
             
             if (Point.Equals(card.point, p) && card.cardAsset.Type != CardType.Spell && card.cardAsset.Type != CardType.Player)
+            {
+                return card;
+            }
+
+        }
+        return null;
+    }
+
+    public OneCardManager FindPlayerCardAtPoint(Point p)
+    {
+        foreach (OneCardManager card in AllCards)
+        {
+
+            if (Point.Equals(card.point, p) && card.cardAsset.Type == CardType.Player)
             {
                 return card;
             }
@@ -190,10 +204,10 @@ public class BoardManager : MonoBehaviour {
             if (card.cardAsset.Type != CardType.Spell)
             {
                 arrows t = arrows.None;
-                if (FindCardAtPoint(new Point(card.point.X, card.point.Y - 1)) != null) t |= arrows.Up;
-                if (FindCardAtPoint(new Point(card.point.X - 1, card.point.Y)) != null) t |= arrows.Left;
-                if (FindCardAtPoint(new Point(card.point.X, card.point.Y + 1)) != null) t |= arrows.Down;
-                if (FindCardAtPoint(new Point(card.point.X + 1, card.point.Y)) != null) t |= arrows.Right;
+                if (FindFieldCardAtPoint(new Point(card.point.X, card.point.Y - 1)) != null) t |= arrows.Up;
+                if (FindFieldCardAtPoint(new Point(card.point.X - 1, card.point.Y)) != null) t |= arrows.Left;
+                if (FindFieldCardAtPoint(new Point(card.point.X, card.point.Y + 1)) != null) t |= arrows.Down;
+                if (FindFieldCardAtPoint(new Point(card.point.X + 1, card.point.Y)) != null) t |= arrows.Right;
 
                 if (card.point.Y == 0) t |= arrows.Up;
                 if (card.point.Y == 1) t |= arrows.Down;
@@ -205,354 +219,351 @@ public class BoardManager : MonoBehaviour {
             
         }
 
-        /*if(IsEndzoneValid(location.top))
-        {
-            BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = true;
-            BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
-        }
-        if (IsEndzoneValid(location.bottom))
-        {
-            BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
-            BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
-        }*/
-    }
-
-    public bool IsEndzoneValid(location loc)
-    {
-        if (GameManager.Instance.CurrentPlayerTurn.ActionPoints <= 0) return false;
-
-        int y = loc == location.top ? 0 : 1;
-        arrows check= loc == location.top ? arrows.Up : arrows.Down;
-
-        for(int x=0; x<3;x++)
-        {
-            OneCardManager card = FindCardAtPoint(new Point(x, y));
-            if (card == null) continue;
-            if ((card.arrows & check) != 0) return true;
-        }
-
-        return false;
-    }
-
-    public List<OneCardManager> GetValidMoves(OneCardManager card) // highlight arrows and save all player moves found 
-    {
-        List<OneCardManager> nList = new List<OneCardManager>();
-
-        if (card != null)
-        {
-            nList.AddRange(GetValidMoves(card.point, card.arrows));
-        }
        
-        return nList;      
     }
 
-    public List<OneCardManager> GetValidMoves(Point pos,arrows arr)
+    public bool IsEndzoneValid(Point p)
     {
-        List<OneCardManager> nList = new List<OneCardManager>();
+        arrows check = p.Y == 0 ? arrows.Up : arrows.Down;
 
-        Point p;
+        OneCardManager c;
 
-        if ((arr & arrows.Up) != 0)
+        if (FindFieldCardAtPoint(p) !=null)
         {
-            p = new Point(pos.X, pos.Y - 1);
-            if (FindCardAtPoint(p) != null)
-            {
-                nList.Add(FindCardAtPoint(p));
-            }
+            c = FindFieldCardAtPoint(p);
+        } else
+        {
+            c = FindPlayerCardAtPoint(p);
         }
 
-        if ((arr & arrows.Down) == arrows.Down)
-        {
-            p = new Point(pos.X, pos.Y + 1);
-            if (FindCardAtPoint(p) != null) // can always move into endzone extra arrows here
-            {
-                nList.Add(FindCardAtPoint(p));
-            }
-        }
+        if ((c.arrows & check) != 0) return true;
+        return false;
 
-        if ((arr & arrows.Right) == arrows.Right)
-        {
-            p = new Point(pos.X + 1, pos.Y);
-            if (FindCardAtPoint(p) != null)
-            {
-                nList.Add(FindCardAtPoint(p));
-            }
-        }
+       /*for(int x=0; x<3;x++)
+       {
+           OneCardManager card = FindCardAtPoint(new Point(x, y));
+           if (card == null) continue;
+           if ((card.arrows & check) != 0) return true;
+       }*/
+   }
 
-        if ((arr & arrows.Left) == arrows.Left)
-        {
-            p = new Point(pos.X - 1, pos.Y);
-            if (FindCardAtPoint(p) != null)
-            {
-                nList.Add(FindCardAtPoint(p));
-            }
-        }
+   public List<OneCardManager> GetValidMoves(OneCardManager card) // highlight arrows and save all player moves found 
+   {
+       List<OneCardManager> nList = new List<OneCardManager>();
 
-        if (pos.Y == 2)
-        {
-            foreach (OneCardManager card in AllCards)
-            {
-                if (card.point.Y == 1)
-                    nList.Add(card);
-            }
-        }
-        else if (pos.Y == -1)
-        {
-            foreach (OneCardManager card in AllCards)
-            {
-                if (card.point.Y == 0)
-                    nList.Add(card);
-            }
-        }
-        return nList;
-    }
+       if (card != null)
+       {
+           nList.AddRange(GetValidMoves(card.point, card.arrows));
+       }
 
-    public List<OneCardManager> GetValidMovesDist(Point pos, arrows arr,int dist)
-    {
-        if (dist == 0) return new List<OneCardManager>();
+       return nList;      
+   }
 
-        List<OneCardManager> nList = GetValidMoves(pos, arr);
-        foreach(OneCardManager card in nList)
-        {
-            List<OneCardManager> nSub = GetValidMovesDist(card.point, card.arrows,dist -1);
-            foreach (OneCardManager card2 in nSub)
-            {
-                if (!nList.Contains(card2)) nList.Add(card2);
-            }
-        }
+   public List<OneCardManager> GetValidMoves(Point pos,arrows arr)
+   {
+       List<OneCardManager> nList = new List<OneCardManager>();
 
-        return nList;
-    }
+       Point p;
+
+       if ((arr & arrows.Up) != 0)
+       {
+           p = new Point(pos.X, pos.Y - 1);
+           if (FindFieldCardAtPoint(p) != null)
+           {
+               nList.Add(FindFieldCardAtPoint(p));
+           }
+       }
+
+       if ((arr & arrows.Down) == arrows.Down)
+       {
+           p = new Point(pos.X, pos.Y + 1);
+           if (FindFieldCardAtPoint(p) != null) // can always move into endzone extra arrows here
+           {
+               nList.Add(FindFieldCardAtPoint(p));
+           }
+       }
+
+       if ((arr & arrows.Right) == arrows.Right)
+       {
+           p = new Point(pos.X + 1, pos.Y);
+           if (FindFieldCardAtPoint(p) != null)
+           {
+               nList.Add(FindFieldCardAtPoint(p));
+           }
+       }
+
+       if ((arr & arrows.Left) == arrows.Left)
+       {
+           p = new Point(pos.X - 1, pos.Y);
+           if (FindFieldCardAtPoint(p) != null)
+           {
+               nList.Add(FindFieldCardAtPoint(p));
+           }
+       }
+
+       if (pos.Y == 2)
+       {
+           foreach (OneCardManager card in AllCards)
+           {
+               if (card.point.Y == 1)
+                   nList.Add(card);
+           }
+       }
+       else if (pos.Y == -1)
+       {
+           foreach (OneCardManager card in AllCards)
+           {
+               if (card.point.Y == 0)
+                   nList.Add(card);
+           }
+       }
+       return nList;
+   }
+
+   public List<OneCardManager> GetValidMovesDist(Point pos, arrows arr,int dist)
+   {
+       Debug.Log("okkkkkkkk");
+       if (dist == 0) return new List<OneCardManager>();
+
+       List<OneCardManager> nList = GetValidMoves(pos, arr);
+       List<OneCardManager> nList2 = new List<OneCardManager>();
+       foreach (OneCardManager card in nList)
+       {
+           List<OneCardManager> nSub = GetValidMovesDist(card.point, card.arrows,dist -1);
+           foreach (OneCardManager card2 in nSub)
+           {
+               if (!nList.Contains(card2)) nList2.Add(card2); //TODO fix bug here
+           }
+       }
+       nList.AddRange(nList2);
+       return nList;
+   }
 
 
-    public OneCardManager CreateCard(Point p, GameObject cardPrefab, GameObject initPosition, CardAsset cardAsset,  float delay)
-    {
-        //card = Instantiate(cardPrefab);
+   public OneCardManager CreateCard(Point p, GameObject cardPrefab, GameObject initPosition, CardAsset cardAsset,  float delay)
+   {
+       //card = Instantiate(cardPrefab);
 
-        ; //keep it bewtween 2 and 1
+       ; //keep it bewtween 2 and 1
 
-        OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-2, 2))).GetComponent<OneCardManager>();
-        AllCards.Add(card);
+       OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-2, 2))).GetComponent<OneCardManager>();
+       AllCards.Add(card);
 
-        card.transform.SetParent(FieldCardParent.transform, false);
-        card.cardAsset = cardAsset;
-        card.ReadCardFromAsset();
-        card.point = p;
+       card.transform.SetParent(FieldCardParent.transform, false);
+       card.cardAsset = cardAsset;
+       card.ReadCardFromAsset();
+       card.point = p;
 
-        EmptyCardSlots.Remove(AllSlots[p.Y, p.X]); // cannot put it here sadly
-        card.transform.position = initPosition.transform.position;
-        //Debug.Log("R_"+card.transform.rotation);
-        //card.transform.Rotate(new Vector3(1, 2, -1));
+       EmptyCardSlots.Remove(AllSlots[p.Y, p.X]); // cannot put it here sadly
+       card.transform.position = initPosition.transform.position;
+       //Debug.Log("R_"+card.transform.rotation);
+       //card.transform.Rotate(new Vector3(1, 2, -1));
 
-        Vector3 v = new Vector3(AllSlots[p.Y, p.X].transform.position.x + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.y + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.z);
-        card.transform.DOMove(v, delay); //AllSlots[p.Y, p.X].transform.position
-        return card;
-    }
+       Vector3 v = new Vector3(AllSlots[p.Y, p.X].transform.position.x + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.y + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.z);
+       card.transform.DOMove(v, delay); //AllSlots[p.Y, p.X].transform.position
+       return card;
+   }
 
-    public void SetCardAsset(OneCardManager card, CardAsset cardAsset)
-    {
-        card.cardAsset = cardAsset;
-    }
+   public void SetCardAsset(OneCardManager card, CardAsset cardAsset)
+   {
+       card.cardAsset = cardAsset;
+   }
 
 
-    public void RemoveEmptySlot(Point p)
-    {
-        EmptyCardSlots.Remove(AllSlots[p.Y, p.X]);
-    }
-    public IEnumerator DealOutFieldCards(float delay)
-    {   // itterates through the emptycardslot list and spawns cards at each.
-        // coud convert list to array, go through array and delte list.
-        OneCardManager card;
-        int count = EmptyCardSlots.Count;
+   public void RemoveEmptySlot(Point p)
+   {
+       EmptyCardSlots.Remove(AllSlots[p.Y, p.X]);
+   }
+   public IEnumerator DealOutFieldCards(float delay)
+   {   // itterates through the emptycardslot list and spawns cards at each.
+       // coud convert list to array, go through array and delte list.
+       OneCardManager card;
+       int count = EmptyCardSlots.Count;
 
-        if (count > 0)
-        {
-            for (int i = EmptyCardSlots.Count-1; i >= 0; i--)
-            {                
-                //AudioManager.instance.Play("dealCardSound");
-                //FindObjectOfType<AudioManager>().Play("cardPlace1");
-                
-                Vector2 newPos = EmptyCardSlots[i].transform.position;
-                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], delay);
-                 
-                //maybe add some stuff to card deal in animaton
-                   
-                
+       if (count > 0)
+       {
+           for (int i = EmptyCardSlots.Count-1; i >= 0; i--)
+           {                
+               //AudioManager.instance.Play("dealCardSound");
+               //FindObjectOfType<AudioManager>().Play("cardPlace1");
 
-                //EmptyCardSlots.Remove(EmptyCardSlots[i]);
-                yield return new WaitForSeconds(delay);
-            }
-        }
-        yield return null;
-    }
-    public void DeleteAllCards(){
-        while (AllCards.Count>0)
-        {
-            DeleteCard(AllCards[0]);
-        }
+               Vector2 newPos = EmptyCardSlots[i].transform.position;
+               card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], delay);
 
-    } 
-    public void DeleteCard(OneCardManager card)
-    {
-        //Debug.Log(card.point.X + " " + card.point.Y);
-
-        AddEmptySlot(card.point);
-        StartCoroutine(card.DeleteThisCard());
-    }
-
-    public void AddEmptySlot(Point p)
-    {
-        EmptyCardSlots.Add(AllSlots[p.Y, p.X]);
-    }
-
-    public List<OneCardManager> GetNeighborCards(OneCardManager card)
-    {
-        List<OneCardManager> nList = new List<OneCardManager>();
-
-        if (card != null)
-        {
-            OneCardManager neighbor;
-
-            foreach (Vector2 dir in directions)
-            {
-                Point p = new Point(card.point.X + (int)dir.x, card.point.Y + (int)dir.y);
-                
-                if (FindCardAtPoint(p) != null)
-                {
-                    neighbor = FindCardAtPoint(p);
-                    nList.Add(neighbor);
-                }
-  
-            }
-        }
-        return nList;
-    }
-
-    public int getAdjencyBonus(OneCardManager card)
-    {   
-        List<OneCardManager> NeigborCards = GetNeighborCards(card);
-        int bonus = 0;
-
-        foreach (OneCardManager neigbor in NeigborCards)
-        {
-            
-            if (neigbor.cardAsset.Damage != 0) // check if field card
-            {
-                bonus += 1;
-            }
-             
-        }
-        return bonus;
-    }
-    void Update() // all for testing
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            //Generate();
-            StartCoroutine(DealOutFieldCards(0.2f));
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-
-            SwapCard(new Point(1, 1), new Point(0, 0));
-            //Generate();
-            //StartCoroutine(GenerateTest());
-        }
-        
-
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            //Generate();
-            
-       DeleteAllCards();
-                    
-
-            
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            //For Swapping();
-            //last_fire_time = Time.time;
-            
+               //maybe add some stuff to card deal in animaton
 
 
 
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            UpdateCards();
-        }
-        
-    }
+               //EmptyCardSlots.Remove(EmptyCardSlots[i]);
+               yield return new WaitForSeconds(delay);
+           }
+       }
+       yield return null;
+   }
+   public void DeleteAllCards(){
+       while (AllCards.Count>0)
+       {
+           DeleteCard(AllCards[0]);
+       }
 
-    public void HighlightPaths(OneCardManager card)
-    {
-        /*
-        var allWays = new List<List<OneCardManager>>();
+   } 
+   public void DeleteCard(OneCardManager card)
+   {
+       //Debug.Log(card.point.X + " " + card.point.Y);
 
-        List<OneCardManager> SelectableCards1 = new List<OneCardManager>();
-        List<OneCardManager> SelectableCards2 = new List<OneCardManager>();
-        List<OneCardManager> SelectableCards3 = new List<OneCardManager>();
-        List<OneCardManager> SelectableCards4 = new List<OneCardManager>();
+       AddEmptySlot(card.point);
+       StartCoroutine(card.DeleteThisCard());
+   }
 
-        SelectableCards1 = HighlightArrows(card); // 1 AP
-        foreach (OneCardManager s in SelectableCards1)
-        {
-            allWays.Add(new List<OneCardManager> {card});
-        }
+   public void AddEmptySlot(Point p)
+   {
+       EmptyCardSlots.Add(AllSlots[p.Y, p.X]);
+   }
 
-        if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 2)
-        {
-            foreach (OneCardManager ss in SelectableCards1) //2 AP
-            {
-                SelectableCards2 = HighlightArrows(ss);
-                allWays.Add(new List<OneCardManager> { card, ss});
+   public List<OneCardManager> GetNeighborCards(OneCardManager card)
+   {
+       List<OneCardManager> nList = new List<OneCardManager>();
+
+       if (card != null)
+       {
+           OneCardManager neighbor;
+
+           foreach (Vector2 dir in directions)
+           {
+               Point p = new Point(card.point.X + (int)dir.x, card.point.Y + (int)dir.y);
+
+               if (FindFieldCardAtPoint(p) != null)
+               {
+                   neighbor = FindFieldCardAtPoint(p);
+                   nList.Add(neighbor);
+               }
+
+           }
+       }
+       return nList;
+   }
+
+   public int getAdjencyBonus(OneCardManager card)
+   {   
+       List<OneCardManager> NeigborCards = GetNeighborCards(card);
+       int bonus = 0;
+
+       foreach (OneCardManager neigbor in NeigborCards)
+       {
+
+           if (neigbor.cardAsset.Damage != 0) // check if field card
+           {
+               bonus += 1;
+           }
+
+       }
+       return bonus;
+   }
+   void Update() // all for testing
+   {
+       if (Input.GetKeyDown(KeyCode.T))
+       {
+           //Generate();
+           StartCoroutine(DealOutFieldCards(0.2f));
+       }
+       if (Input.GetKeyDown(KeyCode.I))
+       {
+
+           SwapCard(new Point(1, 1), new Point(0, 0));
+           //Generate();
+           //StartCoroutine(GenerateTest());
+       }
 
 
-                if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
-                {
-                    foreach (OneCardManager sss in SelectableCards2) //3 AP
-                    {
-                        SelectableCards3 = HighlightArrows(sss);
-                        allWays.Add(new List<OneCardManager> { card, ss, sss});
+       if (Input.GetKeyDown(KeyCode.Y))
+       {
+           //Generate();
 
-                        if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
-                        {
-                            foreach (OneCardManager ssss in SelectableCards3) //4 AP
-                            {
-                                SelectableCards4 = HighlightArrows(ssss);
-                                allWays.Add(new List<OneCardManager> { card, ss, sss,ssss});
+      DeleteAllCards();
 
-                            }
-                        } 
-                    }
-                }
-            }
-        }
 
-        Debug.Log(allWays);
-        foreach (List<OneCardManager> l in allWays)
-        {
-            Debug.Log(l.Point.X);
-        }       
-        */
+
+       }
+       if (Input.GetKeyDown(KeyCode.K))
+       {
+           //For Swapping();
+           //last_fire_time = Time.time;
+
+
+
+
+       }
+       if (Input.GetKeyDown(KeyCode.U))
+       {
+           UpdateCards();
+       }
+
+   }
+
+   public void HighlightPaths(OneCardManager card)
+   {
+       /*
+       var allWays = new List<List<OneCardManager>>();
+
+       List<OneCardManager> SelectableCards1 = new List<OneCardManager>();
+       List<OneCardManager> SelectableCards2 = new List<OneCardManager>();
+       List<OneCardManager> SelectableCards3 = new List<OneCardManager>();
+       List<OneCardManager> SelectableCards4 = new List<OneCardManager>();
+
+       SelectableCards1 = HighlightArrows(card); // 1 AP
+       foreach (OneCardManager s in SelectableCards1)
+       {
+           allWays.Add(new List<OneCardManager> {card});
+       }
+
+       if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 2)
+       {
+           foreach (OneCardManager ss in SelectableCards1) //2 AP
+           {
+               SelectableCards2 = HighlightArrows(ss);
+               allWays.Add(new List<OneCardManager> { card, ss});
+
+
+               if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
+               {
+                   foreach (OneCardManager sss in SelectableCards2) //3 AP
+                   {
+                       SelectableCards3 = HighlightArrows(sss);
+                       allWays.Add(new List<OneCardManager> { card, ss, sss});
+
+                       if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
+                       {
+                           foreach (OneCardManager ssss in SelectableCards3) //4 AP
+                           {
+                               SelectableCards4 = HighlightArrows(ssss);
+                               allWays.Add(new List<OneCardManager> { card, ss, sss,ssss});
+
+                           }
+                       } 
+                   }
+               }
+           }
+       }
+
+       Debug.Log(allWays);
+       foreach (List<OneCardManager> l in allWays)
+       {
+           Debug.Log(l.Point.X);
+       }       
+       */
     }
 
     public void UpdateCards() // responsible for adjecny bonus and arrow glow
     {
-
         List<OneCardManager> SelectableCards = new List<OneCardManager>();
         List<OneCardManager> HighlightableCards = new List<OneCardManager>();
         List<OneCardManager>[] a = new List<OneCardManager>[100];
 
-        BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = false;
-        BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
-        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = false;
-        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
         foreach (OneCardManager card in AllCards)
         {
             card.CardFaceInnerGlowImage.enabled = false;
         }
+
         foreach (OneCardManager card in AllCards)
         {
             if (card.cardAsset.Type == CardType.Monster) // check if field card
@@ -568,8 +579,9 @@ public class BoardManager : MonoBehaviour {
         }
 
         SelectableCards = GetValidMoves(GameManager.Instance.CurrentPlayerTurn.point, GameManager.Instance.CurrentPlayerTurn.arrows);
+        HighlightableCards = GetValidMovesDist(GameManager.Instance.CurrentPlayerTurn.point, GameManager.Instance.CurrentPlayerTurn.arrows, GameManager.Instance.CurrentPlayerTurn.ActionPoints);
 
-       
+
         if (GameManager.Instance.CurrentPlayerTurn.ActionPoints == 0)
         {
             Debug.Log("clear");
@@ -592,9 +604,72 @@ public class BoardManager : MonoBehaviour {
             }  
         }
 
+
+        foreach (OneCardManager c in HighlightableCards)
+        {
+            if (c.cardAsset.Type == CardType.Hp ||
+                c.cardAsset.Type == CardType.Monster ||
+                c.cardAsset.Type == CardType.Neutral)
+            {
+                c.CardFaceInnerGlowImage.enabled = true;
+            }
+        }
+
         HighlightArrows();
+        HighlightEndZones();
+
+
+        BoardManager.Instance.Top.GetComponent<EndzoneManager>().setArrows();
+        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().setArrows();
+
     }
 
+    public void HighlightEndZones()
+    {
+        BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = false;
+        BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
+        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = false;
+        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
+
+        Debug.Log("crashy");
+        int dis = (GameManager.Instance.CurrentPlayerTurn.ActionPoints - 1) > 0 ? (GameManager.Instance.CurrentPlayerTurn.ActionPoints - 1) : 0;
+        Debug.Log("crashy2");
+        List<OneCardManager> HighlightableCards = GetValidMovesDist(GameManager.Instance.CurrentPlayerTurn.point,
+                                               GameManager.Instance.CurrentPlayerTurn.arrows,
+                                               dis);
+        Debug.Log("crashy3");
+        foreach (OneCardManager cards in HighlightableCards)
+        {
+            Debug.Log("crashy4");
+            if (IsEndzoneValid(cards.point)) {
+                if (cards.point.Y == 1)
+                {
+                    BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+                } else
+                {
+                    BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+                }
+            }
+        }
+
+        if (GameManager.Instance.CurrentPlayerTurn.myCardManager != null && GameManager.Instance.CurrentPlayerTurn.ActionPoints > 0) {
+            if (IsEndzoneValid(GameManager.Instance.CurrentPlayerTurn.myCardManager.point))
+            {
+                if (GameManager.Instance.CurrentPlayerTurn.myCardManager.point.Y == 0)
+                {
+                    Debug.Log("top");
+                    BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+                    BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = true;
+                }
+                else
+                {
+                    Debug.Log("bottom");
+                    BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+                    BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
+                }
+            }
+        }
+    }
     public IEnumerator UpdateBoard()
     {
         yield return new WaitForSeconds(1f); // very strage behavor if I delete this

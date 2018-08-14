@@ -32,4 +32,32 @@ public class EndzoneManager : MonoBehaviour {
             isSelectable = false;
         }
     }
+
+    public void setArrows()
+    {
+        Debug.Log("setarrows");
+        int y = loc == location.top ? 0 : 1;
+
+        /*for(int x=0; x<3;x++)
+       {
+           OneCardManager card = FindCardAtPoint(new Point(x, y));
+           if (card == null) continue;
+           if ((card.arrows & check) != 0) return true;
+       }*/
+        CardArrowRightImage.color = Color.white;
+        if (BoardManager.Instance.FindFieldCardAtPoint(new Point(0, y)) != null)
+            CardArrowLeftImage.color = Color.white;
+        else
+            CardArrowLeftImage.color = Color.black;
+
+        if (BoardManager.Instance.FindFieldCardAtPoint(new Point(1, y)) != null)
+            CardArrowUpImage.color = Color.white;
+        else
+            CardArrowUpImage.color = Color.black;
+
+        if (BoardManager.Instance.FindFieldCardAtPoint(new Point(2, y)) != null)
+            CardArrowRightImage.color = Color.white;
+        else
+            CardArrowRightImage.color = Color.black;
+    }
 }

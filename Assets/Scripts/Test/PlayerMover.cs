@@ -93,11 +93,11 @@ public void setPlayerArrows(arrows arrowz)
         OneCardManager desCard;
         Vector2 newPos; 
 
-        if (boardManager.FindCardAtPoint(des) != null)
+        if (boardManager.FindFieldCardAtPoint(des) != null)
         {   
 
             
-            desCard = boardManager.FindCardAtPoint(des);
+            desCard = boardManager.FindFieldCardAtPoint(des);
             //newPos = desCard.transform.localosition;
             if (desCard.cardAsset.Type != CardType.Player)
             {
@@ -113,7 +113,7 @@ public void setPlayerArrows(arrows arrowz)
                 //(desCard);
 
                 boardManager.AddEmptySlot(playerManager.point);
-                setPlayerArrows(boardManager.FindCardAtPoint(des).arrows);
+                setPlayerArrows(boardManager.FindFieldCardAtPoint(des).arrows);
 
 
 
@@ -177,6 +177,10 @@ public void setPlayerArrows(arrows arrowz)
             {
                 
                 playerManager.CaptureKidney(); // capture kidney
+            } else
+            {
+            playerManager.MoveKidneyFromCardToDoctor();
+
             }
 
 
@@ -185,12 +189,9 @@ public void setPlayerArrows(arrows arrowz)
         if (GameManager.Instance.getOtherPlayer(playerManager).myLocation == playerManager.myLocation)
         {
             //other player has full portait
-
             //lay ontop of their portait our half image, need to change out image to half image
             playerManager.Doctor.GetComponent<SpriteRenderer>().sprite = playerManager.PortraitHalf;
             playerManager.Doctor.GetComponent<SpriteRenderer>().sortingOrder = 2;
-
-
         }
         else
         {
@@ -207,16 +208,11 @@ public void setPlayerArrows(arrows arrowz)
             this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.BottomPortraitMask;
         }
 
-
-        Debug.Log("fuck you");
         boardManager.DeleteCard(playerManager.myCardManager);
         yield return new WaitForSeconds(0.5f);
 
-        
-
         playerManager.myCardManager = null;
-        playerManager.ActionPoints = 0;
-        playerManager.MaxAp = 1;
+        playerManager.ActionPoints--;
         playerManager.button.interactable = true;
         BoardManager.Instance.UpdateCards();
         isMoving = false;
@@ -228,14 +224,14 @@ public void setPlayerArrows(arrows arrowz)
         OneCardManager fieldCardDes;
 
         Debug.Log("moveoutofendzone");
-        if (boardManager.FindCardAtPoint(des) != null)
+        if (boardManager.FindFieldCardAtPoint(des) != null)
         {
-            if (boardManager.FindCardAtPoint(des).cardAsset.Type != CardType.Player)
+            if (boardManager.FindFieldCardAtPoint(des).cardAsset.Type != CardType.Player)
             {
                 playerManager.button.interactable = true;
                 SoundManager.PlaySound("dealCardSound");
                 isMoving = true;
-                fieldCardDes = boardManager.FindCardAtPoint(des);
+                fieldCardDes = boardManager.FindFieldCardAtPoint(des);
                 playerManager.Doctor.SetActive(false);
                 playerManager.PortaitGlowObject.SetActive(false);
 
@@ -252,10 +248,16 @@ public void setPlayerArrows(arrows arrowz)
 
                 playerManager.point = des;
 
-                if (playerManager.mySide != playerManager.myLocation)
+                if (playerManager.playerKidneys.Count < 1)
                 {
-                    playerManager.StealKidney();
+                    if (playerManager.mySide != playerManager.myLocation)
+                    {
+                        playerManager.StealKidney();
+                    }
+                } else {
+                    playerManager.MoveKidneyFromDoctorToCard();
                 }
+               
 
                 playerManager.myLocation = location.board;
 
