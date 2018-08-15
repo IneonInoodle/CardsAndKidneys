@@ -30,6 +30,7 @@ public class OneCardManager : MonoBehaviour {
 
     public GameObject CardFaceGlowObject;
     public Image CardFaceInnerGlowImage;
+    Color normalColor = new Color(196f, 0f, 0f);
 
     public Point point;
 
@@ -71,7 +72,6 @@ public class OneCardManager : MonoBehaviour {
 
     public void updateArrowsGlow(arrows arrowz)
     {
-        Color normalColor = CardArrowLeftImage.color;
         if ((arrowz & arrows.Left) != 0)
         {
             CardArrowLeftImage.color = normalColor;
@@ -151,12 +151,15 @@ public class OneCardManager : MonoBehaviour {
 
         if (cardAsset.Type != CardType.Spell)
         {
+            
             setRandomArrows();
             updateArrows(arrows);//meh
+            
         }
        
         CardFaceInnerGlowImage.enabled = false;
         CardFaceGlowObject.SetActive(false);
+
 }
 
     private bool isMoveOption = false;
