@@ -79,7 +79,17 @@ public class DamageEffect : MonoBehaviour {
         Destroy(this.gameObject);
     }
 
-   
+    public static void CreateMoveEffect(GameObject moveeff, Vector3 pos, Vector3 tohere)
+    {
+        /*todo: 
+        create, DONE
+        move,  
+        destroy,
+        */
+        GameObject APG = Instantiate(moveeff, pos, Quaternion.identity);
+        APG.transform.DOMove(tohere, 1f);
+        Destroy(APG, 1.5f);
+    }
     public static void CreateDamageEffect(GameObject go, int amount)
     {
        

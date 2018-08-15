@@ -10,6 +10,9 @@ public class MainMenu : MonoBehaviour {
 
 	public void PlayGame()
     {
+        PauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+        GameIsPaused = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -35,6 +38,11 @@ public class MainMenu : MonoBehaviour {
                 Pause();
             }
         }
+    }
+    
+	public void Break()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void ResumePause()

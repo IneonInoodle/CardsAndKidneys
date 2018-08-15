@@ -69,7 +69,7 @@ public class PlayerManager : TurnManager {
 
     public GameObject PortaitGlowObject;
     public GameObject EndTurnGlowObject;
-
+    public GameObject ParticalEff;
     public Sprite PortraitFull;
     public Sprite PortraitHalf;
     // Kidneys shit 
@@ -213,6 +213,8 @@ public class PlayerManager : TurnManager {
                 break;
             case "Boost":
                 ActionPoints++;
+                MaxAp++;
+                apvis.TotalAp = MaxAp;
                 break;
         }
         Debug.Log("update cards");
@@ -422,7 +424,8 @@ public class PlayerManager : TurnManager {
     public void takeDamage(OneCardManager c)
     {
 
-       
+        bool StillAlive = false;
+        Vector3 ApLocation = new Vector3(0, 0, 0);
         if (c != null)
         {
             int damage = int.Parse(c.DamageText.text);
@@ -444,12 +447,27 @@ public class PlayerManager : TurnManager {
             {
                 MaxAp++;
                 apvis.TotalAp = MaxAp;
+                /*input= gameobject + position
+                 * c.transform.position
+                */
+                ApLocation = new Vector3(0, 0, 0);
+
+                ApLocation = apvis.ActionPoints[MaxAp - 1].transform.position;
+
+                StillAlive = true;
+
+
             }
-               
+
             Debug.Log("add in max AP increase here");
             Hp -= damage;
 
-            if (Hp <= 0) Die();
+            if (Hp <= 0)
+            {
+                StillAlive = false;
+                Die();
+            }
+            if (StillAlive) DamageEffect.CreateMoveEffect(ParticalEff, c.transform.position, ApLocation);
         }
     }
 
