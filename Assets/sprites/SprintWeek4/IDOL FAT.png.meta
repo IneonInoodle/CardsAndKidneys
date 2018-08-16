@@ -1,7 +1,42 @@
 fileFormatVersion: 2
 guid: 43861b75a5ad7e346beac6dac35480ae
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: IDOL FAT_0
+    21300002: IDOL FAT_1
+    21300004: IDOL FAT_2
+    21300006: IDOL FAT_3
+    21300008: IDOL FAT_4
+    21300010: IDOL FAT_5
+    21300012: IDOL FAT_6
+    21300014: IDOL FAT_7
+    21300016: IDOL FAT_8
+    21300018: IDOL FAT_9
+    21300020: IDOL FAT_10
+    21300022: IDOL FAT_11
+    21300024: IDOL FAT_12
+    21300026: IDOL FAT_13
+    21300028: IDOL FAT_14
+    21300030: IDOL FAT_15
+    21300032: IDOL FAT_16
+    21300034: IDOL FAT_17
+    21300036: IDOL FAT_18
+    21300038: IDOL FAT_19
+    21300040: IDOL FAT_20
+    21300042: IDOL FAT_21
+    21300044: IDOL FAT_22
+    21300046: IDOL FAT_23
+    21300048: IDOL FAT_24
+    21300050: IDOL FAT_25
+    21300052: IDOL FAT_26
+    21300054: IDOL FAT_27
+    21300056: IDOL FAT_28
+    21300058: IDOL FAT_29
+    21300060: IDOL FAT_30
+    21300062: IDOL FAT_31
+    21300064: IDOL FAT_32
+    21300066: IDOL FAT_33
+    21300068: IDOL FAT_34
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -102,7 +137,707 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: IDOL FAT_0
+      rect:
+        serializedVersion: 2
+        x: 491
+        y: 4325
+        width: 926
+        height: 1075
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a89beea309643c24daa1889efdb9c0d3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_1
+      rect:
+        serializedVersion: 2
+        x: 2545
+        y: 4315
+        width: 682
+        height: 1071
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e75a15c12fb8a964891c6ec64412e227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_2
+      rect:
+        serializedVersion: 2
+        x: 4456
+        y: 4308
+        width: 692
+        height: 1056
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36dbb7d07d73a6a4aa11a88ebf707eec
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_3
+      rect:
+        serializedVersion: 2
+        x: 6376
+        y: 4271
+        width: 717
+        height: 1112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9015aebeac582c845981289ad9c2fdf7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_4
+      rect:
+        serializedVersion: 2
+        x: 8285
+        y: 4285
+        width: 729
+        height: 1106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8247ef544362d5946a5034473bc1da7f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_5
+      rect:
+        serializedVersion: 2
+        x: 10227
+        y: 4268
+        width: 713
+        height: 1107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f509d180014441548866901af00f55e5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_6
+      rect:
+        serializedVersion: 2
+        x: 12144
+        y: 4309
+        width: 713
+        height: 1066
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3dfac5f31388dd49967baab78c62f28
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_7
+      rect:
+        serializedVersion: 2
+        x: 616
+        y: 3195
+        width: 713
+        height: 1098
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd614eb30692c894bba48d76a6f0ed91
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_8
+      rect:
+        serializedVersion: 2
+        x: 2517
+        y: 3220
+        width: 770
+        height: 1057
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70cc32c618a1be74e8a1fb1b5b94307d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_9
+      rect:
+        serializedVersion: 2
+        x: 4450
+        y: 3203
+        width: 779
+        height: 1049
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b36caee28f734c54f855edf5fec7283a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_10
+      rect:
+        serializedVersion: 2
+        x: 6343
+        y: 3228
+        width: 811
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a32255a863a9cf42bbb9080750bf55e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_11
+      rect:
+        serializedVersion: 2
+        x: 8293
+        y: 3220
+        width: 771
+        height: 1032
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1582aefd62f1e9468173589306e15af
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_12
+      rect:
+        serializedVersion: 2
+        x: 10194
+        y: 3220
+        width: 787
+        height: 1073
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40288efd2d6b725498ce85a1e7d42006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_13
+      rect:
+        serializedVersion: 2
+        x: 12128
+        y: 3244
+        width: 754
+        height: 1041
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dafd6bd5d38e9364ca57e0339dbe76de
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_14
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 2130
+        width: 771
+        height: 1073
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 647648feb138c9448967484208110946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_15
+      rect:
+        serializedVersion: 2
+        x: 2533
+        y: 2146
+        width: 721
+        height: 1057
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 030c6743b80d7e5409445476210272c7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_16
+      rect:
+        serializedVersion: 2
+        x: 4434
+        y: 2138
+        width: 762
+        height: 1082
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0c322f1315a5bf4887ca1725b2eee74
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_17
+      rect:
+        serializedVersion: 2
+        x: 6368
+        y: 2122
+        width: 729
+        height: 1098
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f7bbab072f996842a8a785ad12f2d96
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_18
+      rect:
+        serializedVersion: 2
+        x: 8310
+        y: 2171
+        width: 696
+        height: 1049
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c425610c842683d479d1ad8451f9ee09
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_19
+      rect:
+        serializedVersion: 2
+        x: 10235
+        y: 2171
+        width: 697
+        height: 1040
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2680c53ec1018424cb4a0828bcefb325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_20
+      rect:
+        serializedVersion: 2
+        x: 12128
+        y: 2154
+        width: 729
+        height: 1066
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5554d95cedd7a54184d678cc3215a7e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_21
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 1073
+        width: 688
+        height: 1040
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62213b06af9954746b050827c048c531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_22
+      rect:
+        serializedVersion: 2
+        x: 2525
+        y: 1065
+        width: 696
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bedb27b9d4659df49bb2d6b919d8187d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_23
+      rect:
+        serializedVersion: 2
+        x: 4442
+        y: 1065
+        width: 705
+        height: 1089
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4c71e00b54deb141a0b61a7780ee4b8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_24
+      rect:
+        serializedVersion: 2
+        x: 6384
+        y: 1065
+        width: 713
+        height: 1065
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cfcc3bd55457bc499bf0b937992a67b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_25
+      rect:
+        serializedVersion: 2
+        x: 8269
+        y: 1065
+        width: 745
+        height: 1106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1c493a11c1dbdc4ba0fc6f3238e33d3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_26
+      rect:
+        serializedVersion: 2
+        x: 10235
+        y: 1056
+        width: 697
+        height: 1090
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2eb72a3bfd82c614b8395e97987a442f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_27
+      rect:
+        serializedVersion: 2
+        x: 12120
+        y: 1056
+        width: 721
+        height: 1090
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63e999e3ef523c147b8d15d9a39b798d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_28
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 8
+        width: 688
+        height: 1016
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1110147028444114fa5597c546a18676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_29
+      rect:
+        serializedVersion: 2
+        x: 2533
+        y: 8
+        width: 705
+        height: 1057
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14173821e86410946bf1ea6dee92021d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_30
+      rect:
+        serializedVersion: 2
+        x: 4459
+        y: 16
+        width: 671
+        height: 1032
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdb1ca928ebad9046bfdc92f346efbd9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_31
+      rect:
+        serializedVersion: 2
+        x: 6368
+        y: 8
+        width: 729
+        height: 1081
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 159792a7eca8da04d890c54799a67c4f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_32
+      rect:
+        serializedVersion: 2
+        x: 8277
+        y: 8
+        width: 721
+        height: 1065
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8638228b2c68f74eb0d475668e897ea
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_33
+      rect:
+        serializedVersion: 2
+        x: 10202
+        y: 0
+        width: 689
+        height: 1065
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b820e5e15b56a548a91b472756d0bd3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IDOL FAT_34
+      rect:
+        serializedVersion: 2
+        x: 12136
+        y: 0
+        width: 713
+        height: 1065
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3c2bd8fa6aade6489842f9fcd532033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
