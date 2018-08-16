@@ -506,7 +506,7 @@ public class BoardManager : MonoBehaviour {
        foreach (OneCardManager neigbor in NeigborCards)
        {
 
-           if (neigbor.cardAsset.Damage != 0) // check if field card
+           if (neigbor.cardAsset.Type == CardType.Monster) // check if field card
            {
                bonus += 1;
            }

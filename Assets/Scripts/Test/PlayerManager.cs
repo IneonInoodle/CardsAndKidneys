@@ -173,6 +173,7 @@ public class PlayerManager : TurnManager {
                 {
                     Debug.Log("swapping");
                     boardManager.SwapCard(gm.selectionManager.points[0], gm.selectionManager.points[1]);
+                    BoardManager.Instance.UpdateCards();
                 } else
                 {
                     Debug.Log("cancled");
@@ -186,6 +187,7 @@ public class PlayerManager : TurnManager {
                 {
                     Debug.Log("here");
                     boardManager.RotateArrows(gm.selectionManager.points[0]);
+                    BoardManager.Instance.UpdateCards();
                 } else
                 {
                     Debug.Log("cancled");
@@ -196,6 +198,7 @@ public class PlayerManager : TurnManager {
                 if (gm.selectionManager.points.Count == 2)
                 {
                     boardManager.Replace2(gm.selectionManager.points[0], gm.selectionManager.points[1]);
+                    BoardManager.Instance.UpdateCards();
                 } else
                 {
                     Debug.Log("cancled");
@@ -212,11 +215,12 @@ public class PlayerManager : TurnManager {
                 ActionPoints++;
                 MaxAp++;
                 apvis.TotalAp = MaxAp;
+                BoardManager.Instance.UpdateCards();
                 break;
         }
         Debug.Log("update cards");
 
-        BoardManager.Instance.UpdateCards();
+        
         yield return null;
     }
     public void MoveKidneyFromCardToDoctor()
@@ -249,8 +253,11 @@ public class PlayerManager : TurnManager {
         else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
         //AudioManager.instance.Play("dieSound");
         MaxAp = 1;
-        apvis.TotalAp = MaxAp;
         ActionPoints = 0;
+
+        apvis.AvailableAp = ActionPoints;
+        apvis.TotalAp = MaxAp;
+        
         Hp = 0;
 
 
