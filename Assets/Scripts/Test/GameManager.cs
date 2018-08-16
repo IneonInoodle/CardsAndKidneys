@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour {
     public SelectionManager selectionManager;
 
     public GameObject DamagePrefab;
-
     public GameObject SpellCardPrefab;
 
     public TableCollider TableCollider;
@@ -223,11 +222,13 @@ public class GameManager : MonoBehaviour {
                     messageManager.ShowMessage("You Loose Boy", 1f);
                     isGameOver = true;
                     Debug.Log("YouLoose");
+                    SceneManager.LoadScene("MainMenu");
                 }
                 else if (players[0].patientKidneys.Count == 2)
                 {
                     messageManager.ShowMessage("You Win", 1f);
                     isGameOver = true;
+                    SceneManager.LoadScene("MainMenu");
                 }
                 else
                 {
@@ -256,10 +257,12 @@ public class GameManager : MonoBehaviour {
                     messageManager.ShowMessage("You Loose Boy", 1f);
                     isGameOver = true;
                     Debug.Log("YouLoose");
+                    SceneManager.LoadScene("MainMenu");
                 } else if (players[1].patientKidneys.Count == 2)
                 {
                     messageManager.ShowMessage("You Win", 1f);
                     isGameOver = true;
+                    SceneManager.LoadScene("MainMenu");
                 } else
                 {
                     Debug.Log("playerturn1complete");

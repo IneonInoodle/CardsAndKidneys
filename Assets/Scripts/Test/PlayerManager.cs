@@ -407,7 +407,7 @@ public class PlayerManager : TurnManager {
         playerInput.InputEnabled = true;
         yield return null;
     }
-
+   
 
     public void takeDamage(OneCardManager c)
     {
@@ -433,17 +433,13 @@ public class PlayerManager : TurnManager {
 
             if (c.cardAsset.Type == CardType.Monster)
             {
-                MaxAp++;
-                apvis.TotalAp = MaxAp;
+
                 /*input= gameobject + position
                  * c.transform.position
                 */
                 ApLocation = new Vector3(0, 0, 0);
-
-                ApLocation = apvis.ActionPoints[MaxAp - 1].transform.position;
-
+                ApLocation = apvis.ActionPoints[MaxAp].transform.position;                
                 StillAlive = true;
-
 
             }
 
@@ -455,12 +451,23 @@ public class PlayerManager : TurnManager {
                 StillAlive = false;
                 Die();
             }
-            if (StillAlive) DamageEffect.CreateMoveEffect(ParticalEff, c.transform.position, ApLocation);
+            if (StillAlive)
+            {
+                StartCoroutine(AddMaxApp());
+                DamageEffect.CreateMoveEffect(ParticalEff, c.transform.position, ApLocation);
+            }
         }
     }
 
-    
 
+    public IEnumerator AddMaxApp()
+    {
+        Debug.Log("ADDING AP!!");
+        yield return new WaitForSeconds(1f);
+        MaxAp++;
+        apvis.TotalAp = MaxAp;
+        
+    }
 
     /*public void TakeDamage(int amount, int healthAfter)
     {
