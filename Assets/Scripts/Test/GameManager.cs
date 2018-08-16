@@ -288,7 +288,11 @@ public class GameManager : MonoBehaviour {
             p.playerInput.InputEnabled = false;
             p.button.interactable = false;
             p.handvisual.gameObject.SetActive(false);
+
         }
+
+        board.Top.GetComponent<EndzoneManager>().isSelectable = false;
+        board.Bottom.GetComponent<EndzoneManager>().isSelectable = false;
 
     }
 
@@ -301,6 +305,9 @@ public class GameManager : MonoBehaviour {
         {
             p.handvisual.gameObject.SetActive(true);
         }
+
+        board.Top.GetComponent<EndzoneManager>().isSelectable = true;
+        board.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
     }
 
 
