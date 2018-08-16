@@ -113,7 +113,6 @@ public class HandVisual : MonoBehaviour
             Vector3 targetRotation;
             if (p.mySide == location.top)
             {
-                Debug.Log("ok then");
                 targetRotation = new Vector3(0,0,180);
             } else
             {

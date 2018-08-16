@@ -35,7 +35,6 @@ public class EndzoneManager : MonoBehaviour {
 
     public void setEndZoneArrows()
     {
-        Debug.Log("setarrows");
         int y = loc == location.top ? 0 : 1;
 
         /*for(int x=0; x<3;x++)

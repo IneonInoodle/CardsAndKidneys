@@ -61,7 +61,6 @@ public class DamageEffect : MonoBehaviour {
             //SoundManager.PlaySound("hpUp");
             yield return new WaitForSeconds(1.0f);
         }
-        Debug.Log("amount" + amount);
 
         while (cg.alpha > 0)
         {   
@@ -73,7 +72,7 @@ public class DamageEffect : MonoBehaviour {
             
             //IceCube.emit(1);
         }
-        Debug.Log("zou");
+
         
         // after the effect is shown it gets destroyed.
         Destroy(this.gameObject);
@@ -99,7 +98,6 @@ public class DamageEffect : MonoBehaviour {
 
         newDamageEffect.transform.SetParent(go.transform, false);
         newDamageEffect.transform.position = go.transform.position;
-        Debug.Log(amount);
  
         // Instantiate a DamageEffect from prefab
 
@@ -107,15 +105,14 @@ public class DamageEffect : MonoBehaviour {
 
         // Get DamageEffect component in this new game object
         
-        Debug.Log("what");
+        
 
         if (amount < 0) {
             de.AmountText.color = Color.green;
             de.AmountText.text = "+" + Math.Abs(amount).ToString();
         }
         else if (amount > 0)
-        {
-            Debug.Log("what" + amount);
+        {   
             de.AmountText.color = Color.blue;
             de.AmountText.text = "-" + (amount).ToString();
         }

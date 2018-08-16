@@ -89,7 +89,6 @@ public void setPlayerArrows(arrows arrowz)
 
     IEnumerator MoveOnBoard(Point des, float delay)
     {   
-        Debug.Log("moveOnBoard");
         OneCardManager desCard;
         Vector2 newPos; 
 
@@ -115,13 +114,9 @@ public void setPlayerArrows(arrows arrowz)
                 boardManager.AddEmptySlot(playerManager.point);
                 setPlayerArrows(boardManager.FindFieldCardAtPoint(des).arrows);
 
-
-
                 playerManager.myCardManager.transform.DOMove(boardManager.AllSlots[des.Y, des.X].transform.position, delay);
                 playerManager.point = des;
                 playerManager.myCardManager.point = des;
-
-                
 
                 playerManager.ActionPoints--;
                 playerManager.PickUpKidneyFromBoard();
@@ -130,7 +125,15 @@ public void setPlayerArrows(arrows arrowz)
                 boardManager.DeleteCard(desCard);
                 boardManager.RemoveEmptySlot(des);
 
+                Debug.Log("takingdamage");
                 Debug.Log(int.Parse(desCard.DamageText.text));
+
+                if (desCard.cardAsset.Type == CardType.Monster)
+                {
+                    playerManager.raiseAp();
+                }
+                
+
                 playerManager.takeDamage(int.Parse(desCard.DamageText.text)); // take damage from deleted card?
                 
                 yield return new WaitForSeconds(0.5f);
@@ -153,8 +156,6 @@ public void setPlayerArrows(arrows arrowz)
         playerManager.Doctor.transform.position = des.transform.position; // move doctor image
         playerManager.Doctor.SetActive(true); // make visable
        
-
-        Debug.Log("moveintoendzone");
         // delete player card
 
         if (des.name == "Top")
@@ -267,15 +268,8 @@ public void setPlayerArrows(arrows arrowz)
 
 
                 playerManager.myLocation = location.board;
-
-
-                setPlayerArrows(temp);
-                boardManager.DeleteCard(fieldCardDes);
-                boardManager.RemoveEmptySlot(playerManager.point);
-
                 int damage = int.Parse(fieldCardDes.DamageText.text);
-                
-                
+
                 if (damage != 0)
                 {
                     Debug.Log("DAMAGE");
@@ -287,13 +281,25 @@ public void setPlayerArrows(arrows arrowz)
                 {
                     Debug.Log("RaisAP");
                     if (playerManager.Hp > 0)
-                    playerManager.raiseAp();
+                        playerManager.raiseAp();
                 }
+
+
+                setPlayerArrows(temp);
+
+
+
+                boardManager.DeleteCard(fieldCardDes);
+                boardManager.RemoveEmptySlot(playerManager.point);
+
+                
+                
+                
+                
             }
         }
         isMoving = false; // card finished moving now can take input
         BoardManager.Instance.UpdateCards();
-        Debug.Log("Done move outof endzone");
         yield return null;
     }
 

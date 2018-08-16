@@ -254,7 +254,6 @@ public class OneCardManager : MonoBehaviour {
             yield return new WaitForSeconds(0.05f); // due to float math choose non round 
         }
         // after the effect is shown it gets destroyed.
-        Debug.Log("destroy");
         Destroy(this.gameObject);   
     }
 }

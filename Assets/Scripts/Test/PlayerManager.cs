@@ -327,7 +327,6 @@ public class PlayerManager : TurnManager {
 
     public void PickUpKidneyFromBoard()
     {
-        Debug.Log("damn");
         CardSlotManager cardslot;
 
         cardslot = boardManager.FindSlotAtPoint(point);
@@ -336,10 +335,8 @@ public class PlayerManager : TurnManager {
 
         if (count > 0 && playerKidneys.Count == 0)
         {
-            Debug.Log("damn");
             for (int i = 0; i < count; i++)
             {
-                Debug.Log("damn");
                 playerKidneys.Add(cardslot.Kidneys[i]);
                 cardslot.Kidneys[i].transform.SetParent(myPlayerCard.transform, false);
                 cardslot.Kidneys.Remove(cardslot.Kidneys[i]);
@@ -434,7 +431,6 @@ public class PlayerManager : TurnManager {
         
             Vector3 ApLocation = new Vector3(0, 0, 0);
             ApLocation = apvis.ActionPoints[MaxAp].transform.position;
-        Debug.Log("ttttttt");
             StartCoroutine(AddMaxApp());
             DamageEffect.CreateMoveEffect(ParticalEff, myPlayerCard.transform.position, ApLocation);
     }

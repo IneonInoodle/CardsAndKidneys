@@ -702,15 +702,15 @@ public class BoardManager : MonoBehaviour {
             {
                 if (GameManager.Instance.CurrentPlayerTurn.myCardManager.point.Y == 0)
                 {
-                    Debug.Log("top");
-                    BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
-                    BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = true;
+
+                    Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+                    Top.GetComponent<EndzoneManager>().isSelectable = true;
                 }
                 else
                 {
                     Debug.Log("bottom");
-                    BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
-                    BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
+                    Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+                    Bottom.GetComponent<EndzoneManager>().isSelectable = true;
                 }
             }
         }

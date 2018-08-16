@@ -13,7 +13,6 @@ public class TurnManager : MonoBehaviour {
 	
     public void FinishTurn()
     {
-        Debug.Log("finished turn");
         isTurnComplete = true;
 
 
