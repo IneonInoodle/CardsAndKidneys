@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 [ExecuteInEditMode]
 public class HPVisual : MonoBehaviour
@@ -9,6 +10,9 @@ public class HPVisual : MonoBehaviour
 
     public Text HpText;
     public int TestHpThisTurn;
+
+    public Image[] HealthPoints;
+    public Image[] IceEffect;
 
     private int totalHp = 15;
     public int TotalHp
@@ -59,11 +63,22 @@ public class HPVisual : MonoBehaviour
                 availableHp = value;
 
             for (int i = 0; i < totalHp; i++)
-            {
+            {   
                 if (i < availableHp)
+                {
+                    Debug.Log(i);
+                    Debug.Log((int)(i / 2.5));
                     HealthPoints[i].color = Color.white;
+                    IceEffect[(int)(i / 2.5)].color = Color.white; // 14/6 = 2.3
+                }
+                   
                 else
+                {
+                    Debug.Log("clear");
                     HealthPoints[i].color = Color.gray;
+                    IceEffect[(int)(i / 2.5)].color = Color.clear;
+                }
+                    
             }
 
             // update the text
@@ -71,7 +86,7 @@ public class HPVisual : MonoBehaviour
 
         }
     }
-    public Image[] HealthPoints;
+
     //public Text ProgressText;
 
     // Use this for initialization
