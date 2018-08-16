@@ -283,6 +283,7 @@ public void setPlayerArrows(arrows arrowz)
 
                 if (fieldCardDes.cardAsset.Type == CardType.Monster)
                 {
+                    if (playerManager.Hp > 0)
                     playerManager.raiseAp();
                 }
             }

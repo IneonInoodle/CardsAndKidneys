@@ -69,6 +69,7 @@ public class HPVisual : MonoBehaviour
                     Debug.Log(i);
                     Debug.Log((int)(i / 2.5));
                     HealthPoints[i].color = Color.white;
+                    if (i != 0)
                     IceEffect[(int)(i / 5)].color = Color.white; // 15/6 = 2.5
                 }
                    
@@ -76,7 +77,7 @@ public class HPVisual : MonoBehaviour
                 {
                     Debug.Log("clear");
                     HealthPoints[i].color = Color.clear;
-                    IceEffect[(int)(i / 5)].color = Color.clear;
+                        IceEffect[(int)(i / 5)].color = Color.clear;
                 }
                     
             }

@@ -137,14 +137,12 @@ public class PlayerManager : TurnManager {
         }
         set
         {
-            if (value < 0) //if it goes below zero could be a bug
-                hp = 1;
-            else
             hp = value;
 
             if (hp > 15)
                 hp = 15;
 
+            Debug.Log("remeber me");
             hpvis.AvailableHp = hp;
 
 
@@ -436,6 +434,7 @@ public class PlayerManager : TurnManager {
         
             Vector3 ApLocation = new Vector3(0, 0, 0);
             ApLocation = apvis.ActionPoints[MaxAp].transform.position;
+        Debug.Log("ttttttt");
             StartCoroutine(AddMaxApp());
             DamageEffect.CreateMoveEffect(ParticalEff, myPlayerCard.transform.position, ApLocation);
     }
