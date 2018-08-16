@@ -129,7 +129,7 @@ public void setPlayerArrows(arrows arrowz)
                 // need this order, dont change
                 boardManager.DeleteCard(desCard);
                 boardManager.RemoveEmptySlot(des);
-                playerManager.takeDamage(desCard); // take damage from deleted card?
+                playerManager.takeDamage(int.Parse(desCard.DamageText.text)); // take damage from deleted card?
                 
 
                 yield return new WaitForSeconds(0.5f);
@@ -260,10 +260,12 @@ public void setPlayerArrows(arrows arrowz)
                     {
                         //playerManager.StealKidney();
                     }
-                } else {
+                }
+                else
+                {
                     playerManager.MoveKidneyFromDoctorToCard();
                 }
-               
+
 
                 playerManager.myLocation = location.board;
 
@@ -271,12 +273,20 @@ public void setPlayerArrows(arrows arrowz)
                 setPlayerArrows(temp);
                 boardManager.DeleteCard(fieldCardDes);
                 boardManager.RemoveEmptySlot(playerManager.point);
-                playerManager.takeDamage(fieldCardDes);
 
-                yield return new WaitForSeconds(0.5f);
+                int damage = int.Parse(fieldCardDes.DamageText.text);
+
+                if (damage != 0)
+                {
+                    playerManager.takeDamage(damage);
+                }
+
+                if (fieldCardDes.cardAsset.Type == CardType.Monster)
+                {
+                    playerManager.raiseAp();
+                }
             }
         }
-
         isMoving = false; // card finished moving now can take input
         BoardManager.Instance.UpdateCards();
         Debug.Log("Done move outof endzone");

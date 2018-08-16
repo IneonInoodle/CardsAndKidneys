@@ -409,20 +409,9 @@ public class PlayerManager : TurnManager {
     }
    
 
-    public void takeDamage(OneCardManager c)
+    public void takeDamage(int damage)
     {
-
-        bool StillAlive = false;
-        Vector3 ApLocation = new Vector3(0, 0, 0);
-        if (c != null)
-        {
-            int damage = int.Parse(c.DamageText.text);
-            
-
-            if (c.cardAsset.Type == CardType.Neutral)
-            {
-
-            } else if (myLocation == location.board)
+            if (myLocation == location.board)
             {
                 DamageEffect.CreateDamageEffect(myPlayerCard, damage);
 
@@ -431,32 +420,21 @@ public class PlayerManager : TurnManager {
                 DamageEffect.CreateDamageEffect(Doctor, damage);
             }
 
-            if (c.cardAsset.Type == CardType.Monster)
-            {
-
-                /*input= gameobject + position
-                 * c.transform.position
-                */
-                ApLocation = new Vector3(0, 0, 0);
-                ApLocation = apvis.ActionPoints[MaxAp].transform.position;                
-                StillAlive = true;
-
-            }
-
-            Debug.Log("add in max AP increase here");
             Hp -= damage;
 
             if (Hp <= 0)
             {
-                StillAlive = false;
                 Die();
-            }
-            if (StillAlive)
-            {
-                StartCoroutine(AddMaxApp());
-                DamageEffect.CreateMoveEffect(ParticalEff, c.transform.position, ApLocation);
-            }
-        }
+            }   
+    }
+
+    public void raiseAp()
+    {   
+        
+            Vector3 ApLocation = new Vector3(0, 0, 0);
+            ApLocation = apvis.ActionPoints[MaxAp].transform.position;
+            StartCoroutine(AddMaxApp());
+            DamageEffect.CreateMoveEffect(ParticalEff, myPlayerCard.transform.position, ApLocation);
     }
 
 
