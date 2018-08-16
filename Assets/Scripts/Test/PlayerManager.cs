@@ -256,10 +256,18 @@ public class PlayerManager : TurnManager {
         apvis.TotalAp = MaxAp;
 
         Hp = 0;
+        if (myLocation == location.board)
+        {
+            if (mySide == location.bottom) // needs to come at end
+                StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
+            else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
+        } else
+        {
+            Debug.Log("TODO");
+            // add in fuction that deletes guy from endzone and moves him back to endzone
+        }
 
-        if (mySide == location.bottom) // needs to come at end
-        StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
-        else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
+       
         //AudioManager.instance.Play("dieSound");
  
     }

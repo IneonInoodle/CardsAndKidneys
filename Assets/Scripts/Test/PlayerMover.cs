@@ -150,6 +150,7 @@ public void setPlayerArrows(arrows arrowz)
         SoundManager.PlaySound("dealCardSound");
         //needs to be coroutinetm
         isMoving = true;
+        location loc = playerManager.myLocation;
 
         playerManager.myCardManager.CardFaceGlowObject.SetActive(false);
 
@@ -215,7 +216,11 @@ public void setPlayerArrows(arrows arrowz)
             this.GetComponentInChildren<SpriteMask>().sprite = GameManager.Instance.BottomPortraitMask;
         }
 
-        boardManager.DeleteCard(playerManager.myCardManager);
+        if (loc == location.board) // if player was in endzone, they have no card to delete
+        {
+            boardManager.DeleteCard(playerManager.myCardManager);
+        }
+        
         yield return new WaitForSeconds(0.5f);
 
         playerManager.myCardManager = null;
