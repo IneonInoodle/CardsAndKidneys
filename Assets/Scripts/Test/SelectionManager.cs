@@ -148,7 +148,7 @@ public class SelectionManager : MonoBehaviour {
 
    public IEnumerator exit()
     {
-        isSelectingForSpellCards = false;
+        
         fieldCardParent.transform.DOMove(new Vector3(0, 0, 0), 0.5f);
         yield return new WaitForSeconds(0.5f);
         selectionComplete = true;
@@ -182,19 +182,16 @@ public class SelectionManager : MonoBehaviour {
 
 
         GameManager.Instance.EnableInputs();
-
+        isSelectingForSpellCards = false;
     }
 
     public void confirm()
     {
-        Debug.Log("confirm");
         StartCoroutine(exit());
     }
 
     public void cancel()
-    {
-        Debug.Log("cancle");
-        points.Clear();
+    {        
         StartCoroutine(exit());
     }
 }

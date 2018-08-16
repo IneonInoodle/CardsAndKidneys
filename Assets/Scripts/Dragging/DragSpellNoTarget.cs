@@ -32,7 +32,6 @@ public class DragSpellNoTarget: DraggingActions{
         {
             // play this card
             playerOwner.handvisual.PlayASpellFromHand(gameObject);
-            Debug.Log("fucks");
         }
         else
         {

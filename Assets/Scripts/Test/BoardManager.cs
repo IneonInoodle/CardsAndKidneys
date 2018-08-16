@@ -186,19 +186,23 @@ public class BoardManager : MonoBehaviour {
         {
             t |= arrows.Right;
         }
-        myCard.updateArrows(t);
+        
 
 
         if (myCard.cardAsset.Type == CardType.Player)
         {
+            
             foreach (PlayerManager pl in GameManager.Instance.players)
             {
                 if (pl.myCardManager == myCard)
                 {
+                    Debug.Log("rotateplayerArrows");
                     pl.point = myCard.point;
                 }
             }
         }
+
+        myCard.updateArrows(t);
     }
 
     public CardSlotManager FindSlotAtPoint(Point p)

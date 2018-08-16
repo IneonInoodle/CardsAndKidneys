@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour {
     }
     public IEnumerator UpdateTurn() //switches player turns
     {
-        AudioManager.instance.Play("pressEndTurnButtonSound");
+        //AudioManager.instance.Play("pressEndTurnButtonSound");
         if (CurrentPlayerTurn == null)
         {
             //for first round here we do a trick, set the condition as if enemy just finished playing
@@ -310,7 +310,6 @@ public class GameManager : MonoBehaviour {
         if (player.patientKidneys.Count  == 0)
         {
             //player.TurnsWithoutKidney++;
-            Debug.Log("TurnWithoutKidney " + player.TurnsWithoutKidney); 
         } 
 
         if (player.myLocation == location.board)

@@ -84,8 +84,19 @@ public class PlayerManager : TurnManager {
     
     public location mySide; //top or bottom
     public location myLocation;
+    private int maxAp;
+    public int MaxAp
+    {
+        get { return maxAp; }
 
-    public int MaxAp;
+        set
+        {
+            if (value <= 4)
+            {
+                maxAp = value;
+            }
+        }
+    }
     public Point point;
     public UnityEvent finishTurnEvent;
 
@@ -195,7 +206,7 @@ public class PlayerManager : TurnManager {
                 GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
                 break;
             case "Heal":
-                Hp += 5;              
+                GameManager.Instance.CurrentPlayerTurn.Hp += 5;              
                 break;
             case "Boost":
                 ActionPoints++;
