@@ -248,23 +248,20 @@ public class PlayerManager : TurnManager {
         DropKidney(); //drops kidney if possible
 
         myCardManager.CardFaceGlowObject.SetActive(false);
-        if (mySide == location.bottom)
-        StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
-        else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
-        //AudioManager.instance.Play("dieSound");
+
         MaxAp = 1;
         ActionPoints = 0;
 
         apvis.AvailableAp = ActionPoints;
         apvis.TotalAp = MaxAp;
-        
+
         Hp = 0;
 
-
-
-        //drop kidney on slot 
-        //reset action points
-        // respawn in endzone in endzone
+        if (mySide == location.bottom) // needs to come at end
+        StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
+        else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
+        //AudioManager.instance.Play("dieSound");
+ 
     }
 
     public void CaptureKidney()

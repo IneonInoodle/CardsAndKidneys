@@ -151,7 +151,7 @@ public class SelectionManager : MonoBehaviour {
         
         fieldCardParent.transform.DOMove(new Vector3(0, 0, 0), 0.5f);
         yield return new WaitForSeconds(0.5f);
-        selectionComplete = true;
+        
 
         foreach (Selector s in AllSelectors)
         {
@@ -180,7 +180,7 @@ public class SelectionManager : MonoBehaviour {
         blackScreen.SetActive(false);
         confirmButton.gameObject.SetActive(false);
 
-
+        selectionComplete = true;
         GameManager.Instance.EnableInputs();
         isSelectingForSpellCards = false;
     }
