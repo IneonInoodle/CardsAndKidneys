@@ -137,6 +137,9 @@ public class PlayerManager : TurnManager {
         }
         set
         {
+            if (value < 0) //if it goes below zero could be a bug
+                hp = 1;
+            else
             hp = value;
 
             if (hp > 15)
