@@ -193,10 +193,8 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Damage":
-                GameManager.Instance.getOtherPlayer(this).Hp -= 5;
-
-                if (GameManager.Instance.getOtherPlayer(this).Hp <= 0)
-                    GameManager.Instance.getOtherPlayer(this).Die();
+                Debug.Log("WTF");
+                GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
                 break;
             case "Heal":
                 Hp += 5;              
@@ -412,21 +410,24 @@ public class PlayerManager : TurnManager {
 
     public void takeDamage(int damage)
     {
-            if (myLocation == location.board)
-            {
-                DamageEffect.CreateDamageEffect(myPlayerCard, damage);
+        if (damage == 0)
+        return;
 
-            } else
-            {
-                DamageEffect.CreateDamageEffect(Doctor, damage);
-            }
+        if (myLocation == location.board)
+        {
+            DamageEffect.CreateDamageEffect(myPlayerCard, damage);
 
-            Hp -= damage;
+        } else
+        {
+            DamageEffect.CreateDamageEffect(Doctor, damage);
+        }
 
-            if (Hp <= 0)
-            {
-                Die();
-            }   
+        Hp -= damage;
+
+        if (Hp <= 0)
+        {
+            Die();
+        }   
     }
 
     public void raiseAp()

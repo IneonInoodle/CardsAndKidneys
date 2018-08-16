@@ -129,9 +129,10 @@ public void setPlayerArrows(arrows arrowz)
                 // need this order, dont change
                 boardManager.DeleteCard(desCard);
                 boardManager.RemoveEmptySlot(des);
+
+                Debug.Log(int.Parse(desCard.DamageText.text));
                 playerManager.takeDamage(int.Parse(desCard.DamageText.text)); // take damage from deleted card?
                 
-
                 yield return new WaitForSeconds(0.5f);
                 BoardManager.Instance.UpdateCards();
                 isMoving = false;
@@ -275,7 +276,8 @@ public void setPlayerArrows(arrows arrowz)
                 boardManager.RemoveEmptySlot(playerManager.point);
 
                 int damage = int.Parse(fieldCardDes.DamageText.text);
-
+                Debug.Log("DAMAGE");
+                Debug.Log(damage);
                 if (damage != 0)
                 {
                     playerManager.takeDamage(damage);
