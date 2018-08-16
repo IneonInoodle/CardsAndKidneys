@@ -83,8 +83,8 @@ public class BoardManager : MonoBehaviour {
 
     public void SwapCard(Point p1, Point p2)
     {
-        OneCardManager c1 = FindFieldCardAtPoint(p1);
-        OneCardManager c2 = FindFieldCardAtPoint(p2);
+        OneCardManager c1 = FindCardAtPoint(p1);
+        OneCardManager c2 = FindCardAtPoint(p2);
 
         Vector3 v1 = c1.transform.position;
         Vector3 v2 = c2.transform.position;
@@ -94,6 +94,29 @@ public class BoardManager : MonoBehaviour {
 
         c1.point = p2;
         c2.point = p1;
+
+        if (c1.cardAsset.Type == CardType.Player)
+        {   
+            foreach (PlayerManager p in GameManager.Instance.players)
+            {
+                if (p.myCardManager == c1)
+                {
+                    p.point = c1.point;
+                }
+            }
+        }
+
+        if (c2.cardAsset.Type == CardType.Player)
+        {
+            foreach (PlayerManager p in GameManager.Instance.players)
+            {
+                if (p.myCardManager == c2)
+                {
+                    p.point = c2.point;
+                }
+            }
+        }
+
     }
 
 
@@ -130,7 +153,8 @@ public class BoardManager : MonoBehaviour {
 
     public void RotateArrows(Point p)
     {
-        OneCardManager myCard = FindFieldCardAtPoint(p);
+        OneCardManager myCard = FindCardAtPoint(p);
+
        // if (myCard.gameObject.tag == "Arrows")
         //    Arrow.gameObject.SetActive(false);
         //arrowss = GameObject.FindGameObjectsWithTag("Arrows");
@@ -161,7 +185,18 @@ public class BoardManager : MonoBehaviour {
             t |= arrows.Right;
         }
         myCard.updateArrows(t);
-        
+
+
+        if (myCard.cardAsset.Type == CardType.Player)
+        {
+            foreach (PlayerManager pl in GameManager.Instance.players)
+            {
+                if (pl.myCardManager == myCard)
+                {
+                    pl.point = myCard.point;
+                }
+            }
+        }
     }
 
     public CardSlotManager FindSlotAtPoint(Point p)
@@ -175,6 +210,20 @@ public class BoardManager : MonoBehaviour {
         {   
             
             if (Point.Equals(card.point, p) && card.cardAsset.Type != CardType.Spell && card.cardAsset.Type != CardType.Player)
+            {
+                return card;
+            }
+
+        }
+        return null;
+    }
+
+    public OneCardManager FindCardAtPoint(Point p)
+    {
+        foreach (OneCardManager card in AllCards)
+        {
+
+            if (Point.Equals(card.point, p) && card.cardAsset.Type != CardType.Spell)
             {
                 return card;
             }
