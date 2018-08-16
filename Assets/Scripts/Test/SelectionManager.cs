@@ -44,7 +44,6 @@ public class SelectionManager : MonoBehaviour {
     {   
         //start of game, this whole thing could be a singleton 
         board = BoardManager.Instance;
-        Debug.Log("whattt"+ blackScreen);
         blackScreen.SetActive(false);
         ribbon.SetActive(false);
         confirmButton.gameObject.SetActive(false);

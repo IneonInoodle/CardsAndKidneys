@@ -141,8 +141,6 @@ public class PlayerManager : TurnManager {
 
             if (hp > 15)
                 hp = 15;
-
-            Debug.Log("remeber me");
             hpvis.AvailableHp = hp;
 
 
@@ -206,6 +204,7 @@ public class PlayerManager : TurnManager {
                 break;
         }
         Debug.Log("update cards");
+
         BoardManager.Instance.UpdateCards();
         yield return null;
     }

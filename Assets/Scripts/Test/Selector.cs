@@ -37,9 +37,6 @@ public class Selector : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("mouseDown");
-        Debug.Log(isSelectable);
-
         if (isSelectable == true)
         {
             if (sm.isSelectingForSpellCards == true) // selecting for a spell
@@ -49,7 +46,6 @@ public class Selector : MonoBehaviour
                 {
                     if (sm.amountOfCardsRequired > sm.AmountOfCardsSelected)
                     {
-                        Debug.Log("add");
                         sm.points.Add(card.point);
                         IsSelected = true;
                         sm.AmountOfCardsSelected++;

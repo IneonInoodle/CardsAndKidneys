@@ -105,17 +105,17 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator RunGameLoop()
     {
-        Debug.Log("startlevel");
+
         yield return StartCoroutine("StartLevelRoutine");
-        Debug.LogWarning("run game loop");
+
         yield return StartCoroutine("PlayLevelRoutine");
-        Debug.LogWarning("end game loop");
+
         yield return StartCoroutine("EndLevelRoutine");
     }
 
     IEnumerator StartLevelRoutine()
     {
-        Debug.Log("StartLevelRoutine");
+
 
         foreach (PlayerManager p in players)
         {
@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator PlayLevelRoutine()
     {
-        Debug.Log("PlayLevelRoutine");
+
         IsGamePlaying = true;
 
         if (playLevelEvent != null)
@@ -204,14 +204,13 @@ public class GameManager : MonoBehaviour {
     public IEnumerator UpdateTurn() //switches player turns
     {
         AudioManager.instance.Play("pressEndTurnButtonSound");
-        Debug.Log("what");
         if (CurrentPlayerTurn == null)
         {
             //for first round here we do a trick, set the condition as if enemy just finished playing
             CurrentPlayerTurn = players[0];
             players[0].IsTurnComplete = true;
         }
-        Debug.Log("update turn");
+
         //changes player turn 
         if (CurrentPlayerTurn == players[0])
         {
@@ -221,7 +220,7 @@ public class GameManager : MonoBehaviour {
                 {
                     messageManager.ShowMessage("You Loose Boy", 1f);
                     isGameOver = true;
-                    Debug.Log("YouLoose");
+
                     SceneManager.LoadScene("MainMenu");
                 }
                 else if (players[0].patientKidneys.Count == 2)
@@ -232,7 +231,7 @@ public class GameManager : MonoBehaviour {
                 }
                 else
                 {
-                    Debug.Log("playerturn0complete");
+
                     players[0].playerInput.InputEnabled = false;
                     players[0].button.interactable = false;
                     players[0].PortaitGlowObject.SetActive(false);
@@ -251,14 +250,7 @@ public class GameManager : MonoBehaviour {
         {
             if (players[1].IsTurnComplete)
             {
-
-                if (players[1].TurnsWithoutKidney >= 3)
-                {
-                    messageManager.ShowMessage("You Loose Boy", 1f);
-                    isGameOver = true;
-                    Debug.Log("YouLoose");
-                    SceneManager.LoadScene("MainMenu");
-                } else if (players[1].patientKidneys.Count == 2)
+                 if (players[1].patientKidneys.Count == 2)
                 {
                     messageManager.ShowMessage("You Win", 1f);
                     isGameOver = true;

@@ -371,7 +371,6 @@ public class BoardManager : MonoBehaviour {
 
    public List<OneCardManager> GetValidMovesDist(Point pos, arrows arr,int dist)
    {
-       Debug.Log("okkkkkkkk");
        if (dist == 0) return new List<OneCardManager>();
 
        List<OneCardManager> nList = GetValidMoves(pos, arr);
@@ -633,7 +632,6 @@ public class BoardManager : MonoBehaviour {
 
         if (GameManager.Instance.CurrentPlayerTurn.ActionPoints == 0)
         {
-            Debug.Log("clear");
             SelectableCards.Clear();
         }
             
@@ -642,7 +640,6 @@ public class BoardManager : MonoBehaviour {
         foreach (OneCardManager c in SelectableCards)
         {
             Selector s; 
-            Debug.Log(c.name);
             if (c.cardAsset.Type == CardType.Hp ||
                 c.cardAsset.Type == CardType.Monster ||
                 c.cardAsset.Type == CardType.Neutral)
@@ -668,28 +665,27 @@ public class BoardManager : MonoBehaviour {
         HighlightEndZones();
 
 
-        BoardManager.Instance.Top.GetComponent<EndzoneManager>().setArrows();
-        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().setArrows();
+        Top.GetComponent<EndzoneManager>().setEndZoneArrows();
+        Bottom.GetComponent<EndzoneManager>().setEndZoneArrows();
 
     }
 
     public void HighlightEndZones()
     {
-        BoardManager.Instance.Top.GetComponent<EndzoneManager>().isSelectable = false;
-        BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
-        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().isSelectable = false;
-        BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
+        Top.GetComponent<EndzoneManager>().isSelectable = false;
+        Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
+        Bottom.GetComponent<EndzoneManager>().isSelectable = false;
+        Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
 
-        Debug.Log("crashy");
         int dis = (GameManager.Instance.CurrentPlayerTurn.ActionPoints - 1) > 0 ? (GameManager.Instance.CurrentPlayerTurn.ActionPoints - 1) : 0;
-        Debug.Log("crashy2");
+
         List<OneCardManager> HighlightableCards = GetValidMovesDist(GameManager.Instance.CurrentPlayerTurn.point,
                                                GameManager.Instance.CurrentPlayerTurn.arrows,
                                                dis);
-        Debug.Log("crashy3");
+
         foreach (OneCardManager cards in HighlightableCards)
         {
-            Debug.Log("crashy4");
+
             if (IsEndzoneValid(cards.point)) {
                 if (cards.point.Y == 1)
                 {

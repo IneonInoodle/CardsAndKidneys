@@ -37,7 +37,6 @@ public class KidneyVisual : MonoBehaviour {
 
             for (int i = 0; i < 2; i++)
             {
-                Debug.Log("KidneysCapture");
                 if (i < availableKidneys)
                 {
                     if (KidneyAmount[i].color == Color.clear)

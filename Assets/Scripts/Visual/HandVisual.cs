@@ -149,7 +149,7 @@ public class HandVisual : MonoBehaviour
 
     public void BringToFront(GameObject g)
     {
-        Debug.Log("bringtofront");
+
         canvas = g.GetComponentInChildren<Canvas>();
 
         canvas.sortingOrder = 1000;

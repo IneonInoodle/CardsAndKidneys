@@ -230,7 +230,6 @@ public void setPlayerArrows(arrows arrowz)
         arrows temp;
         OneCardManager fieldCardDes;
 
-        Debug.Log("moveoutofendzone");
         if (boardManager.FindFieldCardAtPoint(des) != null)
         {
             if (boardManager.FindFieldCardAtPoint(des).cardAsset.Type != CardType.Player)
@@ -245,7 +244,6 @@ public void setPlayerArrows(arrows arrowz)
                 temp = fieldCardDes.arrows; // deleting card delete le arrows
 
                 //save playermanager things
-                Debug.Log("Should be here");
                 playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab, playerManager.Doctor, playerManager.playerCardAsset, 0.5f).gameObject;
                 playerManager.myCardManager = playerManager.myPlayerCard.GetComponent<OneCardManager>();
 
@@ -276,15 +274,18 @@ public void setPlayerArrows(arrows arrowz)
                 boardManager.RemoveEmptySlot(playerManager.point);
 
                 int damage = int.Parse(fieldCardDes.DamageText.text);
-                Debug.Log("DAMAGE");
-                Debug.Log(damage);
+                
+                
                 if (damage != 0)
                 {
+                    Debug.Log("DAMAGE");
+                    Debug.Log(damage);
                     playerManager.takeDamage(damage);
                 }
 
                 if (fieldCardDes.cardAsset.Type == CardType.Monster)
                 {
+                    Debug.Log("RaisAP");
                     if (playerManager.Hp > 0)
                     playerManager.raiseAp();
                 }
