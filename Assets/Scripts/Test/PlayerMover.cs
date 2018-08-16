@@ -187,7 +187,7 @@ public void setPlayerArrows(arrows arrowz)
             {
                 playerManager.StealKidney();
             }
-
+            playerManager.ActionPoints--;
         }
 
 
