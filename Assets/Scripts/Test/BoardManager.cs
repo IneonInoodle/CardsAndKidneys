@@ -346,7 +346,7 @@ public class BoardManager : MonoBehaviour {
 
        ; //keep it bewtween 2 and 1
 
-       OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-2, 2))).GetComponent<OneCardManager>();
+       OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-1, 1))).GetComponent<OneCardManager>();
        AllCards.Add(card);
 
        card.transform.SetParent(FieldCardParent.transform, false);
