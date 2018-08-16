@@ -69,10 +69,10 @@ public class SelectionManager : MonoBehaviour {
 
     public void FuckMe()
     {
-        StartCoroutine(getSelection(2));
+        StartCoroutine(getSelectionWithPlayers(2));
     }
 
-    public IEnumerator getSelection(int amount)
+    public IEnumerator getSelectionWithPlayers(int amount)
     {
         isSelectingForSpellCards = true;
         String y = "Choose 1 Card";
@@ -146,7 +146,86 @@ public class SelectionManager : MonoBehaviour {
         //
     }
 
-   public IEnumerator exit()
+    public IEnumerator getSelectionNoPlayers(int amount)
+    {
+        isSelectingForSpellCards = true;
+        String y = "Choose 1 Card";
+
+        if (amount == 1)
+        {
+            y = "Choose 1 Card";
+        }
+        else if (amount == 2)
+        {
+            y = "Choose 2 Cards";
+        }
+
+        RibbonText.text = y;
+
+        selectionComplete = false;
+        GameManager.Instance.DisableInputs();
+
+
+
+
+        // setting things at start here 
+        confirmButton.gameObject.SetActive(false);
+        points.Clear();
+        amountOfCardsRequired = amount;
+        AmountOfCardsSelected = 0;
+        AllSelectors = GameObject.FindObjectsOfType<Selector>();
+
+        //turn all field cards to be selectable
+        foreach (Selector s in AllSelectors)
+        {
+            
+            // here theres a check missing for their card type
+            if (s.gameObject.GetComponent<OneCardManager>().cardAsset.Type != CardType.Player)
+            {
+                s.GetComponentInChildren<Canvas>().sortingLayerName = "Selection";
+                s.GetComponentInChildren<Canvas>().sortingOrder = 10;
+                s.isSelectable = true;
+            }
+                
+
+            ParticleSystemRenderer[] psr = s.GetComponentsInChildren<ParticleSystemRenderer>(true);
+
+            foreach (ParticleSystemRenderer p in psr)
+            {
+                p.sortingLayerName = "Selection";
+                p.sortingOrder = 2;
+            }
+
+        }
+
+        blackScreen.SetActive(true);
+        ribbon.SetActive(true);
+
+        fieldCardParent.transform.DOMove(new Vector3(fieldCardParent.transform.position.x, fieldCardParent.transform.position.y + moveDistance, fieldCardParent.transform.position.z), 0.5f);
+        yield return new WaitForSeconds(0.5f);
+
+
+        while (!selectionComplete) // loop to stay in coroutine until done
+        {
+
+            //check for game over condition
+
+            //win
+            //reach end of the level
+            // lose
+            //player dies
+            // IsGameOver = true; 
+
+            yield return null;
+        }
+        //enable clicks on field cards
+
+        // glow on click
+        //store clicks in selection manager
+        //
+    }
+
+    public IEnumerator exit()
     {
         
         fieldCardParent.transform.DOMove(new Vector3(0, 0, 0), 0.5f);
@@ -181,8 +260,10 @@ public class SelectionManager : MonoBehaviour {
         confirmButton.gameObject.SetActive(false);
 
         selectionComplete = true;
-        GameManager.Instance.EnableInputs();
+        
         isSelectingForSpellCards = false;
+        yield return new WaitForSeconds(0.1f); // to fix double click error
+        GameManager.Instance.EnableInputs();
     }
 
     public void confirm()

@@ -166,7 +166,7 @@ public class PlayerManager : TurnManager {
         {
             case "Swap":
                 Debug.Log("starting swap");
-                yield return StartCoroutine(gm.selectionManager.getSelection(2));
+                yield return StartCoroutine(gm.selectionManager.getSelectionWithPlayers(2));
 
                 Debug.Log(gm.selectionManager.points.Count);
                 if (gm.selectionManager.points.Count == 2)
@@ -182,7 +182,7 @@ public class PlayerManager : TurnManager {
             case "Rotate":
                 Debug.Log("starting rotate");
 
-                yield return StartCoroutine(gm.selectionManager.getSelection(1));
+                yield return StartCoroutine(gm.selectionManager.getSelectionWithPlayers(1));
                 if (gm.selectionManager.points.Count == 1)
                 {
                     Debug.Log("here");
@@ -194,7 +194,7 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Replace2":
-                yield return StartCoroutine(gm.selectionManager.getSelection(2));
+                yield return StartCoroutine(gm.selectionManager.getSelectionWithPlayers(2));
                 if (gm.selectionManager.points.Count == 2)
                 {
                     boardManager.Replace2(gm.selectionManager.points[0], gm.selectionManager.points[1]);
