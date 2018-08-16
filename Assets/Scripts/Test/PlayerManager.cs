@@ -221,7 +221,8 @@ public class PlayerManager : TurnManager {
         Debug.Log("update cards");
 
         
-        yield return null;
+        yield return new WaitForSeconds(0.1f);
+        GameManager.Instance.EnableInputs();
     }
     public void MoveKidneyFromCardToDoctor()
     {

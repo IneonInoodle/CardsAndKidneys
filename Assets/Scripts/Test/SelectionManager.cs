@@ -262,8 +262,6 @@ public class SelectionManager : MonoBehaviour {
         selectionComplete = true;
         
         isSelectingForSpellCards = false;
-        yield return new WaitForSeconds(0.1f); // to fix double click error
-        GameManager.Instance.EnableInputs();
     }
 
     public void confirm()
