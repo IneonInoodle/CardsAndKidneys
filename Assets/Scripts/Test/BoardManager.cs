@@ -197,6 +197,7 @@ public class BoardManager : MonoBehaviour {
                 if (pl.myCardManager == myCard)
                 {
                     Debug.Log("rotateplayerArrows");
+                    pl.arrows = t;
                     pl.point = myCard.point;
                 }
             }
