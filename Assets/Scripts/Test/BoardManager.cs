@@ -691,7 +691,7 @@ public class BoardManager : MonoBehaviour {
             if (IsEndzoneValid(cards.point)) {
                 if (cards.point.Y == 1)
                 {
-                    BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
+                    BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
                 } else
                 {
                     BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;

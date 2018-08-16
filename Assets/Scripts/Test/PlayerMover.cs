@@ -43,7 +43,6 @@ public void setPlayerArrows(arrows arrowz)
         if (playerManager.point.Y == -1) // moving out of endzone top
         {
             des.Y = 0; // if we pressed left or right, need to manually fixed our des.y value 
-            Debug.Log(des.X + " " + des.Y);
             StartCoroutine(MoveOutOfEndzone(des));
 
         }
@@ -250,8 +249,6 @@ public void setPlayerArrows(arrows arrowz)
 
                 //last 2 lines removed for testing
                 playerManager.ActionPoints--;
-                playerManager.MaxAp = 1;
-
                 playerManager.point = des;
 
                 if (playerManager.playerKidneys.Count < 1)
