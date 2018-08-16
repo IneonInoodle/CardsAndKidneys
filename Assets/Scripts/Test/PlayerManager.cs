@@ -144,6 +144,7 @@ public class PlayerManager : TurnManager {
 
             hpvis.AvailableHp = hp;
 
+
         }
     }
     
@@ -191,22 +192,10 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Damage":
-                yield return StartCoroutine(gm.selectionManager.getSelection(1));
-                if (gm.selectionManager.points.Count == 1)
-                {
-                    OneCardManager damageMeCard = boardManager.FindFieldCardAtPoint(gm.selectionManager.points[0]);
+                GameManager.Instance.getOtherPlayer(this).Hp -= 5;
 
-                    if (damageMeCard.cardAsset.Type != CardType.Player)
-                    {
-                        Debug.Log("start damaging");
-                        boardManager.Damage(gm.selectionManager.points[0]);
-                    }
-
-                }
-                else
-                {
-                    Debug.Log("cancled");
-                }
+                if (GameManager.Instance.getOtherPlayer(this).Hp <= 0)
+                    GameManager.Instance.getOtherPlayer(this).Die();
                 break;
             case "Heal":
                 Hp += 5;              
@@ -248,10 +237,9 @@ public class PlayerManager : TurnManager {
 
         myCardManager.CardFaceGlowObject.SetActive(false);
         if (mySide == location.bottom)
-
         StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
         else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
-        AudioManager.instance.Play("dieSound");
+        //AudioManager.instance.Play("dieSound");
         MaxAp = 1;
         apvis.TotalAp = MaxAp;
         ActionPoints = 0;
@@ -374,7 +362,7 @@ public class PlayerManager : TurnManager {
                 otherPlayer.kvis.AvailableKidneys--;
                 otherPlayer.patientKidneys[0].SetActive(true);
 
-                otherPlayer.patientKidneys[0].transform.SetParent(myPlayerCard.transform, false);
+                otherPlayer.patientKidneys[0].transform.SetParent(Doctor.transform, false);
 
                 otherPlayer.patientKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
                 otherPlayer.patientKidneys[0].transform.localPosition = new Vector3(0f, 0f, 0f);

@@ -105,8 +105,6 @@ public class SelectionManager : MonoBehaviour {
         //turn all field cards to be selectable
         foreach (Selector s in AllSelectors)
         {   
-            if (s.gameObject.GetComponent<OneCardManager>().cardAsset.Type != CardType.Player)
-            {   
                 s.GetComponentInChildren<Canvas>().sortingLayerName = "Selection";
                 s.GetComponentInChildren<Canvas>().sortingOrder = 10;
                 // here theres a check missing for their card type
@@ -119,7 +117,7 @@ public class SelectionManager : MonoBehaviour {
                     p.sortingLayerName = "Selection";
                     p.sortingOrder = 2;
                 }
-            }
+            
         }
 
         blackScreen.SetActive(true);
@@ -160,8 +158,7 @@ public class SelectionManager : MonoBehaviour {
         {
             s.IsSelected = false;
             s.isSelectable = false;
-            if (s.gameObject.GetComponent<OneCardManager>().cardAsset.Type != CardType.Player)
-            {
+
                 // extra check to disable all glowing field cards
                 s.gameObject.GetComponent<OneCardManager>().CardFaceGlowObject.SetActive(false);
 
@@ -177,7 +174,7 @@ public class SelectionManager : MonoBehaviour {
                 }
 
 
-            }
+            
         }
 
         ribbon.SetActive(false);

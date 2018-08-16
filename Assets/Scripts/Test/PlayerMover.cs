@@ -179,9 +179,15 @@ public void setPlayerArrows(arrows arrowz)
                 playerManager.CaptureKidney(); // capture kidney
             } else
             {
+            
             playerManager.MoveKidneyFromCardToDoctor();
 
+            if (playerManager.mySide != playerManager.myLocation)
+            {
+                playerManager.StealKidney();
             }
+
+        }
 
 
         Sprite sp;
@@ -252,7 +258,7 @@ public void setPlayerArrows(arrows arrowz)
                 {
                     if (playerManager.mySide != playerManager.myLocation)
                     {
-                        playerManager.StealKidney();
+                        //playerManager.StealKidney();
                     }
                 } else {
                     playerManager.MoveKidneyFromDoctorToCard();

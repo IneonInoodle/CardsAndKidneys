@@ -74,7 +74,7 @@ public class AudioManager : MonoBehaviour {
                 s = AllSounds[1][UnityEngine.Random.Range(0, iceCubesSounds.Length)];
                 break;
             case "splat"://done
-                s = AllSounds[2][UnityEngine.Random.Range(4, splatSounds.Length)];
+                s = AllSounds[2][UnityEngine.Random.Range(0, splatSounds.Length)]; //Anis this is broken here please fix
                 break;
             //"dropKidney" addme          
             //"stealKidneySound" addme
