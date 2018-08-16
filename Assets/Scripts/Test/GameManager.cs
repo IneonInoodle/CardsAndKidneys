@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour {
         Debug.Assert(selectionManager != null);
         Debug.Assert(messageManager != null);
         players = Object.FindObjectsOfType<PlayerManager>(); //find player
-        board = Object.FindObjectOfType<BoardManager>().GetComponent<BoardManager>(); //find board
+        board = BoardManager.Instance; //find board
 
 
         //create both players
@@ -257,7 +257,6 @@ public class GameManager : MonoBehaviour {
                     SceneManager.LoadScene("MainMenu");
                 } else
                 {
-                    Debug.Log("playerturn1complete");
                     players[1].playerInput.InputEnabled = false;
                     players[1].button.interactable = false;
                     players[1].PortaitGlowObject.SetActive(false);

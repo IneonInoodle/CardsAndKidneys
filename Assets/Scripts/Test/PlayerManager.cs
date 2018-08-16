@@ -222,7 +222,6 @@ public class PlayerManager : TurnManager {
     }
     public void callSpellCard (string tt)
     {
-        Debug.Log("playspellcard");
         StartCoroutine(PlaySpellCard(tt));
         
     }

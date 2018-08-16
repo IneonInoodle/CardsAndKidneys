@@ -38,6 +38,7 @@ public void setPlayerArrows(arrows arrowz)
 
     public void MoveToPoint(Point des, float delayTime = 0.25f)
     {
+        Debug.Log("moveToPoint");
         // check if we are in the endzone
         if (playerManager.point.Y == -1) // moving out of endzone top
         {
@@ -128,13 +129,14 @@ public void setPlayerArrows(arrows arrowz)
                 Debug.Log("takingdamage");
                 Debug.Log(int.Parse(desCard.DamageText.text));
 
-                if (desCard.cardAsset.Type == CardType.Monster)
+                playerManager.takeDamage(int.Parse(desCard.DamageText.text));
+                if (desCard.cardAsset.Type == CardType.Monster && playerManager.Hp > 0)
                 {
                     playerManager.raiseAp();
                 }
                 
 
-                playerManager.takeDamage(int.Parse(desCard.DamageText.text)); // take damage from deleted card?
+                // take damage from deleted card?
                 
                 yield return new WaitForSeconds(0.5f);
                 BoardManager.Instance.UpdateCards();
@@ -147,10 +149,9 @@ public void setPlayerArrows(arrows arrowz)
     public IEnumerator MoveIntoEndzone(GameObject des)
     {
         SoundManager.PlaySound("dealCardSound");
-        Debug.Log("moveintoendzone");
         //needs to be coroutinetm
         isMoving = true;
-        Debug.Log("moveintoendzone");
+
         playerManager.myCardManager.CardFaceGlowObject.SetActive(false);
 
         playerManager.Doctor.transform.position = des.transform.position; // move doctor image
@@ -168,7 +169,6 @@ public void setPlayerArrows(arrows arrowz)
         // if pressed down
         if (des.name == "Bottom")
         {
-            Debug.Log("moveintoendzone");
             playerManager.point.X = 1;
             playerManager.point.Y = 2;
             playerManager.myLocation = location.bottom;

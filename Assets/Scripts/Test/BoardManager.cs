@@ -126,7 +126,9 @@ public class BoardManager : MonoBehaviour {
         OneCardManager c2 = FindFieldCardAtPoint(p2);
         DeleteCard(c1);
         DeleteCard(c2);
-        StartCoroutine(DealOutFieldCards(0.5f));
+        
+        CreateCard(p1, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 0.2f);
+        CreateCard(p2, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 0.2f);
     }
 
     public void Damage(Point p1)
