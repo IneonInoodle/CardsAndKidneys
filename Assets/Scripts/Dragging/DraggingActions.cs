@@ -13,7 +13,10 @@ public abstract class DraggingActions : MonoBehaviour {
     {
         get
         {
-            return true; //GlobalSettings.Instance.CanControlThisPlayer(playerOwner);
+            if (playerOwner == GameManager.Instance.CurrentPlayerTurn)
+                return true;
+            else return false;
+            //GlobalSettings.Instance.CanControlThisPlayer(playerOwner);
         }
     }
 

@@ -289,6 +289,10 @@ public class GameManager : MonoBehaviour {
             p.button.interactable = false;
             p.handvisual.gameObject.SetActive(false);
 
+            //foreach car in hand visual 
+
+            //PreviewsAllowed= false 
+
         }
 
         board.Top.GetComponent<EndzoneManager>().isSelectable = false;
@@ -313,6 +317,8 @@ public class GameManager : MonoBehaviour {
 
     public void PlayPlayerTurn(PlayerManager player)
     {
+        GameManager.Instance.getOtherPlayer(player).handvisual.MakeCardsGrey(true);
+        player.handvisual.MakeCardsGrey(false);
 
         if (player.patientKidneys.Count  == 0)
         {

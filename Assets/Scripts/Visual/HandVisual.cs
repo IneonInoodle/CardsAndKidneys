@@ -141,7 +141,14 @@ public class HandVisual : MonoBehaviour
 
     }
 
-   
+   public void MakeCardsGrey(bool b)
+    {
+        foreach (GameObject c in CardsInHand)
+        {
+            c.GetComponent<OneCardManager>().CardGreyOutImage.enabled = b;
+            c.GetComponent<HoverPreview>().ThisPreviewEnabled = !b;
+        }
+    }
 
 
 
@@ -234,7 +241,7 @@ public class HandVisual : MonoBehaviour
         }
 
 
-        if (CardsInHand.Count  < 7)
+        if (CardsInHand.Count  < 6)
         {
             if (fromDeck)
                 card = CreateACardAtPosition(c, DeckTransform.position, new Vector3(0, 0, baseRotation));

@@ -157,6 +157,9 @@ public class OneCardManager : MonoBehaviour {
             setRandomArrows();
             updateArrows(arrows);//meh
             
+        } else
+        {
+            CardGreyOutImage.enabled = false;
         }
        
         CardFaceInnerGlowImage.enabled = false;
