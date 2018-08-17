@@ -11,14 +11,15 @@ public struct Point
     public int X; //{ get; set; }
     public int Y; //{ get; set; }
 
-    public Point(int p1=0, int p2=0)
+    public Point(int p1 = 0, int p2 = 0)
     {
         X = p1;
         Y = p2;
     }
 }
 
-public class BoardManager : MonoBehaviour {
+public class BoardManager : MonoBehaviour
+{
 
     private static BoardManager instance;
 
@@ -43,7 +44,8 @@ public class BoardManager : MonoBehaviour {
 
     public GameObject InitialFieldCardPos;
     public GameObject RemoveFieldCardPos;
-
+    public GameObject ChatBot;
+    public Text ChatBot2;
     public GameObject Top;
     public GameObject Bottom;
 
@@ -73,6 +75,7 @@ public class BoardManager : MonoBehaviour {
     void Start()
     {
         AudioManager.instance.Play("GameStart");
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": Game started now";
     }
 
 
@@ -83,6 +86,7 @@ public class BoardManager : MonoBehaviour {
 
     public void SwapCard(Point p1, Point p2)
     {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": SwapCard()";
         OneCardManager c1 = FindCardAtPoint(p1);
         OneCardManager c2 = FindCardAtPoint(p2);
 
@@ -96,7 +100,7 @@ public class BoardManager : MonoBehaviour {
         c2.point = p1;
 
         if (c1.cardAsset.Type == CardType.Player)
-        {   
+        {
             foreach (PlayerManager p in GameManager.Instance.players)
             {
                 if (p.myCardManager == c1)
@@ -122,17 +126,19 @@ public class BoardManager : MonoBehaviour {
 
     public void Replace2(Point p1, Point p2)
     {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": Replace2()";
         OneCardManager c1 = FindFieldCardAtPoint(p1);
         OneCardManager c2 = FindFieldCardAtPoint(p2);
         DeleteCard(c1);
         DeleteCard(c2);
-        
+
         CreateCard(p1, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 0.2f);
         CreateCard(p2, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 0.2f);
     }
 
     public void Damage(Point p1)
     {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": Damage()";
         OneCardManager c = BoardManager.Instance.FindFieldCardAtPoint(p1);
         int i = Int32.Parse(c.DamageText.text);
         i = i - 100;
@@ -155,16 +161,17 @@ public class BoardManager : MonoBehaviour {
 
     public void RotateArrows(Point p)
     {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": RotateArrows()";
         OneCardManager myCard = FindCardAtPoint(p);
 
-       // if (myCard.gameObject.tag == "Arrows")
+        // if (myCard.gameObject.tag == "Arrows")
         //    Arrow.gameObject.SetActive(false);
         //arrowss = GameObject.FindGameObjectsWithTag("Arrows");
         //foreach (GameObject r in arrowss)
         //   r.transform.Translate(Direction * movespeed * Time.deltaTime);
 
 
-        
+
         arrows t = arrows.None;
 
         if ((myCard.arrows & arrows.Up) == arrows.Up)
@@ -186,12 +193,12 @@ public class BoardManager : MonoBehaviour {
         {
             t |= arrows.Right;
         }
-        
+
 
 
         if (myCard.cardAsset.Type == CardType.Player)
         {
-            
+
             foreach (PlayerManager pl in GameManager.Instance.players)
             {
                 if (pl.myCardManager == myCard)
@@ -210,12 +217,12 @@ public class BoardManager : MonoBehaviour {
     {
         return AllSlots[p.Y, p.X];
     }
-        
+
     public OneCardManager FindFieldCardAtPoint(Point p)
     {
         foreach (OneCardManager card in AllCards)
-        {   
-            
+        {
+
             if (Point.Equals(card.point, p) && card.cardAsset.Type != CardType.Spell && card.cardAsset.Type != CardType.Player)
             {
                 return card;
@@ -255,8 +262,9 @@ public class BoardManager : MonoBehaviour {
 
     public void HighlightArrows() // highlight arrows and save all player moves found 
     {
-        foreach(OneCardManager card in AllCards)
-        {   
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": HighlightArrows";
+        foreach (OneCardManager card in AllCards)
+        {
             if (card.cardAsset.Type != CardType.Spell)
             {
                 arrows t = arrows.None;
@@ -272,22 +280,24 @@ public class BoardManager : MonoBehaviour {
             }
 
 
-            
+
         }
 
-       
+
     }
 
     public bool IsEndzoneValid(Point p)
     {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": IsEndzoneValid()";
         arrows check = p.Y == 0 ? arrows.Up : arrows.Down;
 
         OneCardManager c;
 
-        if (FindFieldCardAtPoint(p) !=null)
+        if (FindFieldCardAtPoint(p) != null)
         {
             c = FindFieldCardAtPoint(p);
-        } else
+        }
+        else
         {
             c = FindPlayerCardAtPoint(p);
         }
@@ -295,321 +305,335 @@ public class BoardManager : MonoBehaviour {
         if ((c.arrows & check) != 0) return true;
         return false;
 
-       /*for(int x=0; x<3;x++)
-       {
-           OneCardManager card = FindCardAtPoint(new Point(x, y));
-           if (card == null) continue;
-           if ((card.arrows & check) != 0) return true;
-       }*/
-   }
+        /*for(int x=0; x<3;x++)
+        {
+            OneCardManager card = FindCardAtPoint(new Point(x, y));
+            if (card == null) continue;
+            if ((card.arrows & check) != 0) return true;
+        }*/
+    }
 
-   public List<OneCardManager> GetValidMoves(OneCardManager card) // highlight arrows and save all player moves found 
-   {
-       List<OneCardManager> nList = new List<OneCardManager>();
+    public List<OneCardManager> GetValidMoves(OneCardManager card) // highlight arrows and save all player moves found 
+    {
+        List<OneCardManager> nList = new List<OneCardManager>();
 
-       if (card != null)
-       {
-           nList.AddRange(GetValidMoves(card.point, card.arrows));
-       }
+        if (card != null)
+        {
+            nList.AddRange(GetValidMoves(card.point, card.arrows));
+        }
 
-       return nList;      
-   }
+        return nList;
+    }
 
-   public List<OneCardManager> GetValidMoves(Point pos,arrows arr)
-   {
-       List<OneCardManager> nList = new List<OneCardManager>();
+    public List<OneCardManager> GetValidMoves(Point pos, arrows arr)
+    {
+        List<OneCardManager> nList = new List<OneCardManager>();
 
-       Point p;
+        Point p;
 
-       if ((arr & arrows.Up) != 0)
-       {
-           p = new Point(pos.X, pos.Y - 1);
-           if (FindFieldCardAtPoint(p) != null)
-           {
-               nList.Add(FindFieldCardAtPoint(p));
-           }
-       }
+        if ((arr & arrows.Up) != 0)
+        {
+            p = new Point(pos.X, pos.Y - 1);
+            if (FindFieldCardAtPoint(p) != null)
+            {
+                nList.Add(FindFieldCardAtPoint(p));
+            }
+        }
 
-       if ((arr & arrows.Down) == arrows.Down)
-       {
-           p = new Point(pos.X, pos.Y + 1);
-           if (FindFieldCardAtPoint(p) != null) // can always move into endzone extra arrows here
-           {
-               nList.Add(FindFieldCardAtPoint(p));
-           }
-       }
+        if ((arr & arrows.Down) == arrows.Down)
+        {
+            p = new Point(pos.X, pos.Y + 1);
+            if (FindFieldCardAtPoint(p) != null) // can always move into endzone extra arrows here
+            {
+                nList.Add(FindFieldCardAtPoint(p));
+            }
+        }
 
-       if ((arr & arrows.Right) == arrows.Right)
-       {
-           p = new Point(pos.X + 1, pos.Y);
-           if (FindFieldCardAtPoint(p) != null)
-           {
-               nList.Add(FindFieldCardAtPoint(p));
-           }
-       }
+        if ((arr & arrows.Right) == arrows.Right)
+        {
+            p = new Point(pos.X + 1, pos.Y);
+            if (FindFieldCardAtPoint(p) != null)
+            {
+                nList.Add(FindFieldCardAtPoint(p));
+            }
+        }
 
-       if ((arr & arrows.Left) == arrows.Left)
-       {
-           p = new Point(pos.X - 1, pos.Y);
-           if (FindFieldCardAtPoint(p) != null)
-           {
-               nList.Add(FindFieldCardAtPoint(p));
-           }
-       }
+        if ((arr & arrows.Left) == arrows.Left)
+        {
+            p = new Point(pos.X - 1, pos.Y);
+            if (FindFieldCardAtPoint(p) != null)
+            {
+                nList.Add(FindFieldCardAtPoint(p));
+            }
+        }
 
-       if (pos.Y == 2)
-       {
-           foreach (OneCardManager card in AllCards)
-           {
-               if (card.point.Y == 1)
-                   nList.Add(card);
-           }
-       }
-       else if (pos.Y == -1)
-       {
-           foreach (OneCardManager card in AllCards)
-           {
-               if (card.point.Y == 0)
-                   nList.Add(card);
-           }
-       }
-       return nList;
-   }
+        if (pos.Y == 2)
+        {
+            foreach (OneCardManager card in AllCards)
+            {
+                if (card.point.Y == 1)
+                    nList.Add(card);
+            }
+        }
+        else if (pos.Y == -1)
+        {
+            foreach (OneCardManager card in AllCards)
+            {
+                if (card.point.Y == 0)
+                    nList.Add(card);
+            }
+        }
+        return nList;
+    }
 
-   public List<OneCardManager> GetValidMovesDist(Point pos, arrows arr,int dist)
-   {
-       if (dist == 0) return new List<OneCardManager>();
+    public List<OneCardManager> GetValidMovesDist(Point pos, arrows arr, int dist)
+    {
+        if (dist == 0) return new List<OneCardManager>();
 
-       List<OneCardManager> nList = GetValidMoves(pos, arr);
-       List<OneCardManager> nList2 = new List<OneCardManager>();
-       foreach (OneCardManager card in nList)
-       {
-           List<OneCardManager> nSub = GetValidMovesDist(card.point, card.arrows,dist -1);
-           foreach (OneCardManager card2 in nSub)
-           {
-               if (!nList.Contains(card2)) nList2.Add(card2); //TODO fix bug here
-           }
-       }
-       nList.AddRange(nList2);
-       return nList;
-   }
-
-
-   public OneCardManager CreateCard(Point p, GameObject cardPrefab, GameObject initPosition, CardAsset cardAsset,  float delay)
-   {
-       //card = Instantiate(cardPrefab);
-
-       ; //keep it bewtween 2 and 1
-
-       OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-1, 1))).GetComponent<OneCardManager>();
-       AllCards.Add(card);
-
-       card.transform.SetParent(FieldCardParent.transform, false);
-       card.cardAsset = cardAsset;
-       card.ReadCardFromAsset();
-       card.point = p;
-
-       EmptyCardSlots.Remove(AllSlots[p.Y, p.X]); // cannot put it here sadly
-       card.transform.position = initPosition.transform.position;
-       //Debug.Log("R_"+card.transform.rotation);
-       //card.transform.Rotate(new Vector3(1, 2, -1));
-
-       Vector3 v = new Vector3(AllSlots[p.Y, p.X].transform.position.x + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.y + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.z);
-       card.transform.DOMove(v, delay); //AllSlots[p.Y, p.X].transform.position
-       return card;
-   }
-
-   public void SetCardAsset(OneCardManager card, CardAsset cardAsset)
-   {
-       card.cardAsset = cardAsset;
-   }
+        List<OneCardManager> nList = GetValidMoves(pos, arr);
+        List<OneCardManager> nList2 = new List<OneCardManager>();
+        foreach (OneCardManager card in nList)
+        {
+            List<OneCardManager> nSub = GetValidMovesDist(card.point, card.arrows, dist - 1);
+            foreach (OneCardManager card2 in nSub)
+            {
+                if (!nList.Contains(card2)) nList2.Add(card2); //TODO fix bug here
+            }
+        }
+        nList.AddRange(nList2);
+        return nList;
+    }
 
 
-   public void RemoveEmptySlot(Point p)
-   {
-       EmptyCardSlots.Remove(AllSlots[p.Y, p.X]);
-   }
-   public IEnumerator DealOutFieldCards(float delay)
-   {   // itterates through the emptycardslot list and spawns cards at each.
-       // coud convert list to array, go through array and delte list.
-       OneCardManager card;
-       int count = EmptyCardSlots.Count;
+    public OneCardManager CreateCard(Point p, GameObject cardPrefab, GameObject initPosition, CardAsset cardAsset, float delay)
+    {
+        //card = Instantiate(cardPrefab);
 
-       if (count > 0)
-       {
-           for (int i = EmptyCardSlots.Count-1; i >= 0; i--)
-           {                
-               AudioManager.instance.Play("dealCardSound");
-               //FindObjectOfType<AudioManager>().Play("cardPlace1");
+        //keep it bewtween 2 and 1
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": CreateCard()";
+        OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-1, 1))).GetComponent<OneCardManager>();
+        AllCards.Add(card);
 
-               Vector2 newPos = EmptyCardSlots[i].transform.position;
-               card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], delay);
+        card.transform.SetParent(FieldCardParent.transform, false);
+        card.cardAsset = cardAsset;
+        card.ReadCardFromAsset();
+        card.point = p;
 
-               //maybe add some stuff to card deal in animaton
+        EmptyCardSlots.Remove(AllSlots[p.Y, p.X]); // cannot put it here sadly
+        card.transform.position = initPosition.transform.position;
+        //Debug.Log("R_"+card.transform.rotation);
+        //card.transform.Rotate(new Vector3(1, 2, -1));
 
+        Vector3 v = new Vector3(AllSlots[p.Y, p.X].transform.position.x + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.y + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.z);
+        card.transform.DOMove(v, delay); //AllSlots[p.Y, p.X].transform.position
+        return card;
+    }
 
-
-               //EmptyCardSlots.Remove(EmptyCardSlots[i]);
-               yield return new WaitForSeconds(delay);
-           }
-       }
-       yield return null;
-   }
-   public void DeleteAllCards(){
-       while (AllCards.Count>0)
-       {
-           DeleteCard(AllCards[0]);
-       }
-
-   } 
-   public void DeleteCard(OneCardManager card)
-   {
-       //Debug.Log(card.point.X + " " + card.point.Y);
-
-       AddEmptySlot(card.point);
-       StartCoroutine(card.DeleteThisCard());
-   }
-
-   public void AddEmptySlot(Point p)
-   {
-       EmptyCardSlots.Add(AllSlots[p.Y, p.X]);
-   }
-
-   public List<OneCardManager> GetNeighborCards(OneCardManager card)
-   {
-       List<OneCardManager> nList = new List<OneCardManager>();
-
-       if (card != null)
-       {
-           OneCardManager neighbor;
-
-           foreach (Vector2 dir in directions)
-           {
-               Point p = new Point(card.point.X + (int)dir.x, card.point.Y + (int)dir.y);
-
-               if (FindFieldCardAtPoint(p) != null)
-               {
-                   neighbor = FindFieldCardAtPoint(p);
-                   nList.Add(neighbor);
-               }
-
-           }
-       }
-       return nList;
-   }
-
-   public int getAdjencyBonus(OneCardManager card)
-   {   
-       List<OneCardManager> NeigborCards = GetNeighborCards(card);
-       int bonus = 0;
-
-       foreach (OneCardManager neigbor in NeigborCards)
-       {
-
-           if (neigbor.cardAsset.Type == CardType.Monster) // check if field card
-           {
-               bonus += 1;
-           }
-
-       }
-       return bonus;
-   }
-   void Update() // all for testing
-   {
-       if (Input.GetKeyDown(KeyCode.T))
-       {
-           //Generate();
-           StartCoroutine(DealOutFieldCards(0.2f));
-       }
-       if (Input.GetKeyDown(KeyCode.I))
-       {
-
-           SwapCard(new Point(1, 1), new Point(0, 0));
-           //Generate();
-           //StartCoroutine(GenerateTest());
-       }
+    public void SetCardAsset(OneCardManager card, CardAsset cardAsset)
+    {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": SetCardAsset()";
+        card.cardAsset = cardAsset;
+    }
 
 
-       if (Input.GetKeyDown(KeyCode.Y))
-       {
-           //Generate();
+    public void RemoveEmptySlot(Point p)
+    {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": RemoveEmptySlot()";
+        EmptyCardSlots.Remove(AllSlots[p.Y, p.X]);
+    }
+    public IEnumerator DealOutFieldCards(float delay)
+    {   // itterates through the emptycardslot list and spawns cards at each.
+        // coud convert list to array, go through array and delte list.
+        OneCardManager card;
+        int count = EmptyCardSlots.Count;
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": DealOutFieldCards()";
+        if (count > 0)
+        {
+            for (int i = EmptyCardSlots.Count - 1; i >= 0; i--)
+            {
+                AudioManager.instance.Play("dealCardSound");
+                //FindObjectOfType<AudioManager>().Play("cardPlace1");
 
-      DeleteAllCards();
+                Vector2 newPos = EmptyCardSlots[i].transform.position;
+                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], delay);
+
+                //maybe add some stuff to card deal in animaton
 
 
 
-       }
-       if (Input.GetKeyDown(KeyCode.K))
-       {
-           //For Swapping();
-           //last_fire_time = Time.time;
+                //EmptyCardSlots.Remove(EmptyCardSlots[i]);
+                yield return new WaitForSeconds(delay);
+            }
+        }
+        yield return null;
+    }
+    public void DeleteAllCards()
+    {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : DeleteAllCards()";
+        while (AllCards.Count > 0)
+        {
+            DeleteCard(AllCards[0]);
+        }
+
+    }
+    public void DeleteCard(OneCardManager card)
+    {
+        //Debug.Log(card.point.X + " " + card.point.Y);
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : DeleteCard()";
+        AddEmptySlot(card.point);
+        StartCoroutine(card.DeleteThisCard());
+    }
+
+    public void AddEmptySlot(Point p)
+    {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : AddEmptySlot()";
+        EmptyCardSlots.Add(AllSlots[p.Y, p.X]);
+    }
+
+    public List<OneCardManager> GetNeighborCards(OneCardManager card)
+    {
+        List<OneCardManager> nList = new List<OneCardManager>();
+
+        if (card != null)
+        {
+            OneCardManager neighbor;
+
+            foreach (Vector2 dir in directions)
+            {
+                Point p = new Point(card.point.X + (int)dir.x, card.point.Y + (int)dir.y);
+
+                if (FindFieldCardAtPoint(p) != null)
+                {
+                    neighbor = FindFieldCardAtPoint(p);
+                    nList.Add(neighbor);
+                }
+
+            }
+        }
+        return nList;
+    }
+
+    public int getAdjencyBonus(OneCardManager card)
+    {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : getAdjencyBonus()";
+        List<OneCardManager> NeigborCards = GetNeighborCards(card);
+        int bonus = 0;
+
+        foreach (OneCardManager neigbor in NeigborCards)
+        {
+
+            if (neigbor.cardAsset.Type == CardType.Monster) // check if field card
+            {
+                bonus += 1;
+            }
+
+        }
+        return bonus;
+    }
+    void Update() // all for testing
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": ";
+            //ChatBot2.text = "Starting on: " + System.DateTime.Now.ToString("hh:mm:ss");
+            ChatBot.SetActive(true);
+
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            //Generate();
+            StartCoroutine(DealOutFieldCards(0.2f));
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+
+            SwapCard(new Point(1, 1), new Point(0, 0));
+            //Generate();
+            //StartCoroutine(GenerateTest());
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            //Generate();
+
+            DeleteAllCards();
+
+
+
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            //For Swapping();
+            //last_fire_time = Time.time;
 
 
 
 
-       }
-       if (Input.GetKeyDown(KeyCode.U))
-       {
-           UpdateCards();
-       }
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            UpdateCards();
+        }
 
-   }
+    }
 
-   public void HighlightPaths(OneCardManager card)
-   {
-       /*
-       var allWays = new List<List<OneCardManager>>();
+    public void HighlightPaths(OneCardManager card)
+    {
+        /*
+        var allWays = new List<List<OneCardManager>>();
 
-       List<OneCardManager> SelectableCards1 = new List<OneCardManager>();
-       List<OneCardManager> SelectableCards2 = new List<OneCardManager>();
-       List<OneCardManager> SelectableCards3 = new List<OneCardManager>();
-       List<OneCardManager> SelectableCards4 = new List<OneCardManager>();
+        List<OneCardManager> SelectableCards1 = new List<OneCardManager>();
+        List<OneCardManager> SelectableCards2 = new List<OneCardManager>();
+        List<OneCardManager> SelectableCards3 = new List<OneCardManager>();
+        List<OneCardManager> SelectableCards4 = new List<OneCardManager>();
 
-       SelectableCards1 = HighlightArrows(card); // 1 AP
-       foreach (OneCardManager s in SelectableCards1)
-       {
-           allWays.Add(new List<OneCardManager> {card});
-       }
+        SelectableCards1 = HighlightArrows(card); // 1 AP
+        foreach (OneCardManager s in SelectableCards1)
+        {
+            allWays.Add(new List<OneCardManager> {card});
+        }
 
-       if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 2)
-       {
-           foreach (OneCardManager ss in SelectableCards1) //2 AP
-           {
-               SelectableCards2 = HighlightArrows(ss);
-               allWays.Add(new List<OneCardManager> { card, ss});
+        if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 2)
+        {
+            foreach (OneCardManager ss in SelectableCards1) //2 AP
+            {
+                SelectableCards2 = HighlightArrows(ss);
+                allWays.Add(new List<OneCardManager> { card, ss});
 
 
-               if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
-               {
-                   foreach (OneCardManager sss in SelectableCards2) //3 AP
-                   {
-                       SelectableCards3 = HighlightArrows(sss);
-                       allWays.Add(new List<OneCardManager> { card, ss, sss});
+                if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
+                {
+                    foreach (OneCardManager sss in SelectableCards2) //3 AP
+                    {
+                        SelectableCards3 = HighlightArrows(sss);
+                        allWays.Add(new List<OneCardManager> { card, ss, sss});
 
-                       if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
-                       {
-                           foreach (OneCardManager ssss in SelectableCards3) //4 AP
-                           {
-                               SelectableCards4 = HighlightArrows(ssss);
-                               allWays.Add(new List<OneCardManager> { card, ss, sss,ssss});
+                        if (GameManager.Instance.CurrentPlayerTurn.ActionPoints >= 3)
+                        {
+                            foreach (OneCardManager ssss in SelectableCards3) //4 AP
+                            {
+                                SelectableCards4 = HighlightArrows(ssss);
+                                allWays.Add(new List<OneCardManager> { card, ss, sss,ssss});
 
-                           }
-                       } 
-                   }
-               }
-           }
-       }
+                            }
+                        } 
+                    }
+                }
+            }
+        }
 
-       Debug.Log(allWays);
-       foreach (List<OneCardManager> l in allWays)
-       {
-           Debug.Log(l.Point.X);
-       }       
-       */
+        Debug.Log(allWays);
+        foreach (List<OneCardManager> l in allWays)
+        {
+            Debug.Log(l.Point.X);
+        }       
+        */
     }
 
     public void UpdateCards() // responsible for adjecny bonus and arrow glow
     {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : UpdateCards()";
         List<OneCardManager> SelectableCards = new List<OneCardManager>();
         List<OneCardManager> HighlightableCards = new List<OneCardManager>();
         List<OneCardManager>[] a = new List<OneCardManager>[100];
@@ -624,13 +648,13 @@ public class BoardManager : MonoBehaviour {
             if (card.cardAsset.Type == CardType.Monster) // check if field card
             {
                 card.AdjencyBonus = getAdjencyBonus(card);
-                
+
             }
             if (card.cardAsset.Type != CardType.Spell) // check if field card
             {
                 card.gameObject.GetComponent<Selector>().isSelectable = false;
             }
-           
+
         }
 
         SelectableCards = GetValidMoves(GameManager.Instance.CurrentPlayerTurn.point, GameManager.Instance.CurrentPlayerTurn.arrows);
@@ -641,12 +665,12 @@ public class BoardManager : MonoBehaviour {
         {
             SelectableCards.Clear();
         }
-            
+
 
 
         foreach (OneCardManager c in SelectableCards)
         {
-            Selector s; 
+            Selector s;
             if (c.cardAsset.Type == CardType.Hp ||
                 c.cardAsset.Type == CardType.Monster ||
                 c.cardAsset.Type == CardType.Neutral)
@@ -654,7 +678,7 @@ public class BoardManager : MonoBehaviour {
                 c.CardFaceInnerGlowImage.enabled = true;
                 s = c.gameObject.GetComponent<Selector>();
                 s.isSelectable = true;
-            }  
+            }
         }
 
 
@@ -679,6 +703,7 @@ public class BoardManager : MonoBehaviour {
 
     public void HighlightEndZones()
     {
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : HighlightEndZones()";
         Top.GetComponent<EndzoneManager>().isSelectable = false;
         Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
         Bottom.GetComponent<EndzoneManager>().isSelectable = false;
@@ -693,18 +718,21 @@ public class BoardManager : MonoBehaviour {
         foreach (OneCardManager cards in HighlightableCards)
         {
 
-            if (IsEndzoneValid(cards.point)) {
+            if (IsEndzoneValid(cards.point))
+            {
                 if (cards.point.Y == 1)
                 {
                     BoardManager.Instance.Bottom.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
-                } else
+                }
+                else
                 {
                     BoardManager.Instance.Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = true;
                 }
             }
         }
 
-        if (GameManager.Instance.CurrentPlayerTurn.myCardManager != null && GameManager.Instance.CurrentPlayerTurn.ActionPoints > 0) {
+        if (GameManager.Instance.CurrentPlayerTurn.myCardManager != null && GameManager.Instance.CurrentPlayerTurn.ActionPoints > 0)
+        {
             if (IsEndzoneValid(GameManager.Instance.CurrentPlayerTurn.myCardManager.point))
             {
                 if (GameManager.Instance.CurrentPlayerTurn.myCardManager.point.Y == 0)
@@ -726,7 +754,7 @@ public class BoardManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(1f); // very strage behavor if I delete this
         yield return StartCoroutine(DealOutFieldCards(0.2f));
-
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : UpdateBoard()";
         UpdateCards();
 
         // todo set glows
