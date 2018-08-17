@@ -46,6 +46,7 @@ public class APVisual : MonoBehaviour {
         set
         {
             //Debug.Log("Changed mana this turn to: " + value);
+<<<<<<< Updated upstream
             if (value >= totalAp) //use a boost
             {
                 ActionPoints[value - 1].color = Color.white;
@@ -64,6 +65,24 @@ public class APVisual : MonoBehaviour {
                 else
                     availableAp = value;
 
+=======
+            if (availableAp > totalAp) //removing extra AP from bar AFTER BOOST
+            {
+                for (int i = totalAp; i < availableAp; i++)
+                {
+                    ActionPoints[i].color = Color.clear;
+                }
+            }
+ 
+            if (value < 0)
+                availableAp = 0;
+            else
+                availableAp = value;
+
+
+            if (availableAp <= totalAp) //NORMAL SITUATION
+            {
+>>>>>>> Stashed changes
                 for (int i = 0; i < totalAp; i++)
                 {
                     if (i < availableAp)
@@ -71,11 +90,21 @@ public class APVisual : MonoBehaviour {
                     else
                         ActionPoints[i].color = Color.gray;
                 }
+<<<<<<< Updated upstream
             }
             //if (value > totalAp)
             //    availableAp = totalAp;
             
            
+=======
+            } else //ADDING IN EXTRA AP FROM BOOST
+            {
+                for (int i = 0; i < availableAp; i++)
+                {
+                        ActionPoints[i].color = Color.white;                   
+                }
+            }
+>>>>>>> Stashed changes
             
 
             // update the text

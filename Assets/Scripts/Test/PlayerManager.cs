@@ -194,7 +194,7 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Replace2":
-                yield return StartCoroutine(gm.selectionManager.getSelectionWithPlayers(2));
+                yield return StartCoroutine(gm.selectionManager.getSelectionNoPlayers(2));
                 if (gm.selectionManager.points.Count == 2)
                 {
                     boardManager.Replace2(gm.selectionManager.points[0], gm.selectionManager.points[1]);
