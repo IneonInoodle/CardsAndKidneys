@@ -122,8 +122,11 @@ public class PlayerManager : TurnManager {
         {
             return actionPoints;
         }
-        set
-        {   
+        set 
+        {
+            Debug.Log("setting");
+            Debug.Log(value);
+            if (value >= 0)
             actionPoints = value;
             if (actionPoints > 4)
                 actionPoints = 4;
@@ -249,6 +252,7 @@ public class PlayerManager : TurnManager {
         myCardManager.CardFaceGlowObject.SetActive(false);
 
         MaxAp = 1;
+        Debug.Log("actionpoints0");
         ActionPoints = 0;
 
         apvis.AvailableAp = ActionPoints;
@@ -324,8 +328,8 @@ public class PlayerManager : TurnManager {
 
                  mySequence.Append(playerKidneys[i].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
                  mySequence.Append(playerKidneys[i].transform.DOMove(pos, 1.2f));
-                AudioManager.instance.Play("dropKidney");
-                AudioManager.instance.Play("splat");
+                //AudioManager.instance.Play("dropKidney");
+                //AudioManager.instance.Play("splat");
                 DOTween.Play(mySequence);
 
                 playerKidneys.Remove(playerKidneys[i]);
@@ -386,7 +390,7 @@ public class PlayerManager : TurnManager {
                 Debug.Log("FUCUCUCU");
                 
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
-                AudioManager.instance.Play("stealKidneySound");
+                //AudioManager.instance.Play("stealKidneySound");
 
             }
         }

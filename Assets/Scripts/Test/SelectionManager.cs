@@ -73,11 +73,6 @@ public class SelectionManager : MonoBehaviour {
         StartCoroutine(getSelectionWithPlayers(2));
     }
 
-    public void ClearMeBot()
-    {
-        ChatBot2.text = "";
-    }
-
     public IEnumerator getSelectionWithPlayers(int amount)
     {
         isSelectingForSpellCards = true;

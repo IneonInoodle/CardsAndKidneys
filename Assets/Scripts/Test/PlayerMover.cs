@@ -117,7 +117,7 @@ public void setPlayerArrows(arrows arrowz)
                 playerManager.myCardManager.transform.DOMove(boardManager.AllSlots[des.Y, des.X].transform.position, delay);
                 playerManager.point = des;
                 playerManager.myCardManager.point = des;
-
+                Debug.Log("actionpoints");
                 playerManager.ActionPoints--;
                 playerManager.PickUpKidneyFromBoard();
 
@@ -188,6 +188,7 @@ public void setPlayerArrows(arrows arrowz)
             {
                 playerManager.StealKidney();
             }
+            Debug.Log("actionpoints");
             playerManager.ActionPoints--;
         }
 
@@ -224,6 +225,7 @@ public void setPlayerArrows(arrows arrowz)
         yield return new WaitForSeconds(0.5f);
 
         playerManager.myCardManager = null;
+        Debug.Log("actionpoints");
         playerManager.ActionPoints--;
         playerManager.button.interactable = true;
         BoardManager.Instance.UpdateCards();
@@ -253,7 +255,9 @@ public void setPlayerArrows(arrows arrowz)
                 playerManager.myCardManager = playerManager.myPlayerCard.GetComponent<OneCardManager>();
 
                 //last 2 lines removed for testing
+                Debug.Log("actionpoints");
                 playerManager.ActionPoints--;
+                Debug.Log(playerManager.ActionPoints);
                 playerManager.point = des;
 
                 if (playerManager.playerKidneys.Count < 1)

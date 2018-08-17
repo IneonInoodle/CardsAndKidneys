@@ -392,6 +392,8 @@ public class BoardManager : MonoBehaviour
 
         List<OneCardManager> nList = GetValidMoves(pos, arr);
         List<OneCardManager> nList2 = new List<OneCardManager>();
+        Debug.Log(nList.Count);
+        Debug.Log(dist);
         foreach (OneCardManager card in nList)
         {
             List<OneCardManager> nSub = GetValidMovesDist(card.point, card.arrows, dist - 1);
