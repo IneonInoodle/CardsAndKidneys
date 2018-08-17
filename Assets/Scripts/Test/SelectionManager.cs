@@ -13,6 +13,7 @@ public class SelectionManager : MonoBehaviour {
     public GameObject blackScreen;
     public GameObject ribbon;
     public Text RibbonText;
+    public Text ChatBot2;
     public Button confirmButton;
 
     public bool isSelectingForSpellCards = false;
@@ -70,6 +71,11 @@ public class SelectionManager : MonoBehaviour {
     public void FuckMe()
     {
         StartCoroutine(getSelectionWithPlayers(2));
+    }
+
+    public void ClearMeBot()
+    {
+        ChatBot2.text = "";
     }
 
     public IEnumerator getSelectionWithPlayers(int amount)
