@@ -30,6 +30,8 @@ public class OneCardManager : MonoBehaviour {
 
     public GameObject CardFaceGlowObject;
     public Image CardFaceInnerGlowImage;
+
+    public Image CardGreyOutImage;
     Color normalColor = new Color(196f, 0f, 0f);
 
     public Point point;
