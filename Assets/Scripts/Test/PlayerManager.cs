@@ -455,8 +455,9 @@ public class PlayerManager : TurnManager {
     {   
         
             Vector3 ApLocation = new Vector3(0, 0, 0);
-        Debug.Log("MaxAp");
-            ApLocation = apvis.ActionPoints[MaxAp].transform.position;
+            Debug.Log("MaxAp");
+            Debug.Log(MaxAp);
+        ApLocation = apvis.ActionPoints[MaxAp].transform.position;
             StartCoroutine(AddMaxApp());
             DamageEffect.CreateMoveEffect(ParticalEff, myPlayerCard.transform.position, ApLocation);
     }

@@ -146,9 +146,11 @@ public void setPlayerArrows(arrows arrowz)
     }
    
     public IEnumerator MoveIntoEndzone(GameObject des)
-    {
+    {   
         SoundManager.PlaySound("dealCardSound");
         //needs to be coroutinetm
+
+        Debug.Log("MoreintoEndzone");
         isMoving = true;
         location loc = playerManager.myLocation;
 
@@ -188,8 +190,6 @@ public void setPlayerArrows(arrows arrowz)
             {
                 playerManager.StealKidney();
             }
-            Debug.Log("actionpoints");
-            playerManager.ActionPoints--;
         }
 
 
