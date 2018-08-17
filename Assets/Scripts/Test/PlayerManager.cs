@@ -213,8 +213,6 @@ public class PlayerManager : TurnManager {
                 break;
             case "Boost":
                 ActionPoints++;
-                MaxAp++;
-                apvis.TotalAp = MaxAp;
                 BoardManager.Instance.UpdateCards();
                 break;
         }

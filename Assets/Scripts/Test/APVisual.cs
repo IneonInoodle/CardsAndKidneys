@@ -46,21 +46,37 @@ public class APVisual : MonoBehaviour {
         set
         {
             //Debug.Log("Changed mana this turn to: " + value);
-
-            if (value > totalAp)
-                availableAp = totalAp;
-            else if (value < 0)
-                availableAp = 0;
-            else
-                availableAp = value;
-
-            for (int i = 0; i < totalAp; i++)
+            if (value >= totalAp) //use a boost
             {
-                if (i < availableAp)
-                    ActionPoints[i].color = Color.white;
+                ActionPoints[value - 1].color = Color.white;
+                availableAp = value;
+                for (int i = 0; i < totalAp+1; i++)
+                {
+                    if (i < availableAp)
+                        ActionPoints[i].color = Color.white;
+                    else
+                        ActionPoints[i].color = Color.gray;
+                }
+            } else
+            {
+                if (value < 0)
+                    availableAp = 0;
                 else
-                    ActionPoints[i].color = Color.gray;
+                    availableAp = value;
+
+                for (int i = 0; i < totalAp; i++)
+                {
+                    if (i < availableAp)
+                        ActionPoints[i].color = Color.white;
+                    else
+                        ActionPoints[i].color = Color.gray;
+                }
             }
+            //if (value > totalAp)
+            //    availableAp = totalAp;
+            
+           
+            
 
             // update the text
             //ProgressText.text = string.Format("{0}/{1}", availableCrystals.ToString(), totalAp.ToString());
