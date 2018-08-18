@@ -124,18 +124,20 @@ public class PlayerManager : TurnManager {
         }
         set 
         {
-            Debug.Log("setting");
-            Debug.Log(value);
-            if (value >= 0)
             actionPoints = value;
+            if (actionPoints < 0)
+                 actionPoints = 0;
+           
             if (actionPoints > 4)
                 actionPoints = 4;
+
             apvis.AvailableAp = actionPoints;
 
             if (actionPoints == 0)
             {   
                 if (myLocation == location.board)
                     myCardManager.CardFaceGlowObject.SetActive(false);
+
                 this.EndTurnGlowObject.SetActive(true);
                 // end turn
             }
@@ -276,30 +278,29 @@ public class PlayerManager : TurnManager {
     }
 
     public void CaptureKidney()
-    {
+    {   
+        
         int count = playerKidneys.Count;
 
         if (count > 0)
         {
-            for (int i = 0; i < count; i++)
+            Debug.Log("capture kidney");
+            patientKidneys.Add(playerKidneys[0]);
+
+            playerKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+            playerKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
+
+            playerKidneys[0].transform.SetParent(KidneyLocation.transform, true);
+            playerKidneys[0].SetActive(false);
+            playerKidneys.Remove(playerKidneys[0]);
+            Debug.Log("captureKidney");
+            kvis.AvailableKidneys++;
+            if (Hp < 10)
             {
-                patientKidneys.Add(playerKidneys[i]);
-
-                playerKidneys[i].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-                playerKidneys[i].transform.position = new Vector3(0f, 0f, 0f);
-
-                playerKidneys[i].transform.SetParent(KidneyLocation.transform, true);
-                playerKidneys[i].SetActive(false);
-                playerKidneys.Remove(playerKidneys[i]);
-                Debug.Log("captureKidney");
-                kvis.AvailableKidneys++;
-                TurnsWithoutKidney = 0;
-                if (Hp < 10)
-                {
-                    Hp = 10;
+                Hp = 10;
                     
-                }               
-            }
+            }               
+            
         }
     }
 
@@ -317,22 +318,23 @@ public class PlayerManager : TurnManager {
 
         if (count > 0)
         {
-            for (int i = 0; i < count; i++)
-            {   
-                cardslot.Kidneys.Add(playerKidneys[i]);
-                playerKidneys[i].transform.SetParent(cardslot.transform, false);
-                pos = playerKidneys[i].transform.position;
+            Debug.Log("removing kidney from player");
+                cardslot.Kidneys.Add(playerKidneys[0]);
+                playerKidneys.Remove(cardslot.Kidneys[0]);
+
+                cardslot.Kidneys[0].transform.SetParent(cardslot.transform, false);
+                pos = cardslot.Kidneys[0].transform.position;
 
 
                  Sequence mySequence = DOTween.Sequence();
 
-                 mySequence.Append(playerKidneys[i].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
-                 mySequence.Append(playerKidneys[i].transform.DOMove(pos, 1.2f));
+                 mySequence.Append(cardslot.Kidneys[0].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
+                 mySequence.Append(cardslot.Kidneys[0].transform.DOMove(pos, 1.2f));
                 //AudioManager.instance.Play("dropKidney");
                 //AudioManager.instance.Play("splat");
                 DOTween.Play(mySequence);
 
-                playerKidneys.Remove(playerKidneys[i]);
+                
                 //mySequence.Insert(0, transform.DORotate(new Vector3(3, 3, 3), mySequence.Duration()));
                 //mySequence.Insert(0, transform.DORotate(new Vector3(3, 3, 3), mySequence.Duration()));
 
@@ -346,8 +348,6 @@ public class PlayerManager : TurnManager {
 
 
             }
-        }
- 
     }
 
     public void PickUpKidneyFromBoard()
@@ -360,12 +360,11 @@ public class PlayerManager : TurnManager {
 
         if (count > 0 && playerKidneys.Count == 0)
         {
-            for (int i = 0; i < count; i++)
-            {
-                playerKidneys.Add(cardslot.Kidneys[i]);
-                cardslot.Kidneys[i].transform.SetParent(myPlayerCard.transform, false);
-                cardslot.Kidneys.Remove(cardslot.Kidneys[i]);
-            }
+            Debug.Log("PickupKidney");
+            playerKidneys.Add(cardslot.Kidneys[0]);
+            cardslot.Kidneys[0].transform.SetParent(myPlayerCard.transform, false);
+            cardslot.Kidneys.Remove(cardslot.Kidneys[0]);
+            
         }
     }
 
@@ -374,7 +373,7 @@ public class PlayerManager : TurnManager {
         
         PlayerManager otherPlayer = GameManager.Instance.getOtherPlayer(this);
 
-        if (playerKidneys.Count == 0 && otherPlayer.patientKidneys != null) // && OtherPlayer.patientKidneys != null
+        if (playerKidneys.Count == 0 && otherPlayer.patientKidneys.Count > 0) // && OtherPlayer.patientKidneys != null
         {   
             if (otherPlayer.mySide == myLocation){
                 playerKidneys.Add(otherPlayer.patientKidneys[0]); // give player the kidney
@@ -455,8 +454,8 @@ public class PlayerManager : TurnManager {
     {   
         
             Vector3 ApLocation = new Vector3(0, 0, 0);
-            Debug.Log("MaxAp");
-            Debug.Log(MaxAp);
+        Debug.Log("RaisAP max ap is");
+        Debug.Log(MaxAp);
         ApLocation = apvis.ActionPoints[MaxAp].transform.position;
             StartCoroutine(AddMaxApp());
             DamageEffect.CreateMoveEffect(ParticalEff, myPlayerCard.transform.position, ApLocation);

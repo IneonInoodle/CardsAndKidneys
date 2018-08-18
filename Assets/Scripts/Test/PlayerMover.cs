@@ -123,6 +123,8 @@ public void setPlayerArrows(arrows arrowz)
 
                 // need this order, dont change
                 boardManager.DeleteCard(desCard);
+
+
                 boardManager.RemoveEmptySlot(des);
 
                 Debug.Log("takingdamage");
@@ -150,7 +152,7 @@ public void setPlayerArrows(arrows arrowz)
         SoundManager.PlaySound("dealCardSound");
         //needs to be coroutinetm
 
-        Debug.Log("MoreintoEndzone");
+        Debug.Log("MoveintoEndzone");
         isMoving = true;
         location loc = playerManager.myLocation;
 
@@ -179,17 +181,15 @@ public void setPlayerArrows(arrows arrowz)
 
             if (playerManager.myLocation == playerManager.mySide)
             {
-                
+            if (playerManager.Hp > 0)
                 playerManager.CaptureKidney(); // capture kidney
             } else
             {
-            
+            Debug.Log("tt");
             playerManager.MoveKidneyFromCardToDoctor();
-
-            if (playerManager.mySide != playerManager.myLocation)
-            {
-                playerManager.StealKidney();
-            }
+            Debug.Log("tt");
+            playerManager.StealKidney();
+           
         }
 
 
@@ -219,7 +219,12 @@ public void setPlayerArrows(arrows arrowz)
 
         if (loc == location.board) // if player was in endzone, they have no card to delete
         {
+            Debug.Log("here");
+            Debug.Log(playerManager.myCardManager.point.X + " " + playerManager.myCardManager.point.Y);
+            Debug.Log(playerManager.point.X + " " + playerManager.point.Y);
+
             boardManager.DeleteCard(playerManager.myCardManager);
+            Debug.Log("here");
         }
         
         yield return new WaitForSeconds(0.5f);
@@ -258,6 +263,8 @@ public void setPlayerArrows(arrows arrowz)
                 Debug.Log("actionpoints");
                 playerManager.ActionPoints--;
                 Debug.Log(playerManager.ActionPoints);
+                Debug.Log("des");
+                Debug.Log(des.X + " " + des.Y);
                 playerManager.point = des;
 
                 if (playerManager.playerKidneys.Count < 1)
@@ -275,6 +282,10 @@ public void setPlayerArrows(arrows arrowz)
 
                 playerManager.myLocation = location.board;
                 int damage = int.Parse(fieldCardDes.DamageText.text);
+                playerManager.PickUpKidneyFromBoard(); // try to pickup le kidney
+                setPlayerArrows(temp);
+                boardManager.DeleteCard(fieldCardDes);
+                boardManager.RemoveEmptySlot(playerManager.point);
 
                 if (damage != 0)
                 {
@@ -285,26 +296,18 @@ public void setPlayerArrows(arrows arrowz)
 
                 if (fieldCardDes.cardAsset.Type == CardType.Monster)
                 {
-                    Debug.Log("RaisAP");
+                    
                     if (playerManager.Hp > 0)
                         playerManager.raiseAp();
                 }
 
 
-                setPlayerArrows(temp);
-
-
-
-                boardManager.DeleteCard(fieldCardDes);
-                boardManager.RemoveEmptySlot(playerManager.point);
-
-                
-                
-                
+    
                 
             }
         }
         isMoving = false; // card finished moving now can take input
+        yield return new WaitForSeconds(0.5f); // need to add a fucking state manager god damn this is ugly
         BoardManager.Instance.UpdateCards();
         yield return null;
     }

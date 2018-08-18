@@ -215,6 +215,7 @@ public class BoardManager : MonoBehaviour
 
     public CardSlotManager FindSlotAtPoint(Point p)
     {
+        Debug.Log(p.X + " " + p.Y);
         return AllSlots[p.Y, p.X];
     }
 
@@ -440,6 +441,9 @@ public class BoardManager : MonoBehaviour
 
     public void RemoveEmptySlot(Point p)
     {
+        Debug.Log(p.X + " " + p.Y);
+
+
         //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": RemoveEmptySlot()";
         EmptyCardSlots.Remove(AllSlots[p.Y, p.X]);
     }
