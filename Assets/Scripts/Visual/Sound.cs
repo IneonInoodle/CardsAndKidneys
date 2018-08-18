@@ -1,5 +1,7 @@
 ﻿using UnityEngine.Audio;
 using UnityEngine;
+using System;
+using DG.Tweening;
 
 [System.Serializable]
 public class Sound {
@@ -15,4 +17,5 @@ public class Sound {
     public AudioSource source;
 
     public bool loop;
+    public AudioMixer output;
 }

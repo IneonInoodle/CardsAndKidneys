@@ -4,8 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using UnityEngine.Experimental.UIElements;
-
+//using UnityEngine.Experimental.UIElements;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour {
     public Sound[] OneOffsounds;
@@ -14,16 +14,40 @@ public class AudioManager : MonoBehaviour {
     public Sound[] iceCubesSounds;
     public Sound[] doctor1Sounds;
     public Sound[] doctor2Sounds;
-
-
+    public AudioMixerGroup masterMixer;
+    public AudioMixer mainMixer;
+    [Range(-80f, 20f)]
+    public float volume;
+    public Slider mslider;
     public static AudioManager instance;
-
+    
     private Sound[][] AllSounds;
 
     // Use this for initialization
+
+    public void SetVolume(float volume)
+    {
+        mainMixer.SetFloat("volume", volume);
+    }
+
+    public void GetVolume()
+    {
+        mainMixer.GetFloat("volume", out volume);
+        mslider.value = volume;        
+    }
+
+    public void Start()
+    {
+       //mainMixer.SetFloat("volume", volume);
+    }
+
+    public void Update()
+    {
+      //  GetVolume(volume);
+    }
     void Awake()
     {
-
+        
         if (instance == null)
         {
             instance = this;
@@ -55,11 +79,18 @@ public class AudioManager : MonoBehaviour {
                 AllSounds[i][j].source.volume = AllSounds[i][j].volume;
                 AllSounds[i][j].source.pitch = AllSounds[i][j].pitch;
                 AllSounds[i][j].source.loop = AllSounds[i][j].loop;
+                AllSounds[i][j].source.outputAudioMixerGroup = masterMixer;
             }
         }
     }
 
     // Update is called once per frame
+
+   /* public static void SetVolume(float volume)
+    {
+        audioMixer.SetFloat("volume", volume);
+        audiomanager.
+    }*/
     public void Play(string name)
     {
         Sound s = null;

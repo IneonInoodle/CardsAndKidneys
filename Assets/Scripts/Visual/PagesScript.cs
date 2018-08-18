@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PagesScript : MonoBehaviour {
 
     [SerializeField]
     public int CurrentImageNr = 1;
+    public TextMeshProUGUI CurrentPage;
     public Image MainImage;
     public Sprite[] Images;
     void Awake ()
@@ -19,16 +21,18 @@ public class PagesScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+        CurrentPage.text = CurrentImageNr+1 + "/" + Images.Length;
     }
     public void NextImage()
     {
         MainImage.sprite = Images[CurrentImageNr + 1];
         CurrentImageNr++;
+        CurrentPage.text = CurrentImageNr+1+"/" + Images.Length;
     }
     public void PreviousImage()
     {
         MainImage.sprite = Images[CurrentImageNr - 1];
         CurrentImageNr--;
+        CurrentPage.text = CurrentImageNr+1 + "/" + Images.Length;
     }
 }
