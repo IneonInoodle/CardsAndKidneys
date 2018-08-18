@@ -312,27 +312,29 @@ public class PlayerManager : TurnManager {
         Vector3 pos;
         CardSlotManager cardslot;
         cardslot = boardManager.FindSlotAtPoint(point);
-        int count = playerKidneys.Count;
 
-        if (count > 0)
+        if (cardslot != null)
         {
-            Debug.Log("removing kidney from player");
-                cardslot.Kidneys.Add(playerKidneys[0]);
-                playerKidneys.Remove(cardslot.Kidneys[0]);
+            int count = playerKidneys.Count;
+
+            if (count > 0)
+            {
+                Debug.Log("removing kidney from player");
+                
 
                 cardslot.Kidneys[0].transform.SetParent(cardslot.transform, false);
                 pos = cardslot.Kidneys[0].transform.position;
 
 
-                 Sequence mySequence = DOTween.Sequence();
+                Sequence mySequence = DOTween.Sequence();
 
-                 mySequence.Append(cardslot.Kidneys[0].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
-                 mySequence.Append(cardslot.Kidneys[0].transform.DOMove(pos, 1.2f));
+                mySequence.Append(cardslot.Kidneys[0].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
+                mySequence.Append(cardslot.Kidneys[0].transform.DOMove(pos, 1.2f));
                 //AudioManager.instance.Play("dropKidney");
                 //AudioManager.instance.Play("splat");
                 DOTween.Play(mySequence);
 
-                
+
                 //mySequence.Insert(0, transform.DORotate(new Vector3(3, 3, 3), mySequence.Duration()));
                 //mySequence.Insert(0, transform.DORotate(new Vector3(3, 3, 3), mySequence.Duration()));
 
@@ -346,6 +348,18 @@ public class PlayerManager : TurnManager {
 
 
             }
+        } else // dropping in endzone need to return to patient
+        {
+            if (myLocation == mySide)
+            {
+                // capture kidney
+            } else
+            {
+                // other player.capturekidney
+            }
+
+        }
+        
     }
 
     public void PickUpKidneyFromBoard()
