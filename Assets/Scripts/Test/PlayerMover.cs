@@ -134,12 +134,19 @@ public void setPlayerArrows(arrows arrowz)
                 playerManager.takeDamage(int.Parse(desCard.DamageText.text));
                 if (desCard.cardAsset.Type == CardType.Monster && playerManager.Hp > 0)
                 {
+                    AudioManager.instance.Play("damage");
                     playerManager.raiseAp();
                 }
-                
-
+                else if (desCard.cardAsset.Type == CardType.Neutral)
+                {
+                    AudioManager.instance.Play("neutral");
+                }
+                else if (desCard.cardAsset.Type == CardType.Hp)
+                {
+                    AudioManager.instance.Play("hp");
+                }
                 // take damage from deleted card?
-                
+
                 yield return new WaitForSeconds(0.5f);
                 BoardManager.Instance.UpdateCards();
                 isMoving = false;
@@ -299,12 +306,21 @@ public void setPlayerArrows(arrows arrowz)
                 {
                     
                     if (playerManager.Hp > 0)
-                        playerManager.raiseAp();
+                        AudioManager.instance.Play("damage");
+                    playerManager.raiseAp();
+                }
+
+                else if (fieldCardDes.cardAsset.Type == CardType.Neutral)
+                {
+                    AudioManager.instance.Play("neutral");
+                }
+                else if (fieldCardDes.cardAsset.Type == CardType.Hp)
+                {
+                    AudioManager.instance.Play("hp");
                 }
 
 
-    
-                
+
             }
         }
          // card finished moving now can take input

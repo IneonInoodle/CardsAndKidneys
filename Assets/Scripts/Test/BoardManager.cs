@@ -434,7 +434,7 @@ public class BoardManager : MonoBehaviour
 
     public void SetCardAsset(OneCardManager card, CardAsset cardAsset)
     {
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": SetCardAsset()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": SetCardAsset()";
         card.cardAsset = cardAsset;
     }
 
@@ -444,7 +444,7 @@ public class BoardManager : MonoBehaviour
         Debug.Log(p.X + " " + p.Y);
 
 
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": RemoveEmptySlot()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": RemoveEmptySlot()";
         EmptyCardSlots.Remove(AllSlots[p.Y, p.X]);
     }
     public IEnumerator DealOutFieldCards(float delay)
@@ -452,7 +452,7 @@ public class BoardManager : MonoBehaviour
         // coud convert list to array, go through array and delte list.
         OneCardManager card;
         int count = EmptyCardSlots.Count;
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": DealOutFieldCards()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": DealOutFieldCards()";
         if (count > 0)
         {
             for (int i = EmptyCardSlots.Count - 1; i >= 0; i--)
@@ -475,7 +475,7 @@ public class BoardManager : MonoBehaviour
     }
     public void DeleteAllCards()
     {
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : DeleteAllCards()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : DeleteAllCards()";
         while (AllCards.Count > 0)
         {
             DeleteCard(AllCards[0]);
@@ -485,14 +485,14 @@ public class BoardManager : MonoBehaviour
     public void DeleteCard(OneCardManager card)
     {
         //Debug.Log(card.point.X + " " + card.point.Y);
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : DeleteCard()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : DeleteCard()";
         AddEmptySlot(card.point);
         StartCoroutine(card.DeleteThisCard());
     }
 
     public void AddEmptySlot(Point p)
     {
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : AddEmptySlot()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : AddEmptySlot()";
         EmptyCardSlots.Add(AllSlots[p.Y, p.X]);
     }
 
@@ -521,7 +521,7 @@ public class BoardManager : MonoBehaviour
 
     public int getAdjencyBonus(OneCardManager card)
     {
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : getAdjencyBonus()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : getAdjencyBonus()";
         List<OneCardManager> NeigborCards = GetNeighborCards(card);
         int bonus = 0;
 
@@ -540,9 +540,9 @@ public class BoardManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": ";
-            //ChatBot2.text = "Starting on: " + System.DateTime.Now.ToString("hh:mm:ss");
-            //ChatBot.SetActive(true);
+            ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": ";
+            ChatBot2.text = "Starting on: " + System.DateTime.Now.ToString("hh:mm:ss");
+            ChatBot.SetActive(true);
 
         }
         if (Input.GetKeyDown(KeyCode.T))
@@ -639,7 +639,7 @@ public class BoardManager : MonoBehaviour
 
     public void UpdateCards() // responsible for adjecny bonus and arrow glow
     {
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : UpdateCards()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : UpdateCards()";
         List<OneCardManager> SelectableCards = new List<OneCardManager>();
         List<OneCardManager> HighlightableCards = new List<OneCardManager>();
         List<OneCardManager>[] a = new List<OneCardManager>[100];
@@ -709,7 +709,7 @@ public class BoardManager : MonoBehaviour
 
     public void HighlightEndZones()
     {
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : HighlightEndZones()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : HighlightEndZones()";
         Top.GetComponent<EndzoneManager>().isSelectable = false;
         Top.GetComponent<EndzoneManager>().PortraitGlowImage.enabled = false;
         Bottom.GetComponent<EndzoneManager>().isSelectable = false;
@@ -760,7 +760,7 @@ public class BoardManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f); // very strage behavor if I delete this
         yield return StartCoroutine(DealOutFieldCards(0.2f));
-        //ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : UpdateBoard()";
+        ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : UpdateBoard()";
         UpdateCards();
 
         // todo set glows

@@ -203,6 +203,7 @@ public class GameManager : MonoBehaviour {
     }
     public IEnumerator UpdateTurn() //switches player turns
     {
+        
         //AudioManager.instance.Play("pressEndTurnButtonSound");
         if (CurrentPlayerTurn == null)
         {
@@ -214,19 +215,21 @@ public class GameManager : MonoBehaviour {
         //changes player turn 
         if (CurrentPlayerTurn == players[0])
         {
+           
             if (players[0].IsTurnComplete)
             {
                 if (players[0].TurnsWithoutKidney >= 3)
                 {
                     messageManager.ShowMessage("You Loose Boy", 1f);
                     isGameOver = true;
-
+                    yield return new WaitForSeconds(3f);
                     SceneManager.LoadScene("MainMenu");
                 }
                 else if (players[0].patientKidneys.Count == 2)
                 {
                     messageManager.ShowMessage("You Win", 1f);
                     isGameOver = true;
+                    yield return new WaitForSeconds(3f);
                     SceneManager.LoadScene("MainMenu");
                 }
                 else
@@ -254,6 +257,7 @@ public class GameManager : MonoBehaviour {
                 {
                     messageManager.ShowMessage("You Win", 1f);
                     isGameOver = true;
+                    yield return new WaitForSeconds(3f);
                     SceneManager.LoadScene("MainMenu");
                 } else
                 {

@@ -192,7 +192,7 @@ public class OneCardManager : MonoBehaviour {
         CardFaceFrameImage.sprite = cardAsset.FrameImage;
         CardBodyImage.sprite = cardAsset.CardBodyImage;
 
-        
+
 
         if (cardAsset.Type == CardType.Monster)
         {
@@ -202,7 +202,7 @@ public class OneCardManager : MonoBehaviour {
             CardArrowRightImage.sprite = cardAsset.CardArrowImage;
             DamageImage.sprite = cardAsset.DamageImage;
             DamageText.text = cardAsset.Damage.ToString();
-        } else if (cardAsset.Type == CardType.Hp || cardAsset.Type == CardType.Neutral)
+        } else if (cardAsset.Type == CardType.Hp || cardAsset.Type == CardType.Neutral) 
         {
             DamageText.text = cardAsset.Damage.ToString();
             DamageImage.enabled = false;

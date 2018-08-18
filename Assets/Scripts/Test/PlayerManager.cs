@@ -172,7 +172,7 @@ public class PlayerManager : TurnManager {
             case "Swap":
                 Debug.Log("starting swap");
                 yield return StartCoroutine(gm.selectionManager.getSelectionWithPlayers(2));
-
+                
                 Debug.Log(gm.selectionManager.points.Count);
                 if (gm.selectionManager.points.Count == 2)
                 {
@@ -184,9 +184,8 @@ public class PlayerManager : TurnManager {
                     Debug.Log("cancled");
                 }
                 break;
-            case "Rotate":
+            case "Rotate":                
                 Debug.Log("starting rotate");
-
                 yield return StartCoroutine(gm.selectionManager.getSelectionWithPlayers(1));
                 if (gm.selectionManager.points.Count == 1)
                 {
@@ -286,7 +285,6 @@ public class PlayerManager : TurnManager {
         {
             Debug.Log("capture kidney");
             patientKidneys.Add(playerKidneys[0]);
-
             playerKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
             playerKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
 
@@ -387,7 +385,7 @@ public class PlayerManager : TurnManager {
                 otherPlayer.patientKidneys[0].transform.localPosition = new Vector3(0f, 0f, 0f);
                 otherPlayer.patientKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
                 Debug.Log("FUCUCUCU");
-                
+                AudioManager.instance.Play("kidney");
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
                 //AudioManager.instance.Play("stealKidneySound");
 
