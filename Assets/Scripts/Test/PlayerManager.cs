@@ -85,7 +85,7 @@ public class PlayerManager : TurnManager {
     public location mySide; //top or bottom
     public location myLocation;
     private int maxAp;
-    public int MaxAp
+    public int AvailableAp
     {
         get { return maxAp; }
 
@@ -253,12 +253,12 @@ public class PlayerManager : TurnManager {
 
         myCardManager.CardFaceGlowObject.SetActive(false);
 
-        MaxAp = 1;
+        AvailableAp = 1;
         Debug.Log("actionpoints0");
         ActionPoints = 0;
 
         apvis.AvailableAp = ActionPoints;
-        apvis.TotalAp = MaxAp;
+        apvis.TotalAp = AvailableAp;
 
         Hp = 0;
         if (myLocation == location.board)
@@ -451,23 +451,25 @@ public class PlayerManager : TurnManager {
     }
 
     public void raiseAp()
-    {   
-        
-            Vector3 ApLocation = new Vector3(0, 0, 0);
+    {
+
+        Vector3 ApLocation = new Vector3(0, 0, 0);
         Debug.Log("RaisAP max ap is");
-        Debug.Log(MaxAp);
-        ApLocation = apvis.ActionPoints[MaxAp].transform.position;
-            StartCoroutine(AddMaxApp());
-            DamageEffect.CreateMoveEffect(ParticalEff, myPlayerCard.transform.position, ApLocation);
+        Debug.Log(AvailableAp);
+        if (AvailableAp < 4) { 
+            ApLocation = apvis.ActionPoints[AvailableAp].transform.position;
+        StartCoroutine(AddAvailableApp());
+        DamageEffect.CreateMoveEffect(ParticalEff, myPlayerCard.transform.position, ApLocation);
+         }
     }
 
 
-    public IEnumerator AddMaxApp()
+    public IEnumerator AddAvailableApp()
     {
         Debug.Log("ADDING AP!!");
         yield return new WaitForSeconds(1f);
-        MaxAp++;
-        apvis.TotalAp = MaxAp;
+        AvailableAp++;
+        apvis.TotalAp = AvailableAp;
         
     }
 
@@ -487,8 +489,8 @@ public class PlayerManager : TurnManager {
         base.Awake();
         boardManager = BoardManager.Instance;
         kvis.AvailableKidneys = 1;
-        MaxAp = 1;
-        apvis.TotalAp = MaxAp;
+        AvailableAp = 1;
+        apvis.TotalAp = AvailableAp;
         ActionPoints = 1;
         
         Hp = 10;

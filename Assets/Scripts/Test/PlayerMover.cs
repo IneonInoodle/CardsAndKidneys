@@ -38,7 +38,8 @@ public void setPlayerArrows(arrows arrowz)
 
     public void MoveToPoint(Point des, float delayTime = 0.25f)
     {
-        Debug.Log("moveToPoint");
+        if (isMoving)
+            return;
         // check if we are in the endzone
         if (playerManager.point.Y == -1) // moving out of endzone top
         {
@@ -306,8 +307,9 @@ public void setPlayerArrows(arrows arrowz)
                 
             }
         }
-        isMoving = false; // card finished moving now can take input
-        yield return new WaitForSeconds(0.5f); // need to add a fucking state manager god damn this is ugly
+         // card finished moving now can take input
+        yield return new WaitForSeconds(0.5f);
+        isMoving = false;// need to add a fucking state manager god damn this is ugly
         BoardManager.Instance.UpdateCards();
         yield return null;
     }

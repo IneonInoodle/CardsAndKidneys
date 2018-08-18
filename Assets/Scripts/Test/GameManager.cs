@@ -341,7 +341,7 @@ public class GameManager : MonoBehaviour {
 
 
     
-        player.ActionPoints = player.MaxAp;
+        player.ActionPoints = player.AvailableAp;
         CurrentPlayerTurn = player;
         player.IsTurnComplete = false;
 

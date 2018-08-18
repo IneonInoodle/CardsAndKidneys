@@ -132,8 +132,8 @@ public class BoardManager : MonoBehaviour
         DeleteCard(c1);
         DeleteCard(c2);
 
-        CreateCard(p1, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 0.2f);
-        CreateCard(p2, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 0.2f);
+        CreateCard(p1, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 0.5f);
+        CreateCard(p2, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 1f);
     }
 
     public void Damage(Point p1)
