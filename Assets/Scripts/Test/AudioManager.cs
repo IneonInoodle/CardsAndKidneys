@@ -4,27 +4,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-//using UnityEngine.Experimental.UIElements;
+
 using UnityEngine.UI;
 using UnityEditor;
 
 
-public class LabelFieldExample : EditorWindow
-{
-    [MenuItem("Examples/Editor GUILayout Label Usage")]
-    static void Init()
-    {
-        LabelFieldExample window = (LabelFieldExample)EditorWindow.GetWindow(typeof(LabelFieldExample), true, "My Empty Window");
-        window.Show();
-    }
-
-    public void OnGUI()
-    {
-        EditorGUILayout.LabelField("Time since start: ",
-            EditorApplication.timeSinceStartup.ToString());
-        this.Repaint();
-    }
-}
 public class AudioManager : MonoBehaviour {
     public Sound[] OneOffsounds;
     public Sound[] dealCardSounds;

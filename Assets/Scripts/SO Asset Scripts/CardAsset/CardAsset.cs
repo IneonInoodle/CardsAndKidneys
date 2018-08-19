@@ -32,10 +32,11 @@ public class CardAsset : ScriptableObject
     public Sprite CardImage;
     public Sprite CardBodyImage;
 
-    public Sprite CardArrowImage;
-
+    public Material ArrowInactiveMat;
+    public Material ArrowActiveMat;
+    public Material FrameMat;
+    
     public CardType Type;
-    public Sprite FrameImage;
 
     [Header("Field Card Info")]
     public Sprite DamageImage;

@@ -16,26 +16,26 @@ public class OneCardManager : MonoBehaviour {
     public CanvasGroup cg;
     [Header("Image References")]
     public Image CardTypeImage;
-    public Image CardGraphicImage;
 
+    public Image CardGraphicImage;
     public Image CardBodyImage;
     public Image DamageImage;
 
-    public Image CardArrowUpImage;
-    public Image CardArrowDownImage;
-    public Image CardArrowLeftImage;
-    public Image CardArrowRightImage;
-
-    public Image CardFaceFrameImage;
+    public GameObject CardArrowUp;
+    public GameObject CardArrowDown;
+    public GameObject CardArrowLeft;
+    public GameObject CardArrowRight;
 
     public GameObject CardFaceGlowObject;
-    public Image CardFaceInnerGlowImage;
 
+    public Image CardFaceInnerGlowImage;
     public Image CardGreyOutImage;
-    Color normalColor = new Color(196f, 0f, 0f);
+
+    public Material arrowActiveMat;
+    public Material arrowInactiveMat;
+    public Material cardFrameMat;
 
     public Point point;
-
     public arrows arrows = arrows.None;
 
     public void setRandomArrows()
@@ -63,47 +63,47 @@ public class OneCardManager : MonoBehaviour {
 
     public void updateArrows(arrows arrowz) {
 
-        CardArrowLeftImage.enabled = (arrowz & arrows.Left) != 0;
-        CardArrowRightImage.enabled = (arrowz & arrows.Right) != 0;
-        CardArrowDownImage.enabled = (arrowz & arrows.Down) != 0;
-        CardArrowUpImage.enabled = (arrowz & arrows.Up) != 0;
+        CardArrowLeft.SetActive((arrowz & arrows.Left) != 0);
+        CardArrowRight.SetActive((arrowz & arrows.Right) != 0);
+        CardArrowDown.SetActive((arrowz & arrows.Down) != 0);
+        CardArrowUp.SetActive((arrowz & arrows.Up) != 0);
+
         this.arrows = arrowz;
-
-
     }
 
     public void updateArrowsGlow(arrows arrowz)
     {
         if ((arrowz & arrows.Left) != 0)
         {
-            CardArrowLeftImage.color = normalColor;
+            CardArrowLeft.GetComponent<MeshRenderer>().material = arrowActiveMat;
+           
         } else
         {
-            CardArrowLeftImage.color = Color.black;
+            CardArrowLeft.GetComponent<MeshRenderer>().material = arrowInactiveMat;
         }
         if ((arrowz & arrows.Right) != 0)
         {
-            CardArrowRightImage.color = normalColor;
+            CardArrowRight.GetComponent<MeshRenderer>().material = arrowActiveMat;
         }
         else
         {
-            CardArrowRightImage.color = Color.black;
+            CardArrowRight.GetComponent<MeshRenderer>().material = arrowInactiveMat;
         }
         if ((arrowz & arrows.Up) != 0)
         {
-            CardArrowUpImage.color = normalColor;
+            CardArrowUp.GetComponent<MeshRenderer>().material = arrowActiveMat;
         }
         else
         {
-            CardArrowUpImage.color = Color.black;
+            CardArrowUp.GetComponent<MeshRenderer>().material = arrowInactiveMat;
         }
         if ((arrowz & arrows.Down) != 0)
         {
-            CardArrowDownImage.color = normalColor;
+            CardArrowDown.GetComponent<MeshRenderer>().material = arrowActiveMat;
         }
         else
         {
-            CardArrowDownImage.color = Color.black;
+            CardArrowDown.GetComponent<MeshRenderer>().material = arrowInactiveMat;          
         }
     }
 // field card
@@ -156,13 +156,14 @@ public class OneCardManager : MonoBehaviour {
             
             setRandomArrows();
             updateArrows(arrows);//meh
-            
+            CardFaceInnerGlowImage.enabled = false;
+
         } else
         {
             CardGreyOutImage.enabled = false;
         }
        
-        CardFaceInnerGlowImage.enabled = false;
+        
         CardFaceGlowObject.SetActive(false);
 
 }
@@ -189,29 +190,29 @@ public class OneCardManager : MonoBehaviour {
         // 5) Change the card graphic sprite
 
         CardGraphicImage.sprite = cardAsset.CardImage;
-        CardFaceFrameImage.sprite = cardAsset.FrameImage;
         CardBodyImage.sprite = cardAsset.CardBodyImage;
 
 
+        cardFrameMat = cardAsset.FrameMat;
 
         if (cardAsset.Type == CardType.Monster)
         {
-            CardArrowUpImage.sprite = cardAsset.CardArrowImage;
-            CardArrowDownImage.sprite = cardAsset.CardArrowImage;
-            CardArrowLeftImage.sprite = cardAsset.CardArrowImage;
-            CardArrowRightImage.sprite = cardAsset.CardArrowImage;
+            arrowInactiveMat = cardAsset.ArrowInactiveMat;
+            arrowActiveMat = cardAsset.ArrowActiveMat;
+
             DamageImage.sprite = cardAsset.DamageImage;
             DamageText.text = cardAsset.Damage.ToString();
         } else if (cardAsset.Type == CardType.Hp || cardAsset.Type == CardType.Neutral) 
         {
+
+            arrowInactiveMat = cardAsset.ArrowInactiveMat;
+            arrowActiveMat = cardAsset.ArrowActiveMat;
+
             DamageText.text = cardAsset.Damage.ToString();
             DamageImage.enabled = false;
             DamageText.enabled = false;
 
-            CardArrowUpImage.sprite = cardAsset.CardArrowImage;
-            CardArrowDownImage.sprite = cardAsset.CardArrowImage;
-            CardArrowLeftImage.sprite = cardAsset.CardArrowImage;
-            CardArrowRightImage.sprite = cardAsset.CardArrowImage;
+
 
         } else if (cardAsset.Type == CardType.Spell)
         {
@@ -239,7 +240,7 @@ public class OneCardManager : MonoBehaviour {
     {
         AudioManager.instance.Play("cardFlip");
         this.GetComponent<DragRotator>().enabled = false;
-        this.transform.DOLocalRotate(new Vector3(0f, 360f, this.transform.localRotation.eulerAngles.z), 0.5f, RotateMode.FastBeyond360); // why doesnt it work
+        this.transform.DOLocalRotate(new Vector3(0f, 360f + 180f, this.transform.localRotation.eulerAngles.z), 0.5f, RotateMode.FastBeyond360); // why doesnt it work
        
         yield return null;
     }

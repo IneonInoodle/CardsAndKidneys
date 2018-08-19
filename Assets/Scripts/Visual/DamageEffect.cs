@@ -98,6 +98,7 @@ public class DamageEffect : MonoBehaviour {
 
         newDamageEffect.transform.SetParent(go.transform, false);
         newDamageEffect.transform.position = go.transform.position;
+        newDamageEffect.transform.localScale = new Vector3(-0.43f,0.5f,1);
  
         // Instantiate a DamageEffect from prefab
 

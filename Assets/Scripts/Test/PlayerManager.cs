@@ -6,6 +6,21 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using System;
 
+public class statusEffect
+{
+    public statusEffecttype St;
+    public int Rounds; //total number of rounds to apply effect
+    public int Val;
+
+    public statusEffect(statusEffecttype st, int rounds, int val)
+    {
+        St = st;
+        Rounds = rounds;
+        Val = val;
+    }
+
+}
+public enum statusEffecttype {poisoned,healing,neutral};
 
 
 public enum location { top, bottom, board };
@@ -45,7 +60,7 @@ public enum arrows
 public class PlayerManager : TurnManager {
 
     public arrows arrows = arrows.None;
-
+    private List <statusEffect> statusEffects = new List<statusEffect>();
     public PlayerMover playerMover;
     public PlayerInput playerInput;
 
@@ -212,9 +227,14 @@ public class PlayerManager : TurnManager {
             case "Damage":
                 Debug.Log("WTF");
                 GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
+
+                statusEffect st = new statusEffect(statusEffecttype.poisoned, 3, 3);
+                statusEffects.Add(st);
                 break;
             case "Heal":
-                GameManager.Instance.CurrentPlayerTurn.Hp += 5;              
+                GameManager.Instance.CurrentPlayerTurn.Hp += 5;
+                statusEffect st2 = new statusEffect(statusEffecttype.healing, 2, 3);
+                statusEffects.Add(st2);
                 break;
             case "Boost":
                 ActionPoints++;
@@ -226,6 +246,25 @@ public class PlayerManager : TurnManager {
         
         yield return new WaitForSeconds(0.1f);
         GameManager.Instance.EnableInputs();
+    }
+    public void cancleOutStatusEffects()
+    {
+      
+
+        bool hasFailed = false; 
+
+        while (hasFailed == false)
+        {
+            statusEffect hasHeal = statusEffects.Find(x => x.St == statusEffecttype.healing); 
+            statusEffect hasPoison = statusEffects.Find(x => x.St == statusEffecttype.poisoned);
+
+            if (hasHeal != null && hasPoison != null)
+            {
+
+            }
+
+        }
+        
     }
     public void MoveKidneyFromCardToDoctor()
     {

@@ -412,7 +412,7 @@ public class BoardManager : MonoBehaviour
 
         //keep it bewtween 2 and 1
         
-        OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 0, 0 + UnityEngine.Random.Range(-1, 1))).GetComponent<OneCardManager>();
+        OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 180, 0 + UnityEngine.Random.Range(-1, 1))).GetComponent<OneCardManager>();
         AllCards.Add(card);
 
         card.transform.SetParent(FieldCardParent.transform, false);
@@ -426,6 +426,10 @@ public class BoardManager : MonoBehaviour
         //card.transform.Rotate(new Vector3(1, 2, -1));
 
         Vector3 v = new Vector3(AllSlots[p.Y, p.X].transform.position.x + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.y + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.z);
+        if (card.cardAsset.Type == CardType.Player)
+        {
+            v.y = 0.5f;
+        }
         card.transform.DOMove(v, delay); //AllSlots[p.Y, p.X].transform.position
         return card;
     }
