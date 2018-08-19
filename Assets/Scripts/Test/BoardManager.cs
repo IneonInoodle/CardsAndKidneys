@@ -393,8 +393,6 @@ public class BoardManager : MonoBehaviour
 
         List<OneCardManager> nList = GetValidMoves(pos, arr);
         List<OneCardManager> nList2 = new List<OneCardManager>();
-        Debug.Log(nList.Count);
-        Debug.Log(dist);
         foreach (OneCardManager card in nList)
         {
             List<OneCardManager> nSub = GetValidMovesDist(card.point, card.arrows, dist - 1);
@@ -664,6 +662,8 @@ public class BoardManager : MonoBehaviour
         }
 
         SelectableCards = GetValidMoves(GameManager.Instance.CurrentPlayerTurn.point, GameManager.Instance.CurrentPlayerTurn.arrows);
+        if (SelectableCards.Count == 0)
+            GameManager.Instance.CurrentPlayerTurn.button.interactable = true;
         HighlightableCards = GetValidMovesDist(GameManager.Instance.CurrentPlayerTurn.point, GameManager.Instance.CurrentPlayerTurn.arrows, GameManager.Instance.CurrentPlayerTurn.ActionPoints);
 
 
