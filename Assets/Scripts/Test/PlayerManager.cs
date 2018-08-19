@@ -262,7 +262,7 @@ public class PlayerManager : TurnManager {
         apvis.AvailableAp = ActionPoints;
         apvis.TotalAp = AvailableAp;
 
-        Hp = 0;
+        Hp = 10;
         if (myLocation == location.board)
         {
             Debug.Log("what");
