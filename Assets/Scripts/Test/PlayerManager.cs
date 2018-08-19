@@ -172,7 +172,7 @@ public class PlayerManager : TurnManager {
             case "Swap":
                 Debug.Log("starting swap");
                 yield return StartCoroutine(gm.selectionManager.getSelectionWithPlayers(2));
-                
+
                 Debug.Log(gm.selectionManager.points.Count);
                 if (gm.selectionManager.points.Count == 2)
                 {
@@ -184,8 +184,9 @@ public class PlayerManager : TurnManager {
                     Debug.Log("cancled");
                 }
                 break;
-            case "Rotate":                
+            case "Rotate":
                 Debug.Log("starting rotate");
+
                 yield return StartCoroutine(gm.selectionManager.getSelectionWithPlayers(1));
                 if (gm.selectionManager.points.Count == 1)
                 {
@@ -249,7 +250,9 @@ public class PlayerManager : TurnManager {
         //delete card
 
         DropKidney(); //drops kidney if possible
+        Debug.Log("dropped");
 
+        if (myLocation == location.board)
         myCardManager.CardFaceGlowObject.SetActive(false);
 
         AvailableAp = 1;
@@ -262,12 +265,16 @@ public class PlayerManager : TurnManager {
         Hp = 0;
         if (myLocation == location.board)
         {
+            Debug.Log("what");
             if (mySide == location.bottom) // needs to come at end
                 StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
             else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
         } else
         {
-            Debug.Log("TODO");
+            Debug.Log("TODOtttt");
+            if (mySide == location.bottom) // needs to come at end
+                StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Bottom));
+            else StartCoroutine(playerMover.MoveIntoEndzone(boardManager.Top));
             // add in fuction that deletes guy from endzone and moves him back to endzone
         }
 
@@ -285,6 +292,7 @@ public class PlayerManager : TurnManager {
         {
             Debug.Log("capture kidney");
             patientKidneys.Add(playerKidneys[0]);
+
             playerKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
             playerKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
 
@@ -309,18 +317,21 @@ public class PlayerManager : TurnManager {
 
     public void DropKidney()
     {
+        Debug.Log("dropkidney");
+        Debug.Log(myLocation);
         Vector3 pos;
-        CardSlotManager cardslot;
-        cardslot = boardManager.FindSlotAtPoint(point);
+        int count = playerKidneys.Count;
 
-        if (cardslot != null)
+        if (myLocation == location.board)
         {
-            int count = playerKidneys.Count;
+            CardSlotManager cardslot;
+            cardslot = boardManager.FindSlotAtPoint(point);
+            
 
             if (count > 0)
             {
                 Debug.Log("removing kidney from player");
-                
+                cardslot.Kidneys.Add(playerKidneys[0]);
 
                 cardslot.Kidneys[0].transform.SetParent(cardslot.transform, false);
                 pos = cardslot.Kidneys[0].transform.position;
@@ -334,7 +345,7 @@ public class PlayerManager : TurnManager {
                 //AudioManager.instance.Play("splat");
                 DOTween.Play(mySequence);
 
-
+                playerKidneys.Remove(playerKidneys[0]);
                 //mySequence.Insert(0, transform.DORotate(new Vector3(3, 3, 3), mySequence.Duration()));
                 //mySequence.Insert(0, transform.DORotate(new Vector3(3, 3, 3), mySequence.Duration()));
 
@@ -350,16 +361,39 @@ public class PlayerManager : TurnManager {
             }
         } else // dropping in endzone need to return to patient
         {
-            if (myLocation == mySide)
+            if (count > 0)
             {
-                // capture kidney
-            } else
-            {
-                // other player.capturekidney
-            }
+                Debug.Log("removing kidney from player");
 
-        }
-        
+                if (myLocation == mySide)
+                {
+                    // can actually never happen because you capture kidney, dont worry about me
+                }
+                else
+                {
+                    GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).patientKidneys.Add(playerKidneys[0]);
+                    pos = playerKidneys[0].transform.position;
+
+                    Sequence mySequence = DOTween.Sequence();
+
+                    mySequence.Append(playerKidneys[0].transform.DOMove(new Vector3(transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
+                    mySequence.Append(playerKidneys[0].transform.DOMove(pos, 1.2f));
+                    //AudioManager.instance.Play("dropKidney");
+                    //AudioManager.instance.Play("splat");
+                    DOTween.Play(mySequence);
+
+
+                    playerKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                    playerKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
+
+                    playerKidneys[0].transform.SetParent(GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).KidneyLocation.transform, true);
+                    playerKidneys[0].SetActive(false);
+                    playerKidneys.Remove(playerKidneys[0]);
+
+                    GameManager.Instance.getOtherPlayer(this).kvis.AvailableKidneys++;
+                }
+            }
+        }  
     }
 
     public void PickUpKidneyFromBoard()
@@ -398,8 +432,7 @@ public class PlayerManager : TurnManager {
                 otherPlayer.patientKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
                 otherPlayer.patientKidneys[0].transform.localPosition = new Vector3(0f, 0f, 0f);
                 otherPlayer.patientKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
-                Debug.Log("FUCUCUCU");
-                AudioManager.instance.Play("kidney");
+                
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
                 //AudioManager.instance.Play("stealKidneySound");
 
@@ -442,6 +475,7 @@ public class PlayerManager : TurnManager {
 
     public void takeDamage(int damage)
     {
+        Debug.Log(myLocation);
         if (damage == 0)
         return;
 

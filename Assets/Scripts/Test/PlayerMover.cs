@@ -163,7 +163,7 @@ public void setPlayerArrows(arrows arrowz)
         Debug.Log("MoveintoEndzone");
         isMoving = true;
         location loc = playerManager.myLocation;
-
+        if (loc == location.board)
         playerManager.myCardManager.CardFaceGlowObject.SetActive(false);
 
         playerManager.Doctor.transform.position = des.transform.position; // move doctor image
