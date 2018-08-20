@@ -220,14 +220,7 @@ public class GameManager : MonoBehaviour {
            
             if (players[0].IsTurnComplete)
             {
-                if (players[0].TurnsWithoutKidney >= 3)
-                {
-                    messageManager.ShowMessage("You Loose Boy", 1f);
-                    isGameOver = true;
-                    yield return new WaitForSeconds(3f);
-                    SceneManager.LoadScene("MainMenu");
-                }
-                else if (players[0].patientKidneys.Count == 2)
+                if (players[0].patientKidneys.Count == 2)
                 {
                     messageManager.ShowMessage("You Win", 1f);
                     isGameOver = true;
@@ -325,6 +318,9 @@ public class GameManager : MonoBehaviour {
     {
         GameManager.Instance.getOtherPlayer(player).handvisual.MakeCardsGrey(true);
         player.handvisual.MakeCardsGrey(false);
+
+        GameManager.Instance.getOtherPlayer(player).setAnimationState(false);
+        player.setAnimationState(true);
 
         if (player.patientKidneys.Count  == 0)
         {

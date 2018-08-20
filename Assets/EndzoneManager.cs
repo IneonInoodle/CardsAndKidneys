@@ -8,9 +8,12 @@ public class EndzoneManager : MonoBehaviour {
     public Point p;
     public location loc;
 
-    public Image CardArrowUpImage;
-    public Image CardArrowLeftImage;
-    public Image CardArrowRightImage;
+    public GameObject CardArrowUp;
+    public GameObject CardArrowLeft;
+    public GameObject CardArrowRight;
+        
+    public Material activeMat;
+    public Material InactiveMat;
 
     public Image PortraitGlowImage;
 
@@ -43,20 +46,20 @@ public class EndzoneManager : MonoBehaviour {
            if (card == null) continue;
            if ((card.arrows & check) != 0) return true;
        }*/
-        CardArrowRightImage.color = Color.white;
+        
         if (BoardManager.Instance.FindFieldCardAtPoint(new Point(0, y)) != null)
-            CardArrowLeftImage.color = Color.white;
+            CardArrowLeft.GetComponent<MeshRenderer>().material = activeMat;
         else
-            CardArrowLeftImage.color = Color.black;
+            CardArrowLeft.GetComponent<MeshRenderer>().material = InactiveMat;
 
         if (BoardManager.Instance.FindFieldCardAtPoint(new Point(1, y)) != null)
-            CardArrowUpImage.color = Color.white;
+            CardArrowUp.GetComponent<MeshRenderer>().material = activeMat;
         else
-            CardArrowUpImage.color = Color.black;
+            CardArrowUp.GetComponent<MeshRenderer>().material = InactiveMat;
 
         if (BoardManager.Instance.FindFieldCardAtPoint(new Point(2, y)) != null)
-            CardArrowRightImage.color = Color.white;
+            CardArrowRight.GetComponent<MeshRenderer>().material = activeMat;
         else
-            CardArrowRightImage.color = Color.black;
+            CardArrowRight.GetComponent<MeshRenderer>().material = InactiveMat;
     }
 }

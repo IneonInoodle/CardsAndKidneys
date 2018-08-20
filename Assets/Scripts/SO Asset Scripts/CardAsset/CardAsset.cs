@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 
 public enum TargetingOptions
 {
@@ -32,8 +33,7 @@ public class CardAsset : ScriptableObject
     public Sprite CardImage;
     public Sprite CardBodyImage;
 
-    public AnimationClip AnimationClip;
-
+    public AnimatorController ac;
     public Material ArrowInactiveMat;
     public Material ArrowActiveMat;
     public Material FrameMat;

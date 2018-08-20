@@ -4,12 +4,12 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using DG.Tweening;
 
+
 // holds the refs to all the Text, Images on the card
 public class OneCardManager : MonoBehaviour {
 
-    public GameObject Animation1;
-    public GameObject Animation2;
-    public GameObject AnimBool;
+    public GameObject Animation;
+
     public CardAsset cardAsset;
     public OneCardManager PreviewManager;
     [Header("Text Component References")]
@@ -237,44 +237,33 @@ public class OneCardManager : MonoBehaviour {
     {
         CardGraphicImage.sprite = cardAsset.CardImage;
         CardBodyImage.sprite = cardAsset.CardBodyImage;
-        //Debug.Log(this.cardAsset.Type + "    " + this.cardAsset.AnimationClip);
-        if (this.cardAsset.Type == CardType.Player && this.cardAsset.AnimationClip != null)
-        {
-            PlayerManager p = GameManager.Instance.CurrentPlayerTurn;
-            PlayerManager pp = GameManager.Instance.getOtherPlayer(p);
+         //if (Animation != null)Animation.SetActive(false);
 
-           
-            if (p.mySide == location.bottom)
+        //if (cardAsset.animation != null)
+        //{
+        //    Animation = cardAsset.animation;
+            
+        //}
+        
+        cardFrameMat = cardAsset.FrameMat;
+        if (cardAsset.Type == CardType.Spell)
+        {
+            if (GameManager.Instance.CurrentPlayerTurn != null)
             {
-                //PATRIK
-                CardGraphicImage.enabled = false;
-                Animation1.SetActive(true);
-                Animation2.SetActive(false);
-                if(AnimBool.active)
+                if (GameManager.Instance.CurrentPlayerTurn.mySide == location.bottom && cardAsset.Type == CardType.Spell)
                 {
-                    Debug.Log("MY TURN");
-                } else
+                    cardFrameMat = GameManager.Instance.BottomSpellMat;
+                }
+                else if (GameManager.Instance.CurrentPlayerTurn.mySide == location.top && cardAsset.Type == CardType.Spell)
                 {
-                    Debug.Log("NOT MY TURN");
+                    cardFrameMat = GameManager.Instance.TopSpellMat;
                 }
             }
-            else
-            {
-                //MARLIN
-                CardGraphicImage.enabled = false;
-                Animation1.SetActive(false);
-                Animation2.SetActive(true);
-            }            
-            
         }
-            cardFrameMat = cardAsset.FrameMat;
-        if (GameManager.Instance.CurrentPlayerTurn.mySide == location.bottom && cardAsset.Type == CardType.Spell)
-        {
-            cardFrameMat = GameManager.Instance.BottomSpellMat;
-        } else if (GameManager.Instance.CurrentPlayerTurn.mySide == location.top && cardAsset.Type == CardType.Spell)
-        {
-            cardFrameMat = GameManager.Instance.TopSpellMat;
-        }
+
+           
+  
+       
 
         frame.GetComponent<MeshRenderer>().material = cardFrameMat;
 

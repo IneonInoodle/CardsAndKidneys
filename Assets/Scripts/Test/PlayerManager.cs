@@ -178,7 +178,17 @@ public class PlayerManager : TurnManager {
         }
     }
     
-    
+    public void setAnimationState(bool b)
+    {   
+
+        if (myCardManager != null)
+        {
+            Debug.Log("tt");
+            Debug.Log(b);
+
+            myCardManager.Animation.SetActive(true);
+        }
+    }
     public IEnumerator PlaySpellCard(string spell)
     {
         var gm = GameManager.Instance;
