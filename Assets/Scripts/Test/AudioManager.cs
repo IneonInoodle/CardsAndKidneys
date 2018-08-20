@@ -60,7 +60,7 @@ public class AudioManager : MonoBehaviour {
     }
     void Awake()
     {
-        
+        /*
         if (instance == null)
         {
             instance = this;
@@ -70,7 +70,7 @@ public class AudioManager : MonoBehaviour {
             Destroy(gameObject);
             return;
         }
-
+        */
         DontDestroyOnLoad(gameObject);
 
         AllSounds = new Sound[12][];
