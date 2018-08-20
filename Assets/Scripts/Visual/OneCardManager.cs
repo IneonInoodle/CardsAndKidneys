@@ -35,6 +35,8 @@ public class OneCardManager : MonoBehaviour {
     public Material arrowInactiveMat;
     public Material cardFrameMat;
 
+    public GameObject frame;
+
     public Point point;
     public arrows arrows = arrows.None;
 
@@ -186,14 +188,21 @@ public class OneCardManager : MonoBehaviour {
 
     public void ReadCardFromAsset()
     {
-
-        // 5) Change the card graphic sprite
-
         CardGraphicImage.sprite = cardAsset.CardImage;
         CardBodyImage.sprite = cardAsset.CardBodyImage;
 
-
         cardFrameMat = cardAsset.FrameMat;
+        if (GameManager.Instance.CurrentPlayerTurn.mySide == location.bottom && cardAsset.Type == CardType.Spell)
+        {
+            cardFrameMat = GameManager.Instance.BottomSpellMat;
+        } else if (GameManager.Instance.CurrentPlayerTurn.mySide == location.top && cardAsset.Type == CardType.Spell)
+        {
+            cardFrameMat = GameManager.Instance.TopSpellMat;
+        }
+
+        frame.GetComponent<MeshRenderer>().material = cardFrameMat;
+
+
 
         if (cardAsset.Type == CardType.Monster)
         {

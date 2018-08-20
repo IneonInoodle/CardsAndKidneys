@@ -64,6 +64,7 @@ public class PlayerManager : TurnManager {
     public PlayerMover playerMover;
     public PlayerInput playerInput;
 
+    public Material spellcardMat;
     public HPVisual hpvis;
     public APVisual apvis;
     public KidneyVisual kvis;
@@ -224,14 +225,14 @@ public class PlayerManager : TurnManager {
                     Debug.Log("cancled");
                 }
                 break;
-            case "Damage":
+            case "Poison":
                 Debug.Log("WTF");
                 //GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
 
                 statusEffect st = new statusEffect(statusEffecttype.poisoned, 3, 3);
                 GameManager.Instance.getOtherPlayer(this).statusEffects.Add(st);
                 break;
-            case "Heal":
+            case "Potion":
                 //GameManager.Instance.CurrentPlayerTurn.Hp += 5;
                 statusEffect st2 = new statusEffect(statusEffecttype.healing, 2, 3);
                 statusEffects.Add(st2);

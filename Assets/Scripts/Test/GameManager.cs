@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
 
     public TableCollider TableCollider;
 
+    public Material TopSpellMat;
+    public Material BottomSpellMat;
     BoardManager  board;
 
     bool hasLevelStarted = false;

@@ -200,6 +200,8 @@ public class HandVisual : MonoBehaviour
                 manager.cardAsset = c;
                 manager.ReadCardFromAsset();
 
+                //manager.PreviewManager.frame.GetComponent<MeshRenderer>().material = p.spellcardMat;
+            
                 return card;
             }
         }
