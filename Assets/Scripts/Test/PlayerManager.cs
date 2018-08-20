@@ -64,7 +64,6 @@ public class PlayerManager : TurnManager {
     public PlayerMover playerMover;
     public PlayerInput playerInput;
 
-    public Material spellcardMat;
     public HPVisual hpvis;
     public APVisual apvis;
     public KidneyVisual kvis;

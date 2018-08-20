@@ -63,7 +63,7 @@ public void setPlayerArrows(arrows arrowz)
         else // move on board
         {
             Debug.Log(des.X + " " + des.Y);
-            StartCoroutine(MoveOnBoard(des, 0.2f));
+            StartCoroutine(MoveOnBoard(des, 0.5f));
         }
 
     }
@@ -115,13 +115,14 @@ public void setPlayerArrows(arrows arrowz)
                 boardManager.AddEmptySlot(playerManager.point);
                 setPlayerArrows(boardManager.FindFieldCardAtPoint(des).arrows);
 
-                playerManager.myCardManager.transform.DOMove(boardManager.AllSlots[des.Y, des.X].transform.position, delay);
+                
                 playerManager.point = des;
                 playerManager.myCardManager.point = des;
                 Debug.Log("actionpoints");
                 playerManager.ActionPoints--;
                 playerManager.PickUpKidneyFromBoard();
-
+                yield return new WaitForSeconds(0.2f);
+                playerManager.myCardManager.transform.DOMove(boardManager.AllSlots[des.Y, des.X].transform.position, delay);
                 // need this order, dont change
                 boardManager.DeleteCard(desCard);
 

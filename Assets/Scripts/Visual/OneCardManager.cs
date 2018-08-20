@@ -265,8 +265,8 @@ public class OneCardManager : MonoBehaviour {
         // gradually fade the effect by changing its alpha value
         while (cg.alpha > 0)
         {
-            cg.alpha -= 0.05f;
-            yield return new WaitForSeconds(0.05f); // due to float math choose non round 
+            cg.alpha -= 0.1f;
+            yield return new WaitForSeconds(0.02f); // due to float math choose non round 
         }
         // after the effect is shown it gets destroyed.
         Destroy(this.gameObject);   
