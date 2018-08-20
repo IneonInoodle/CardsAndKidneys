@@ -7,6 +7,9 @@ using DG.Tweening;
 // holds the refs to all the Text, Images on the card
 public class OneCardManager : MonoBehaviour {
 
+    public GameObject Animation1;
+    public GameObject Animation2;
+    public GameObject AnimBool;
     public CardAsset cardAsset;
     public OneCardManager PreviewManager;
     [Header("Text Component References")]
@@ -62,7 +65,50 @@ public class OneCardManager : MonoBehaviour {
                 break;
         }
     }
+    public void Update()
+    {
+       /* if (this.cardAsset.Type == CardType.Player && this.cardAsset.AnimationClip != null)
+        {
+            PlayerManager p = GameManager.Instance.CurrentPlayerTurn;
+            PlayerManager pp = GameManager.Instance.getOtherPlayer(p);
 
+
+            if (p.mySide == location.bottom)
+            {
+                //PATRIK
+                CardGraphicImage.enabled = false;
+                Animation1.SetActive(true);
+                Animation2.SetActive(false);
+            }
+            else
+            {
+                //MARLIN
+                CardGraphicImage.enabled = false;
+                Animation1.SetActive(false);
+                Animation2.SetActive(true);
+                if (AnimBool.active)
+                {
+                    Debug.Log("MMY TURN");
+                }
+                else
+                {
+                    Debug.Log("NOT MY TURN");
+                }
+            }
+            if (p.mySide == location.bottom && AnimBool.active)
+            {
+                Animation2.SetActive(true);
+                CardGraphicImage.enabled = false;
+            }
+            if (p.mySide == location.top && AnimBool.active)
+            {
+                Animation2.SetActive(true);
+                CardGraphicImage.enabled = false;
+            }
+
+
+        }*/
+    }
     public void updateArrows(arrows arrowz) {
 
         CardArrowLeft.SetActive((arrowz & arrows.Left) != 0);
@@ -182,16 +228,46 @@ public class OneCardManager : MonoBehaviour {
         {
             isMoveOption = value;
             CardFaceGlowObject.SetActive(value);
-
         }
+        
+
     }
 
     public void ReadCardFromAsset()
     {
         CardGraphicImage.sprite = cardAsset.CardImage;
         CardBodyImage.sprite = cardAsset.CardBodyImage;
+        //Debug.Log(this.cardAsset.Type + "    " + this.cardAsset.AnimationClip);
+        if (this.cardAsset.Type == CardType.Player && this.cardAsset.AnimationClip != null)
+        {
+            PlayerManager p = GameManager.Instance.CurrentPlayerTurn;
+            PlayerManager pp = GameManager.Instance.getOtherPlayer(p);
 
-        cardFrameMat = cardAsset.FrameMat;
+           
+            if (p.mySide == location.bottom)
+            {
+                //PATRIK
+                CardGraphicImage.enabled = false;
+                Animation1.SetActive(true);
+                Animation2.SetActive(false);
+                if(AnimBool.active)
+                {
+                    Debug.Log("MY TURN");
+                } else
+                {
+                    Debug.Log("NOT MY TURN");
+                }
+            }
+            else
+            {
+                //MARLIN
+                CardGraphicImage.enabled = false;
+                Animation1.SetActive(false);
+                Animation2.SetActive(true);
+            }            
+            
+        }
+            cardFrameMat = cardAsset.FrameMat;
         if (GameManager.Instance.CurrentPlayerTurn.mySide == location.bottom && cardAsset.Type == CardType.Spell)
         {
             cardFrameMat = GameManager.Instance.BottomSpellMat;
