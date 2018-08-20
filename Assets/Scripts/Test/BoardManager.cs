@@ -38,7 +38,7 @@ public class BoardManager : MonoBehaviour
 
     public GameObject FieldCardPrefab; // todo change to decks
 
-    public CardAsset[] fieldCardAssets;
+    public List<CardAsset> fieldCardAssets;
 
     public GameObject FieldCardParent; // for Gimbal-Lock, do not fuck with me our else y z rotation stops working
 
@@ -132,8 +132,8 @@ public class BoardManager : MonoBehaviour
         DeleteCard(c1);
         DeleteCard(c2);
 
-        CreateCard(p1, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 0.5f);
-        CreateCard(p2, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], 1f);
+        CreateCard(p1, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Count)], 0.5f); // should remove these from the deck tbh
+        CreateCard(p2, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Count)], 1f);
     }
 
     public void Damage(Point p1)
@@ -463,7 +463,10 @@ public class BoardManager : MonoBehaviour
                 //FindObjectOfType<AudioManager>().Play("cardPlace1");
 
                 Vector2 newPos = EmptyCardSlots[i].transform.position;
-                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Length)], delay);
+                CardAsset cs = fieldCardAssets[UnityEngine.Random.Range(0, fieldCardAssets.Count)];
+
+                card = CreateCard(EmptyCardSlots[i].point, FieldCardPrefab, InitialFieldCardPos, cs, delay);
+                fieldCardAssets.Remove(cs);
 
                 //maybe add some stuff to card deal in animaton
 

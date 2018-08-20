@@ -20,7 +20,7 @@ public class statusEffect
     }
 
 }
-public enum statusEffecttype {poisoned,healing,neutral};
+public enum statusEffecttype {poisoned,healing,nothing};
 
 
 public enum location { top, bottom, board };
@@ -75,7 +75,7 @@ public class PlayerManager : TurnManager {
     private BoardManager boardManager;
     public HandVisual handvisual;
 
-    public CardAsset[] Deck;
+    public List <CardAsset> Deck;
 
     public GameObject Doctor;
     public GameObject KidneyLocation;
@@ -226,13 +226,13 @@ public class PlayerManager : TurnManager {
                 break;
             case "Damage":
                 Debug.Log("WTF");
-                GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
+                //GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
 
                 statusEffect st = new statusEffect(statusEffecttype.poisoned, 3, 3);
-                statusEffects.Add(st);
+                GameManager.Instance.getOtherPlayer(this).statusEffects.Add(st);
                 break;
             case "Heal":
-                GameManager.Instance.CurrentPlayerTurn.Hp += 5;
+                //GameManager.Instance.CurrentPlayerTurn.Hp += 5;
                 statusEffect st2 = new statusEffect(statusEffecttype.healing, 2, 3);
                 statusEffects.Add(st2);
                 break;
@@ -247,22 +247,59 @@ public class PlayerManager : TurnManager {
         yield return new WaitForSeconds(0.1f);
         GameManager.Instance.EnableInputs();
     }
-    public void cancleOutStatusEffects()
+
+    public void clearStatusEffects()
     {
-      
+        statusEffects.Clear();
+    }
 
-        bool hasFailed = false; 
+    public void applyStatusEffects()
+    {
+        cancelOutStatusEffects();
 
-        while (hasFailed == false)
+        int damageOrHeal = 0;
+        for (int i=0; i< statusEffects.Count; i++) 
+        {
+
+            Debug.Log("whatsyourflavorxx");
+            statusEffect s = statusEffects[i];
+            
+            if (s.St == statusEffecttype.healing)
+            {    
+                damageOrHeal -= s.Val;
+            }
+            if (s.St == statusEffecttype.poisoned)
+            {
+                damageOrHeal += s.Val;
+            }
+
+            s.Rounds--;
+
+            if (s.Rounds <= 0)
+            {
+                statusEffects.RemoveAt(i);
+                i--;
+                continue;
+            }
+        }
+
+        takeDamage(damageOrHeal);
+    }
+    public void cancelOutStatusEffects()
+    {    
+        while (true)
         {
             statusEffect hasHeal = statusEffects.Find(x => x.St == statusEffecttype.healing); 
             statusEffect hasPoison = statusEffects.Find(x => x.St == statusEffecttype.poisoned);
 
             if (hasHeal != null && hasPoison != null)
             {
-
+                statusEffects.Remove(hasHeal);
+                statusEffects.Remove(hasPoison);
+                continue;
             }
 
+            break;
         }
         
     }
@@ -317,7 +354,8 @@ public class PlayerManager : TurnManager {
             // add in fuction that deletes guy from endzone and moves him back to endzone
         }
 
-       
+
+        clearStatusEffects();
         //AudioManager.instance.Play("dieSound");
  
     }
@@ -503,7 +541,10 @@ public class PlayerManager : TurnManager {
 
         for (int i = 0; i < 1; i++)
         {
-            handvisual.GivePlayerACard(Deck[UnityEngine.Random.Range(0, Deck.Length)], true, true);
+            CardAsset cs = Deck[UnityEngine.Random.Range(0, Deck.Count)];
+
+            handvisual.GivePlayerACard(cs, true, true);
+            Deck.Remove(cs);
             yield return new WaitForSeconds(0.4f);
         }
 

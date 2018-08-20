@@ -343,7 +343,7 @@ public class GameManager : MonoBehaviour {
             player.Hp = 10;
         }
 
-
+        player.applyStatusEffects();
     
         player.ActionPoints = player.AvailableAp;
         CurrentPlayerTurn = player;
