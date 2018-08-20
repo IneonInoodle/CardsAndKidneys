@@ -158,7 +158,7 @@ public void setPlayerArrows(arrows arrowz)
    
     public IEnumerator MoveIntoEndzone(GameObject des)
     {   
-        SoundManager.PlaySound("dealCardSound");
+        AudioManager.instance.Play("dealCardSound");
         //needs to be coroutinetm
 
         Debug.Log("MoveintoEndzone");
