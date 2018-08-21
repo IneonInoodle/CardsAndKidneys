@@ -63,7 +63,9 @@ public class PlayerManager : TurnManager {
     private List <statusEffect> statusEffects = new List<statusEffect>();
     public PlayerMover playerMover;
     public PlayerInput playerInput;
-
+    public GameObject PoisonLocal;
+    public GameObject PoisonTo;
+    public GameObject PotionTo;
     public HPVisual hpvis;
     public APVisual apvis;
     public KidneyVisual kvis;
@@ -85,6 +87,10 @@ public class PlayerManager : TurnManager {
     public GameObject PortaitGlowObject;
     public GameObject EndTurnGlowObject;
     public GameObject ParticalEff;
+    public GameObject PosionEff;
+    public GameObject PotionEff;
+    public Image PosionImage;
+    public Image PotionImage;
     public Sprite PortraitFull;
     public Sprite PortraitHalf;
     // Kidneys shit 
@@ -237,14 +243,23 @@ public class PlayerManager : TurnManager {
             case "Poison":
                 Debug.Log("WTF");
                 //GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
-
-                statusEffect st = new statusEffect(statusEffecttype.poisoned, 3, 3);
+                Vector3 ApLocation = boardManager.transform.position;
+                GameManager.Instance.getOtherPlayer(this).takeDamage(2);
+                statusEffect st = new statusEffect(statusEffecttype.poisoned, 2, 3);
                 GameManager.Instance.getOtherPlayer(this).statusEffects.Add(st);
+
+                DamageEffect d = new DamageEffect();
+                d.CreatePoisonEffect(PosionEff, PoisonLocal.transform.position, PoisonTo.transform.position);
+                StartCoroutine(posionEffekt(PosionImage));
                 break;
             case "Potion":
                 //GameManager.Instance.CurrentPlayerTurn.Hp += 5;
                 statusEffect st2 = new statusEffect(statusEffecttype.healing, 2, 3);
                 statusEffects.Add(st2);
+
+                DamageEffect dd = new DamageEffect();
+                dd.CreatePotionEffect(PotionEff, PoisonLocal.transform.position, PotionTo.transform.position);
+                StartCoroutine(potionEffekt(PotionImage));
                 break;
             case "Boost":
                 ActionPoints++;
@@ -257,7 +272,19 @@ public class PlayerManager : TurnManager {
         yield return new WaitForSeconds(0.1f);
         GameManager.Instance.EnableInputs();
     }
+    public IEnumerator posionEffekt(Image posionimg)
+    {
+        Debug.Log("COOOOOOOOOOOOOOOOOOOOOLOR");
+        yield return new WaitForSeconds(1f);
+        posionimg.color = new Color(255f, 0f, 255f);
 
+    }
+    public IEnumerator potionEffekt(Image posionimg)
+    {
+        yield return new WaitForSeconds(1f);
+        posionimg.color = new Color(255f, 0f, 0f);
+
+    }
     public void clearStatusEffects()
     {
         statusEffects.Clear();
@@ -277,10 +304,12 @@ public class PlayerManager : TurnManager {
             if (s.St == statusEffecttype.healing)
             {    
                 damageOrHeal -= s.Val;
+                PosionImage.color = new Color(255f, 0f, 0f);
             }
             if (s.St == statusEffecttype.poisoned)
             {
                 damageOrHeal += s.Val;
+                //PosionImage.color = new Color(255f, 0f, 255f);
             }
 
             s.Rounds--;
@@ -288,6 +317,10 @@ public class PlayerManager : TurnManager {
             if (s.Rounds <= 0)
             {
                 statusEffects.RemoveAt(i);
+                //GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).PosionImage.color = new Color(255f, 0f, 0f);
+                GameManager.Instance.CurrentPlayerTurn.PosionImage.color = new Color(255f, 0f, 0f);
+                //PosionImage.color = new Color(255f, 0f, 0f);
+                Debug.Log("SEETING COLOR TO RED AGAIN");
                 i--;
                 continue;
             }

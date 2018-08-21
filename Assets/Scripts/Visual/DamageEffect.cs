@@ -88,6 +88,22 @@ public class DamageEffect : MonoBehaviour {
         APG.transform.DOMove(tohere, 1f);
         Destroy(APG, 1.5f);
     }
+
+    
+    public void CreatePoisonEffect(GameObject moveeff, Vector3 pos, Vector3 tohere)
+    {
+        GameObject APG = Instantiate(moveeff, pos, Quaternion.identity);        
+        APG.transform.DOMove(tohere, 1f);        
+        Destroy(APG, 1.5f); 
+
+    }
+    public void CreatePotionEffect(GameObject moveeff, Vector3 pos, Vector3 tohere)
+    {
+        GameObject APG = Instantiate(moveeff, pos, Quaternion.identity);
+        APG.transform.DOMove(tohere, 1f);
+        Destroy(APG, 1.5f);
+
+    }
     public static void CreateDamageEffect(GameObject go, int amount)
     {
        
