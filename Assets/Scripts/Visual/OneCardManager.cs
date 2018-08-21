@@ -3,13 +3,13 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEditor.Animations;
 
 
 // holds the refs to all the Text, Images on the card
 public class OneCardManager : MonoBehaviour {
 
-    public GameObject Animation;
-
+    public Animator animator;
     public CardAsset cardAsset;
     public OneCardManager PreviewManager;
     [Header("Text Component References")]
@@ -52,62 +52,62 @@ public class OneCardManager : MonoBehaviour {
         switch (rand)
         {
             case 0:
-                arrows = arrows.Up | arrows.Left ; 
+                arrows = arrows.Up | arrows.Left;
                 break;
             case 1:
                 arrows = arrows.Up | arrows.Right;
                 break;
             case 2:
-                arrows = arrows.Down | arrows.Left ;
+                arrows = arrows.Down | arrows.Left;
                 break;
             case 3:
-                arrows = arrows.Down | arrows.Right ;
+                arrows = arrows.Down | arrows.Right;
                 break;
         }
     }
     public void Update()
     {
-       /* if (this.cardAsset.Type == CardType.Player && this.cardAsset.AnimationClip != null)
-        {
-            PlayerManager p = GameManager.Instance.CurrentPlayerTurn;
-            PlayerManager pp = GameManager.Instance.getOtherPlayer(p);
+        /* if (this.cardAsset.Type == CardType.Player && this.cardAsset.AnimationClip != null)
+         {
+             PlayerManager p = GameManager.Instance.CurrentPlayerTurn;
+             PlayerManager pp = GameManager.Instance.getOtherPlayer(p);
 
 
-            if (p.mySide == location.bottom)
-            {
-                //PATRIK
-                CardGraphicImage.enabled = false;
-                Animation1.SetActive(true);
-                Animation2.SetActive(false);
-            }
-            else
-            {
-                //MARLIN
-                CardGraphicImage.enabled = false;
-                Animation1.SetActive(false);
-                Animation2.SetActive(true);
-                if (AnimBool.active)
-                {
-                    Debug.Log("MMY TURN");
-                }
-                else
-                {
-                    Debug.Log("NOT MY TURN");
-                }
-            }
-            if (p.mySide == location.bottom && AnimBool.active)
-            {
-                Animation2.SetActive(true);
-                CardGraphicImage.enabled = false;
-            }
-            if (p.mySide == location.top && AnimBool.active)
-            {
-                Animation2.SetActive(true);
-                CardGraphicImage.enabled = false;
-            }
+             if (p.mySide == location.bottom)
+             {
+                 //PATRIK
+                 CardGraphicImage.enabled = false;
+                 Animation1.SetActive(true);
+                 Animation2.SetActive(false);
+             }
+             else
+             {
+                 //MARLIN
+                 CardGraphicImage.enabled = false;
+                 Animation1.SetActive(false);
+                 Animation2.SetActive(true);
+                 if (AnimBool.active)
+                 {
+                     Debug.Log("MMY TURN");
+                 }
+                 else
+                 {
+                     Debug.Log("NOT MY TURN");
+                 }
+             }
+             if (p.mySide == location.bottom && AnimBool.active)
+             {
+                 Animation2.SetActive(true);
+                 CardGraphicImage.enabled = false;
+             }
+             if (p.mySide == location.top && AnimBool.active)
+             {
+                 Animation2.SetActive(true);
+                 CardGraphicImage.enabled = false;
+             }
 
 
-        }*/
+         }*/
     }
     public void updateArrows(arrows arrowz) {
 
@@ -124,7 +124,7 @@ public class OneCardManager : MonoBehaviour {
         if ((arrowz & arrows.Left) != 0)
         {
             CardArrowLeft.GetComponent<MeshRenderer>().material = arrowActiveMat;
-           
+
         } else
         {
             CardArrowLeft.GetComponent<MeshRenderer>().material = arrowInactiveMat;
@@ -151,11 +151,11 @@ public class OneCardManager : MonoBehaviour {
         }
         else
         {
-            CardArrowDown.GetComponent<MeshRenderer>().material = arrowInactiveMat;          
+            CardArrowDown.GetComponent<MeshRenderer>().material = arrowInactiveMat;
         }
     }
-// field card
-//playerCard
+    // field card
+    //playerCard
     private int adjencyBonus;
     public int AdjencyBonus
     {
@@ -171,7 +171,7 @@ public class OneCardManager : MonoBehaviour {
                 DamageText.text = (cardAsset.Damage + adjencyBonus).ToString();
                 DamageText.color = Color.green;
                 StartCoroutine(FlipThisCard());
-            } 
+            }
         }
     }
 
@@ -195,13 +195,13 @@ public class OneCardManager : MonoBehaviour {
     }
 
     void Awake()
-    {   
+    {
         if (cardAsset != null)
             ReadCardFromAsset();
 
         if (cardAsset.Type != CardType.Spell)
         {
-            
+
             setRandomArrows();
             updateArrows(arrows);//meh
             CardFaceInnerGlowImage.enabled = false;
@@ -210,11 +210,11 @@ public class OneCardManager : MonoBehaviour {
         {
             CardGreyOutImage.enabled = false;
         }
-       
-        
+
+
         CardFaceGlowObject.SetActive(false);
 
-}
+    }
 
     private bool isMoveOption = false;
     public bool IsMoveOption
@@ -229,7 +229,7 @@ public class OneCardManager : MonoBehaviour {
             isMoveOption = value;
             CardFaceGlowObject.SetActive(value);
         }
-        
+
 
     }
 
@@ -237,15 +237,66 @@ public class OneCardManager : MonoBehaviour {
     {
         CardGraphicImage.sprite = cardAsset.CardImage;
         CardBodyImage.sprite = cardAsset.CardBodyImage;
-         //if (Animation != null)Animation.SetActive(false);
+        //if (Animation != null)Animation.SetActive(false);
 
-        //if (cardAsset.animation != null)
-        //{
-        //    Animation = cardAsset.animation;
-            
-        //}
+
+        // this would probably also work animator.runtimeAnimatorController = cardAsset.ac;
+        if (animator != null)
+        {
+            animator.speed = 0;    
+        }
         
-        cardFrameMat = cardAsset.FrameMat;
+
+        if (cardAsset.idleClip != null) {
+            animator.gameObject.SetActive(true);
+            CardGraphicImage.enabled = false;
+            Debug.Log("rrrr");
+            animator.speed = 2;
+            animator.Play("idle");
+  
+            /*
+            AnimatorOverrideController animatorOverrideController;
+            animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+            animator.runtimeAnimatorController = animatorOverrideController;
+
+
+            animatorOverrideController["idle"] = cardAsset.idleClip;
+            Debug.Log("setting idle Animation clip");
+            */
+
+
+
+
+
+
+            AnimatorOverrideController aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
+            var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+            foreach (var a in aoc.animationClips)
+            {
+                //a.normalizedSpeed = 1;
+                anims.Add(new KeyValuePair<AnimationClip, AnimationClip>(a, cardAsset.idleClip));
+            }
+                
+            aoc.ApplyOverrides(anims);
+            animator.runtimeAnimatorController = aoc;
+
+
+        } else
+        {
+            if (animator != null)
+            animator.gameObject.SetActive(false);
+        }
+
+            
+
+
+    
+
+
+
+
+
+    cardFrameMat = cardAsset.FrameMat;
         if (cardAsset.Type == CardType.Spell)
         {
             if (GameManager.Instance.CurrentPlayerTurn != null)

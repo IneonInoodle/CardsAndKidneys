@@ -192,7 +192,8 @@ public class PlayerManager : TurnManager {
             Debug.Log("tt");
             Debug.Log(b);
 
-            myCardManager.Animation.SetActive(true);
+            int s = b == true ? 1 : 0;
+            myCardManager.animator.speed = s;
         }
     }
     public IEnumerator PlaySpellCard(string spell)

@@ -33,7 +33,7 @@ public class CardAsset : ScriptableObject
     public Sprite CardImage;
     public Sprite CardBodyImage;
 
-    public AnimatorController ac;
+    public AnimationClip idleClip;
     public Material ArrowInactiveMat;
     public Material ArrowActiveMat;
     public Material FrameMat;
