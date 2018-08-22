@@ -3,7 +3,10 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using DG.Tweening;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
 
 // holds the refs to all the Text, Images on the card

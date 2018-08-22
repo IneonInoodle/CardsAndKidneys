@@ -250,8 +250,11 @@ public class AudioManager : MonoBehaviour {
         Sound s = null;        
         switch (name)
         {     
-            case "GameStart"://done
-                s = AllSounds[0][0]; //Anis this is broken here please fix
+            case "GameStart":
+                s = AllSounds[0][0];
+                break;
+            case "IntroStart":
+                s = AllSounds[0][1];
                 break;
             default:
                 for (int i = 0; i < AllSounds.Length; i++)
