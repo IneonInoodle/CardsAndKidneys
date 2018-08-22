@@ -169,8 +169,9 @@ public void setPlayerArrows(arrows arrowz)
         playerManager.myCardManager.CardFaceGlowObject.SetActive(false);
 
         playerManager.Doctor.transform.position = des.transform.position; // move doctor image
-        playerManager.Doctor.SetActive(true); // make visable
-       
+        playerManager.Doctor.SetActive(true);
+        playerManager.Doctor.GetComponent<SpriteRenderer>().enabled =true;// make visable
+
         // delete player card
 
         if (des.name == "Top")
