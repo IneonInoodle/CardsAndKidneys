@@ -18,4 +18,6 @@ public class Sound {
 
     public bool loop;
     public AudioMixer output;
+    public AudioMixerGroup outputGroup;
+
 }

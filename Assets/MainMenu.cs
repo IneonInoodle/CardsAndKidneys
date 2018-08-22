@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEditor;
 public class MainMenu : MonoBehaviour {
 
     public static bool GameIsPaused = false;
@@ -18,7 +18,11 @@ public class MainMenu : MonoBehaviour {
 
     public void QuitGame()
     {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
 
     public void OptionGame()
@@ -28,7 +32,7 @@ public class MainMenu : MonoBehaviour {
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if(GameIsPaused)
             {
@@ -79,4 +83,35 @@ public class MainMenu : MonoBehaviour {
         Time.timeScale = 0f;
         GameIsPaused = true;
     }
+    void Awake()
+    {
+        Debug.Log("Awake");
+    }
+    void OnEnable()
+    {
+        Debug.Log("OnEnable called");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    // called second
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("OnSceneLoaded: " + scene.name);
+        Debug.Log(mode);
+    }
+
+    // called third
+    void Start()
+    {
+        Debug.Log("Start");
+        AudioManager.instance.rePlay("GameStart");
+    }
+
+    // called when the game is terminated
+    void OnDisable()
+    {
+        Debug.Log("OnDisable");
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+   
 }

@@ -27,9 +27,11 @@ public class AudioManager : MonoBehaviour {
     //LabelFieldExample.OnGUI();     
     public AudioMixerGroup masterMixer;
     public AudioMixer mainMixer;
+    public AudioMixer efxMixer;
     [Range(-80f, 20f)]
     public float volume;
     public Slider mslider;
+    public Slider msliderefx;
     public static AudioManager instance;
     private Sound[][] AllSounds;
 
@@ -40,10 +42,21 @@ public class AudioManager : MonoBehaviour {
         mainMixer.SetFloat("volume", volume);
     }
 
-    public void GetVolume()
+    public void GetVolumee()
     {
         mainMixer.GetFloat("volume", out volume);
         mslider.value = volume;        
+    }
+
+    public void SetVolumee(float volume)
+    {
+        efxMixer.SetFloat("volume", volume);
+    }
+
+    public void GetVolume()
+    {
+        efxMixer.GetFloat("volume", out volume);
+        msliderefx.value = volume;
     }
 
     public void Start()
@@ -98,7 +111,7 @@ public class AudioManager : MonoBehaviour {
                 AllSounds[i][j].source.volume = AllSounds[i][j].volume;
                 AllSounds[i][j].source.pitch = AllSounds[i][j].pitch;
                 AllSounds[i][j].source.loop = AllSounds[i][j].loop;
-                AllSounds[i][j].source.outputAudioMixerGroup = masterMixer;
+                AllSounds[i][j].source.outputAudioMixerGroup = AllSounds[i][j].outputGroup;
             }
         }
     }
@@ -228,6 +241,26 @@ public class AudioManager : MonoBehaviour {
         
 
 
+        if (s == null) return;
+        s.source.Play();
+    }
+
+    public void rePlay(string name)
+    {
+        Sound s = null;        
+        switch (name)
+        {     
+            case "GameStart"://done
+                s = AllSounds[0][0]; //Anis this is broken here please fix
+                break;
+            default:
+                for (int i = 0; i < AllSounds.Length; i++)
+                {
+                    s = Array.Find(AllSounds[i], sound => sound.name == name);
+                    if (s != null) break;
+                }
+                break;
+        }
         if (s == null) return;
         s.source.Play();
     }
