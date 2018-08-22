@@ -258,7 +258,7 @@ public void setPlayerArrows(arrows arrowz)
             {
                 if (GameManager.Instance.getOtherPlayer(playerManager).myLocation == playerManager.myLocation)
                 {
-                    GameManager.Instance.getOtherPlayer(playerManager).Doctor.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.getOtherPlayer(playerManager).PortraitHalf;
+                    GameManager.Instance.getOtherPlayer(playerManager).Doctor.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.getOtherPlayer(playerManager).PortraitFull;
                     GameManager.Instance.getOtherPlayer(playerManager).Doctor.GetComponent<SpriteRenderer>().enabled = true;
                 }
 
