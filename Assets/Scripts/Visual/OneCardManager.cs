@@ -43,6 +43,7 @@ public class OneCardManager : MonoBehaviour {
     public Point point;
     public arrows arrows = arrows.None;
 
+    public Transform kidneyLocation;
     public void setRandomArrows()
     {
         int range = 4;

@@ -69,6 +69,10 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void flipBoard()
+    {
+
+    }
 
     private void Awake()
     {

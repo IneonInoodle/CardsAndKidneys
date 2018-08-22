@@ -209,13 +209,13 @@ public void setPlayerArrows(arrows arrowz)
             //other player has full portait
             //lay ontop of their portait our half image, need to change out image to half image
             playerManager.Doctor.GetComponent<SpriteRenderer>().sprite = playerManager.PortraitHalf;
-            playerManager.Doctor.GetComponent<SpriteRenderer>().sortingOrder = -2;
+            //playerManager.Doctor.GetComponent<SpriteRenderer>().sortingOrder = -2;
         }
         else
         {
             //make sure out image is full image
             playerManager.Doctor.GetComponent<SpriteRenderer>().sprite = playerManager.PortraitFull;
-            playerManager.Doctor.GetComponent<SpriteRenderer>().sortingOrder = -3;
+            //playerManager.Doctor.GetComponent<SpriteRenderer>().sortingOrder = -3;
         }
 
         if (playerManager.myLocation == location.top)

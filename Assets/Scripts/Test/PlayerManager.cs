@@ -179,14 +179,11 @@ public class PlayerManager : TurnManager {
             if (hp > 15)
                 hp = 15;
             hpvis.AvailableHp = hp;
-
-
         }
     }
     
     public void setAnimationState(bool b)
     {   
-
         if (myCardManager != null)
         {
             Debug.Log("tt");
