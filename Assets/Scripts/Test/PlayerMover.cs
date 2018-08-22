@@ -133,6 +133,7 @@ public void setPlayerArrows(arrows arrowz)
                 Debug.Log(int.Parse(desCard.DamageText.text));
 
                 playerManager.takeDamage(int.Parse(desCard.DamageText.text));
+                playerManager.hpvis.EffectAmount = playerManager.hpvis.EffectAmount;
                 if (desCard.cardAsset.Type == CardType.Monster && playerManager.Hp > 0)
                 {
                     AudioManager.instance.Play("damage");

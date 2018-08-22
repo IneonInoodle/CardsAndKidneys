@@ -13,7 +13,7 @@ public class HPVisual : MonoBehaviour
 
     public Image[] HealthPoints;
     public Image[] IceEffect;
-
+    public Image Box;
     private int totalHp = 15;
     public int TotalHp
     {
@@ -46,6 +46,39 @@ public class HPVisual : MonoBehaviour
         }
     }
 
+    private int effectAmount; //damage is positive
+    public int EffectAmount
+    {
+        get { return effectAmount; }
+
+        set
+        {
+            effectAmount = value;
+            Debug.Log(effectAmount);
+            if (effectAmount > 0) //posion
+            {
+                Debug.Log("im poisoned");
+                Box.color = Color.black;
+                for (int i = availableHp; i > availableHp - effectAmount; i--)
+                {   
+                    if (i>0)
+                    HealthPoints[i].color = Color.black;
+                }
+            } else if (effectAmount == 0)
+            {
+                Box.color = Color.red;
+            } else
+            {
+                Box.color = Color.green;
+                for (int i = availableHp; i < availableHp - effectAmount; i++)
+                {
+                    if (i < 15)
+                        HealthPoints[i].color = Color.green;
+                }
+            }
+        }
+    }
+
     private int availableHp;
     public int AvailableHp
     {
@@ -66,7 +99,7 @@ public class HPVisual : MonoBehaviour
             {   
                 if (i < availableHp)
                 {
-                    HealthPoints[i].color = Color.white;
+                    HealthPoints[i].color = Color.red;
                     if (i != 0)
                     IceEffect[(int)(i / 5)].color = Color.white; // 15/6 = 2.5
                 }
@@ -79,6 +112,8 @@ public class HPVisual : MonoBehaviour
                     
             }
 
+            effectAmount = effectAmount; // lol
+           
             // update the text
             HpText.text = string.Format("{0}", availableHp.ToString());
 

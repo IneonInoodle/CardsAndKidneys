@@ -63,9 +63,6 @@ public class PlayerManager : TurnManager {
     private List <statusEffect> statusEffects = new List<statusEffect>();
     public PlayerMover playerMover;
     public PlayerInput playerInput;
-    public GameObject PoisonLocal;
-    public GameObject PoisonTo;
-    public GameObject PotionTo;
     public HPVisual hpvis;
     public APVisual apvis;
     public KidneyVisual kvis;
@@ -178,6 +175,7 @@ public class PlayerManager : TurnManager {
 
             if (hp > 15)
                 hp = 15;
+
             hpvis.AvailableHp = hp;
         }
     }
@@ -247,8 +245,8 @@ public class PlayerManager : TurnManager {
                 GameManager.Instance.getOtherPlayer(this).statusEffects.Add(st);
 
                 DamageEffect d = new DamageEffect();
-                d.CreatePoisonEffect(PosionEff, PoisonLocal.transform.position, PoisonTo.transform.position);
-                StartCoroutine(posionEffekt(PosionImage));
+                d.CreatePoisonEffect(PosionEff, handvisual.PlayPreviewSpot.transform.position, GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).hpvis.Box.transform.position);
+                StartCoroutine(posionEffekt(PosionImage,st));
                 break;
             case "Potion":
                 //GameManager.Instance.CurrentPlayerTurn.Hp += 5;
@@ -256,8 +254,8 @@ public class PlayerManager : TurnManager {
                 statusEffects.Add(st2);
 
                 DamageEffect dd = new DamageEffect();
-                dd.CreatePotionEffect(PotionEff, PoisonLocal.transform.position, PotionTo.transform.position);
-                StartCoroutine(potionEffekt(PotionImage));
+                dd.CreatePotionEffect(PotionEff, handvisual.PlayPreviewSpot.transform.position,GameManager.Instance.CurrentPlayerTurn.hpvis.Box.transform.position);
+                StartCoroutine(potionEffekt(PotionImage, st2));
                 break;
             case "Boost":
                 ActionPoints++;
@@ -270,22 +268,26 @@ public class PlayerManager : TurnManager {
         yield return new WaitForSeconds(0.1f);
         GameManager.Instance.EnableInputs();
     }
-    public IEnumerator posionEffekt(Image posionimg)
+    public IEnumerator posionEffekt(Image posionimg, statusEffect ss)
     {
         Debug.Log("COOOOOOOOOOOOOOOOOOOOOLOR");
         yield return new WaitForSeconds(1f);
-        posionimg.color = new Color(255f, 0f, 255f);
+
+        GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).hpvis.EffectAmount = ss.Val * ss.Rounds;
+        // line above should be
+        //Gamemanager.Instance.Getotherplayer(currentplayer).hpvis.whitebox = new Color(255f, 0f, 255f);
 
     }
-    public IEnumerator potionEffekt(Image posionimg)
+    public IEnumerator potionEffekt(Image posionimg, statusEffect ss)
     {
         yield return new WaitForSeconds(1f);
-        posionimg.color = new Color(255f, 0f, 0f);
-
+        Debug.Log(ss.Val * ss.Rounds);
+        GameManager.Instance.CurrentPlayerTurn.hpvis.EffectAmount = -ss.Val * ss.Rounds;
     }
     public void clearStatusEffects()
     {
         statusEffects.Clear();
+        hpvis.EffectAmount = 0;
     }
 
     public void applyStatusEffects()
@@ -293,6 +295,7 @@ public class PlayerManager : TurnManager {
         cancelOutStatusEffects();
 
         int damageOrHeal = 0;
+        int roundsLeft = 0;
         for (int i=0; i< statusEffects.Count; i++) 
         {
 
@@ -302,29 +305,25 @@ public class PlayerManager : TurnManager {
             if (s.St == statusEffecttype.healing)
             {    
                 damageOrHeal -= s.Val;
-                PosionImage.color = new Color(255f, 0f, 0f);
             }
             if (s.St == statusEffecttype.poisoned)
             {
                 damageOrHeal += s.Val;
                 //PosionImage.color = new Color(255f, 0f, 255f);
             }
-
+            
             s.Rounds--;
-
+            roundsLeft = s.Rounds;
             if (s.Rounds <= 0)
             {
                 statusEffects.RemoveAt(i);
-                //GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).PosionImage.color = new Color(255f, 0f, 0f);
-                GameManager.Instance.CurrentPlayerTurn.PosionImage.color = new Color(255f, 0f, 0f);
-                //PosionImage.color = new Color(255f, 0f, 0f);
-                Debug.Log("SEETING COLOR TO RED AGAIN");
                 i--;
                 continue;
             }
         }
 
         takeDamage(damageOrHeal);
+        hpvis.EffectAmount = damageOrHeal * roundsLeft;
     }
     public void cancelOutStatusEffects()
     {    
@@ -610,6 +609,8 @@ public class PlayerManager : TurnManager {
         }
 
         Hp -= damage;
+        
+
 
         if (Hp <= 0)
         {
