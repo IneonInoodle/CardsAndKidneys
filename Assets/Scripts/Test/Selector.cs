@@ -36,7 +36,8 @@ public class Selector : MonoBehaviour
     }
 
     void OnMouseDown()
-    {
+    {   
+        
         if (isSelectable == true)
         {
             if (sm.isSelectingForSpellCards == true) // selecting for a spell

@@ -119,7 +119,7 @@ public void setPlayerArrows(arrows arrowz)
                 playerManager.point = des;
                 playerManager.myCardManager.point = des;
                 Debug.Log("actionpoints");
-                playerManager.ActionPoints--;
+                
                 playerManager.PickUpKidneyFromBoard();
                 yield return new WaitForSeconds(0.2f);
                 playerManager.myCardManager.transform.DOMove(boardManager.AllSlots[des.Y, des.X].transform.position, delay);
@@ -152,7 +152,7 @@ public void setPlayerArrows(arrows arrowz)
                 yield return new WaitForSeconds(0.5f);
                 BoardManager.Instance.UpdateCards();
                 isMoving = false;
-                
+                playerManager.ActionPoints--; // needs to be after take damage
             }
         }
     }
@@ -210,7 +210,7 @@ public void setPlayerArrows(arrows arrowz)
             //other player has full portait
             //lay ontop of their portait our half image, need to change out image to half image
             playerManager.Doctor.GetComponent<SpriteRenderer>().sprite = playerManager.PortraitHalf;
-            //playerManager.Doctor.GetComponent<SpriteRenderer>().sortingOrder = -2;
+            GameManager.Instance.getOtherPlayer(playerManager).Doctor.GetComponent<SpriteRenderer>().enabled = false;
         }
         else
         {
@@ -256,7 +256,13 @@ public void setPlayerArrows(arrows arrowz)
         {
             if (boardManager.FindFieldCardAtPoint(des).cardAsset.Type != CardType.Player)
             {
-                playerManager.button.interactable = true;
+                if (GameManager.Instance.getOtherPlayer(playerManager).myLocation == playerManager.myLocation)
+                {
+                    GameManager.Instance.getOtherPlayer(playerManager).Doctor.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.getOtherPlayer(playerManager).PortraitHalf;
+                    GameManager.Instance.getOtherPlayer(playerManager).Doctor.GetComponent<SpriteRenderer>().enabled = true;
+                }
+
+                    playerManager.button.interactable = true;
                 SoundManager.PlaySound("dealCardSound");
                 isMoving = true;
                 fieldCardDes = boardManager.FindFieldCardAtPoint(des);
@@ -271,7 +277,7 @@ public void setPlayerArrows(arrows arrowz)
 
                 //last 2 lines removed for testing
                 Debug.Log("actionpoints");
-                playerManager.ActionPoints--;
+                
                 Debug.Log(playerManager.ActionPoints);
                 Debug.Log("des");
                 Debug.Log(des.X + " " + des.Y);
@@ -321,7 +327,7 @@ public void setPlayerArrows(arrows arrowz)
                     AudioManager.instance.Play("hp");
                 }
 
-
+                playerManager.ActionPoints--;
 
             }
         }

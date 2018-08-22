@@ -72,7 +72,7 @@ public class HPVisual : MonoBehaviour
                 Box.color = Color.green;
                 for (int i = availableHp; i < availableHp - effectAmount; i++)
                 {
-                    if (i < 15)
+                    if (i <= 15)
                         HealthPoints[i].color = Color.green;
                 }
             }

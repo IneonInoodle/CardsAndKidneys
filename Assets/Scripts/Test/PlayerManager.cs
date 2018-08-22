@@ -59,6 +59,7 @@ public enum arrows
 
 public class PlayerManager : TurnManager {
 
+    public Transform kidneyLocation;
     public arrows arrows = arrows.None;
     private List <statusEffect> statusEffects = new List<statusEffect>();
     public PlayerMover playerMover;
@@ -77,7 +78,6 @@ public class PlayerManager : TurnManager {
     public List <CardAsset> Deck;
 
     public GameObject Doctor;
-    public GameObject KidneyLocation;
 
     public Button button;
 
@@ -141,7 +141,11 @@ public class PlayerManager : TurnManager {
             return actionPoints;
         }
         set 
-        {
+        {   
+            if (value == actionPoints - 1)
+            {
+                applyStatusEffects();
+            }
             actionPoints = value;
             if (actionPoints < 0)
                  actionPoints = 0;
@@ -150,6 +154,7 @@ public class PlayerManager : TurnManager {
                 actionPoints = 4;
 
             apvis.AvailableAp = actionPoints;
+            
 
             if (actionPoints == 0)
             {   
@@ -240,8 +245,8 @@ public class PlayerManager : TurnManager {
                 Debug.Log("WTF");
                 //GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
                 Vector3 ApLocation = boardManager.transform.position;
-                GameManager.Instance.getOtherPlayer(this).takeDamage(2);
-                statusEffect st = new statusEffect(statusEffecttype.poisoned, 2, 3);
+                //GameManager.Instance.getOtherPlayer(this).takeDamage(2);
+                statusEffect st = new statusEffect(statusEffecttype.poisoned, 4, 2);
                 GameManager.Instance.getOtherPlayer(this).statusEffects.Add(st);
 
                 DamageEffect d = new DamageEffect();
@@ -250,7 +255,7 @@ public class PlayerManager : TurnManager {
                 break;
             case "Potion":
                 //GameManager.Instance.CurrentPlayerTurn.Hp += 5;
-                statusEffect st2 = new statusEffect(statusEffecttype.healing, 2, 3);
+                statusEffect st2 = new statusEffect(statusEffecttype.healing, 3, 3);
                 statusEffects.Add(st2);
 
                 DamageEffect dd = new DamageEffect();
@@ -274,6 +279,7 @@ public class PlayerManager : TurnManager {
         yield return new WaitForSeconds(1f);
 
         GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).hpvis.EffectAmount = ss.Val * ss.Rounds;
+        //GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).applyStatusEffects();
         // line above should be
         //Gamemanager.Instance.Getotherplayer(currentplayer).hpvis.whitebox = new Color(255f, 0f, 255f);
 
@@ -282,6 +288,7 @@ public class PlayerManager : TurnManager {
     {
         yield return new WaitForSeconds(1f);
         Debug.Log(ss.Val * ss.Rounds);
+        //GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).applyStatusEffects();
         GameManager.Instance.CurrentPlayerTurn.hpvis.EffectAmount = -ss.Val * ss.Rounds;
     }
     public void clearStatusEffects()
@@ -351,8 +358,8 @@ public class PlayerManager : TurnManager {
             Debug.Log("MoveKidneyFromDoctorToCard");
             playerKidneys[0].transform.SetParent(Doctor.transform, false);
             playerKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-            playerKidneys[0].transform.localPosition = new Vector3(0f, 0f, 0f);
-            playerKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
+            playerKidneys[0].transform.position = kidneyLocation.position;
+            //playerKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
         }
     }
     public void callSpellCard (string tt)
@@ -411,9 +418,11 @@ public class PlayerManager : TurnManager {
             patientKidneys.Add(playerKidneys[0]);
 
             playerKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+            
+
+            playerKidneys[0].transform.SetParent(Doctor.transform, true);
             playerKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
 
-            playerKidneys[0].transform.SetParent(KidneyLocation.transform, true);
             playerKidneys[0].SetActive(false);
             playerKidneys.Remove(playerKidneys[0]);
             Debug.Log("captureKidney");
@@ -503,7 +512,7 @@ public class PlayerManager : TurnManager {
                     playerKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
                     playerKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
 
-                    playerKidneys[0].transform.SetParent(GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).KidneyLocation.transform, true);
+                    playerKidneys[0].transform.SetParent(GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).kidneyLocation.transform, true);
                     playerKidneys[0].SetActive(false);
                     playerKidneys.Remove(playerKidneys[0]);
 
@@ -547,8 +556,9 @@ public class PlayerManager : TurnManager {
                 otherPlayer.patientKidneys[0].transform.SetParent(Doctor.transform, false);
 
                 otherPlayer.patientKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-                otherPlayer.patientKidneys[0].transform.localPosition = new Vector3(0f, 0f, 0f);
-                otherPlayer.patientKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
+
+                otherPlayer.patientKidneys[0].transform.position = kidneyLocation.position;
+                otherPlayer.patientKidneys[0].transform.localScale = new Vector3(0.11f, 0.11f, 0.11f);
                 
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
                 //AudioManager.instance.Play("stealKidneySound");
@@ -565,8 +575,8 @@ public class PlayerManager : TurnManager {
             Debug.Log("MoveKidneyFromDoctorToCard");
             playerKidneys[0].transform.SetParent(myPlayerCard.transform, false);
             playerKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-            playerKidneys[0].transform.localPosition = new Vector3(0f, 0f, 0f);
-            playerKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
+            playerKidneys[0].transform.position = myCardManager.kidneyLocation.position;
+            playerKidneys[0].transform.localScale = new Vector3(0.03f, 0.03f, 0.03f); // correct value when on board
         }
         //add kidney to playeer
         //remove kidney from gameboard

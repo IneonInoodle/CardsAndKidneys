@@ -249,6 +249,7 @@ public class OneCardManager : MonoBehaviour {
         
 
         if (cardAsset.idleClip != null) {
+            Debug.Log("oktttttttttttttttttttttttttttttttt");
             animator.gameObject.SetActive(true);
             CardGraphicImage.enabled = false;
             Debug.Log("rrrr");
