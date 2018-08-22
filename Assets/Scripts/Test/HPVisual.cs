@@ -59,25 +59,28 @@ public class HPVisual : MonoBehaviour
             {
                 Debug.Log("im poisoned");
                 Box.color = Color.black;
-                for (int i = availableHp; i > availableHp - effectAmount; i--)
-                {   
-                    if (i>0)
-                    HealthPoints[i].color = Color.black;
+                for (int i = availableHp - 1; i > availableHp - effectAmount; i--)
+                {
+                    if (i >= 0)
+                        HealthPoints[i].color = Color.black;
                 }
-            } else if (effectAmount == 0)
+            }
+            else if (effectAmount == 0)
             {
                 Box.color = Color.red;
-            } else
-            {
+                AvailableHp = AvailableHp;
+            }
+            else {
                 Box.color = Color.green;
                 for (int i = availableHp; i < availableHp - effectAmount; i++)
                 {
-                    if (i <= 15)
+                    if (i < 15)
                         HealthPoints[i].color = Color.green;
                 }
             }
         }
     }
+
 
     private int availableHp;
     public int AvailableHp
@@ -111,9 +114,7 @@ public class HPVisual : MonoBehaviour
                 }
                     
             }
-
-            effectAmount = effectAmount; // lol
-           
+ 
             // update the text
             HpText.text = string.Format("{0}", availableHp.ToString());
 

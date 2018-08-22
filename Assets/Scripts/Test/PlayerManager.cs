@@ -144,6 +144,7 @@ public class PlayerManager : TurnManager {
         {   
             if (value == actionPoints - 1)
             {
+                Debug.Log("okrrrr");
                 applyStatusEffects();
             }
             actionPoints = value;
@@ -255,7 +256,7 @@ public class PlayerManager : TurnManager {
                 break;
             case "Potion":
                 //GameManager.Instance.CurrentPlayerTurn.Hp += 5;
-                statusEffect st2 = new statusEffect(statusEffecttype.healing, 3, 3);
+                statusEffect st2 = new statusEffect(statusEffecttype.healing, 3, 2);
                 statusEffects.Add(st2);
 
                 DamageEffect dd = new DamageEffect();
@@ -275,10 +276,10 @@ public class PlayerManager : TurnManager {
     }
     public IEnumerator posionEffekt(Image posionimg, statusEffect ss)
     {
-        Debug.Log("COOOOOOOOOOOOOOOOOOOOOLOR");
         yield return new WaitForSeconds(1f);
 
-        GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).hpvis.EffectAmount = ss.Val * ss.Rounds;
+        GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).
+        setStatusEffectColors();
         //GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).applyStatusEffects();
         // line above should be
         //Gamemanager.Instance.Getotherplayer(currentplayer).hpvis.whitebox = new Color(255f, 0f, 255f);
@@ -287,22 +288,43 @@ public class PlayerManager : TurnManager {
     public IEnumerator potionEffekt(Image posionimg, statusEffect ss)
     {
         yield return new WaitForSeconds(1f);
-        Debug.Log(ss.Val * ss.Rounds);
+
         //GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).applyStatusEffects();
-        GameManager.Instance.CurrentPlayerTurn.hpvis.EffectAmount = -ss.Val * ss.Rounds;
+        GameManager.Instance.CurrentPlayerTurn.setStatusEffectColors();
     }
     public void clearStatusEffects()
     {
         statusEffects.Clear();
-        hpvis.EffectAmount = 0;
     }
 
+    public void setStatusEffectColors()
+    {
+        cancelOutStatusEffects();
+        int l = 0;
+        for (int i = 0; i < statusEffects.Count; i++)
+        {
+            statusEffect s = statusEffects[i];
+
+            if (s.St == statusEffecttype.healing)
+            {
+               l = -s.Val * s.Rounds;
+            }
+            if (s.St == statusEffecttype.poisoned)
+            {
+                l = s.Val * s.Rounds;
+                //PosionImage.color = new Color(255f, 0f, 255f);
+            }
+
+
+        }
+
+        hpvis.EffectAmount = l;
+    }
     public void applyStatusEffects()
     {
         cancelOutStatusEffects();
 
         int damageOrHeal = 0;
-        int roundsLeft = 0;
         for (int i=0; i< statusEffects.Count; i++) 
         {
 
@@ -320,7 +342,7 @@ public class PlayerManager : TurnManager {
             }
             
             s.Rounds--;
-            roundsLeft = s.Rounds;
+            
             if (s.Rounds <= 0)
             {
                 statusEffects.RemoveAt(i);
@@ -330,7 +352,6 @@ public class PlayerManager : TurnManager {
         }
 
         takeDamage(damageOrHeal);
-        hpvis.EffectAmount = damageOrHeal * roundsLeft;
     }
     public void cancelOutStatusEffects()
     {    
@@ -343,6 +364,7 @@ public class PlayerManager : TurnManager {
             {
                 statusEffects.Remove(hasHeal);
                 statusEffects.Remove(hasPoison);
+                clearStatusEffects();
                 continue;
             }
 
@@ -619,8 +641,8 @@ public class PlayerManager : TurnManager {
         }
 
         Hp -= damage;
-        
 
+        setStatusEffectColors();
 
         if (Hp <= 0)
         {

@@ -1,5 +1,4 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +10,7 @@ public class GameManager : MonoBehaviour {
 
     public PlayerManager[] players;
     public PlayerManager CurrentPlayerTurn;
-    public static bool CheckIfAllowOrNot = true;
+
     public Sprite BottomPortraitMask;
     public Sprite TopPortraitMask;
     
@@ -92,13 +91,7 @@ public class GameManager : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
-        if (CheckIfAllowOrNot)
-        {
-            EnableInputs();
-        } else
-        {
-            DisableInputs();
-        }
+ 
     }
 
     void Start()
@@ -292,7 +285,6 @@ public class GameManager : MonoBehaviour {
 
     }
 
- 
     public void DisableInputs() {
         foreach (PlayerManager p in players)
         {

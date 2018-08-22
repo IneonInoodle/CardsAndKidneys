@@ -7,7 +7,8 @@ public class MainMenu : MonoBehaviour {
 
     public static bool GameIsPaused = false;
     public GameObject PauseMenuUI;
-    public void PlayGame()
+
+	public void PlayGame()
     {
         PauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
@@ -66,7 +67,6 @@ public class MainMenu : MonoBehaviour {
         PauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
-        GameManager.CheckIfAllowOrNot = true;
     }
 
     public void Restart()
@@ -75,7 +75,6 @@ public class MainMenu : MonoBehaviour {
         Time.timeScale = 1f;
         GameIsPaused = false;
         PauseMenuUI.SetActive(false);
-        GameManager.CheckIfAllowOrNot = true;
     }
 
     public void Pause()
@@ -83,7 +82,6 @@ public class MainMenu : MonoBehaviour {
         PauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
-        GameManager.CheckIfAllowOrNot = false;
     }
     void Awake()
     {
@@ -105,14 +103,8 @@ public class MainMenu : MonoBehaviour {
     // called third
     void Start()
     {
-        Scene m_Scene = SceneManager.GetActiveScene();
-        if(m_Scene.name == "MainMenu"){
-            AudioManager.instance.rePlay("GameStart");
-        }else if (m_Scene.name == "IntroScene")
-        {
-            AudioManager.instance.rePlay("GameIntro");
-        }
-            Debug.Log("Start");
+        Debug.Log("Start");
+        AudioManager.instance.rePlay("GameStart");
     }
 
     // called when the game is terminated

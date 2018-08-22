@@ -121,8 +121,11 @@ public void setPlayerArrows(arrows arrowz)
                 Debug.Log("actionpoints");
                 
                 playerManager.PickUpKidneyFromBoard();
-                yield return new WaitForSeconds(0.2f);
-                playerManager.myCardManager.transform.DOMove(boardManager.AllSlots[des.Y, des.X].transform.position, delay);
+
+                Vector3 v = boardManager.AllSlots[des.Y, des.X].transform.position;
+
+                v.y += 0.3f;
+                playerManager.myCardManager.transform.DOMove(v, delay);
                 // need this order, dont change
                 boardManager.DeleteCard(desCard);
 
@@ -133,7 +136,7 @@ public void setPlayerArrows(arrows arrowz)
                 Debug.Log(int.Parse(desCard.DamageText.text));
 
                 playerManager.takeDamage(int.Parse(desCard.DamageText.text));
-                playerManager.hpvis.EffectAmount = playerManager.hpvis.EffectAmount;
+               
                 if (desCard.cardAsset.Type == CardType.Monster && playerManager.Hp > 0)
                 {
                     AudioManager.instance.Play("damage");
