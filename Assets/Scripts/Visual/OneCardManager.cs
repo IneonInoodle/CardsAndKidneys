@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using DG.Tweening;
-using UnityEditor.Animations;
+
 
 
 // holds the refs to all the Text, Images on the card
