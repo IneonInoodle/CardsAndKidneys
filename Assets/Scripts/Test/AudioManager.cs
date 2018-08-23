@@ -247,17 +247,20 @@ public class AudioManager : MonoBehaviour {
 
     public void rePlay(string name)
     {
-        Sound s = null;        
+        Sound s = null;
         switch (name)
         {     
-            case "GameStart"://done
-                s = AllSounds[0][0]; //Anis this is broken here please fix
+            case "GameStart":
+                s = AllSounds[0][0];
+                break;
+            case "GameIntro":
+                s = AllSounds[0][1]; 
                 break;
             default:
                 for (int i = 0; i < AllSounds.Length; i++)
                 {
-                    s = Array.Find(AllSounds[i], sound => sound.name == name);
-                    if (s != null) break;
+                    s = Array.Find(AllSounds[i], sound => sound.name == name);                    
+                        if (s != null) break;
                 }
                 break;
         }
