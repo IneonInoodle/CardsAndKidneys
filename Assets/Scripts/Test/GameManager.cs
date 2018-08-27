@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
     public MessageManager messageManager;
     public SelectionManager selectionManager;
 
+    public GameObject mainMenu;
     public GameObject DamagePrefab;
     public GameObject SpellCardPrefab;
 
@@ -339,6 +340,7 @@ public class GameManager : MonoBehaviour {
         camera.transform.DOLocalRotateQuaternion(camera.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
 
         selectionManager.transform.DOLocalRotateQuaternion(selectionManager.transform.localRotation * Quaternion.Euler(0, 180, 0), 0.25f);
+        mainMenu.transform.DOLocalRotateQuaternion(selectionManager.transform.localRotation * Quaternion.Euler(0, 180, 0), 0.25f);
         messageManager.transform.DOLocalRotateQuaternion(messageManager.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
 
         StartCoroutine(board.RotateFieldCards());

@@ -469,7 +469,7 @@ public class BoardManager : MonoBehaviour
         Vector3 v = new Vector3(AllSlots[p.Y, p.X].transform.position.x + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.y + UnityEngine.Random.Range(-0.05f, 0.05f), AllSlots[p.Y, p.X].transform.position.z);
         if (card.cardAsset.Type == CardType.Player)
         {
-            v.y = 0.5f;
+            v.y = 0.35f;
         }
         card.transform.DOMove(v, delay); //AllSlots[p.Y, p.X].transform.position
         return card;

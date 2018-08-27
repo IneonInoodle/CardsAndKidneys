@@ -236,6 +236,8 @@ public void setPlayerArrows(arrows arrowz)
             Debug.Log(playerManager.myCardManager.point.X + " " + playerManager.myCardManager.point.Y);
             Debug.Log(playerManager.point.X + " " + playerManager.point.Y);
 
+            playerManager.myPlayerCard.transform.DOMove(des.transform.position, 3f);
+
             boardManager.DeleteCard(playerManager.myCardManager);
             Debug.Log("here");
         }
