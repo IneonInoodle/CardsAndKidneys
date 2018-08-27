@@ -7,6 +7,10 @@ public class MessageManager : MonoBehaviour
     public Text MessageText;
     public GameObject MessagePanel;
 
+    public Image panelImage;
+    public Sprite Merlin;
+    public Sprite Patric;
+
     public static MessageManager Instance;
 
     void Awake()
@@ -21,7 +25,14 @@ public class MessageManager : MonoBehaviour
     }
 
     IEnumerator ShowMessageCoroutine(string Message, float Duration)
-    {
+    {   
+        if (Message == "patric")
+        {
+            panelImage.sprite = Patric;
+        } else
+        {
+            panelImage.sprite = Merlin;
+        }
         //Debug.Log("Showing some message. Duration: " + Duration);
         MessageText.text = Message;
         MessagePanel.SetActive(true);

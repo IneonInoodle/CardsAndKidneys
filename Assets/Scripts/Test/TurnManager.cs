@@ -15,10 +15,10 @@ public class TurnManager : MonoBehaviour {
     {
         isTurnComplete = true;
 
-
+        Debug.Log("hmmmmmm");
         StartCoroutine(GameManager.Instance.UpdateTurn());
+        GameManager.Instance.RotateEverything();
 
-        
     }
 	// Update is called once per frame
 	void Update () {

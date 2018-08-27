@@ -429,9 +429,9 @@ public class BoardManager : MonoBehaviour
             c.CardArrowRight.SetActive(false);
             c.CardArrowDown.SetActive(false);
             c.CardArrowUp.SetActive(false);
-            Debug.Log("gggggggg");
             //c.frame.transform.DOLocalRotate(new Vector3(0f, 0f, c.frame.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
-            c.frame.transform.DORotateQuaternion(c.frame.transform.rotation * Quaternion.Euler(0, 0, GameManager.Instance.camera.transform.rotation.eulerAngles.y), 0.25f);
+            Debug.Log(GameManager.Instance.camera.transform.rotation.eulerAngles.y);
+            c.frame.transform.DORotateQuaternion(c.frame.transform.rotation * Quaternion.Euler(0, 0, 180), 0.25f);
             //RotateFieldCard(c);
 
         }

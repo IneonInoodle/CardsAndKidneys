@@ -63,7 +63,7 @@ public void setPlayerArrows(arrows arrowz)
         else // move on board
         {
             Debug.Log(des.X + " " + des.Y);
-            StartCoroutine(MoveOnBoard(des, 0.5f));
+            MoveOnBoard(des, 0.5f);
         }
 
     }
@@ -88,7 +88,7 @@ public void setPlayerArrows(arrows arrowz)
 
     }
 
-    IEnumerator MoveOnBoard(Point des, float delay)
+    public void MoveOnBoard(Point des, float delay)
     {   
         OneCardManager desCard;
         Vector2 newPos; 
@@ -151,11 +151,10 @@ public void setPlayerArrows(arrows arrowz)
                     AudioManager.instance.Play("hp");
                 }
                 // take damage from deleted card?
-
-                yield return new WaitForSeconds(0.5f);
-                BoardManager.Instance.UpdateCards();
+                
                 isMoving = false;
                 playerManager.ActionPoints--; // needs to be after take damage
+                BoardManager.Instance.UpdateCards();
             }
         }
     }

@@ -255,7 +255,8 @@ public class GameManager : MonoBehaviour {
                         players[0].myCardManager.CardFaceGlowObject.SetActive(false);
                     players[0].EndTurnGlowObject.SetActive(false);
 
-                    messageManager.ShowMessage("Your Turn", 1f);
+                    
+                    messageManager.ShowMessage("patric", 1f);
                     PlayPlayerTurn(players[1]);
                 }
                 
@@ -281,7 +282,8 @@ public class GameManager : MonoBehaviour {
                         players[1].myCardManager.CardFaceGlowObject.SetActive(false);
                     players[1].EndTurnGlowObject.SetActive(false);
 
-                    messageManager.ShowMessage("Enemy Turn", 1f);                   
+                    
+                    messageManager.ShowMessage("merlin", 1f);                   
                     PlayPlayerTurn(players[0]);
                 }  
             }
@@ -332,11 +334,13 @@ public class GameManager : MonoBehaviour {
 
     public void RotateEverything()
     {
-       // camera.transform.DOLocalRotate(new Vector3(90f, 0f, camera.transform.localRotation.eulerAngles.y + 180), 0.25f, RotateMode.FastBeyond360);
+        // camera.transform.DOLocalRotate(new Vector3(90f, 0f, camera.transform.localRotation.eulerAngles.y + 180), 0.25f, RotateMode.FastBeyond360);
 
+        camera.transform.DOLocalRotateQuaternion(camera.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
 
-        selectionManager.transform.DOLocalRotate(new Vector3(0f, 0f, selectionManager.transform.localRotation.eulerAngles.z + 180), 0f, RotateMode.FastBeyond360);
-        messageManager.transform.DOLocalRotate(new Vector3(0f, 0f, messageManager.transform.localRotation.eulerAngles.z + 180), 0f, RotateMode.FastBeyond360);
+        selectionManager.transform.DOLocalRotateQuaternion(selectionManager.transform.localRotation * Quaternion.Euler(0, 180, 0), 0.25f);
+        messageManager.transform.DOLocalRotateQuaternion(messageManager.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
+
         StartCoroutine(board.RotateFieldCards());
         board.RotatePlayerPortaitZones();
 
@@ -351,7 +355,7 @@ public class GameManager : MonoBehaviour {
 
         
         //camera.transform.DOLocalRotate(new Vector3(90f, 0f, 180), 0.25f, RotateMode.FastBeyond360);
-        camera.transform.DOLocalRotateQuaternion(camera.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
+
     }
 
     public void PlayPlayerTurn(PlayerManager player)

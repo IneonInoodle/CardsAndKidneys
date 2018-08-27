@@ -114,6 +114,9 @@ public class DamageEffect : MonoBehaviour {
 
         newDamageEffect.transform.SetParent(go.transform, false);
         newDamageEffect.transform.position = go.transform.position;
+
+        
+        newDamageEffect.transform.DOLocalRotateQuaternion(newDamageEffect.transform.localRotation * Quaternion.Euler(0, 0, GameManager.Instance.camera.transform.localRotation.eulerAngles.y), 0f);
         newDamageEffect.transform.localScale = new Vector3(-0.43f,0.5f,1);
  
         // Instantiate a DamageEffect from prefab
