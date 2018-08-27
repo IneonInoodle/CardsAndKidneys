@@ -391,7 +391,7 @@ public class PlayerManager : TurnManager {
             playerKidneys[0].transform.SetParent(Doctor.transform, false);
             playerKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
             playerKidneys[0].transform.position = kidneyLocation.position;
-            //playerKidneys[0].transform.localScale = new Vector3(1f, 1f, 1f);
+            playerKidneys[0].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         }
     }
     public void callSpellCard (string tt)
@@ -492,6 +492,14 @@ public class PlayerManager : TurnManager {
                 cardslot.Kidneys.Add(playerKidneys[0]);
 
                 cardslot.Kidneys[0].transform.SetParent(cardslot.transform, false);
+
+
+                playerKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                playerKidneys[0].transform.localPosition = new Vector3(0,0,0);
+                playerKidneys[0].transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
+
+
+
                 pos = cardslot.Kidneys[0].transform.position;
 
 
@@ -567,6 +575,7 @@ public class PlayerManager : TurnManager {
             Debug.Log("PickupKidney");
             playerKidneys.Add(cardslot.Kidneys[0]);
             cardslot.Kidneys[0].transform.SetParent(myPlayerCard.transform, false);
+            playerKidneys[0].transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
             cardslot.Kidneys.Remove(cardslot.Kidneys[0]);
             
         }
@@ -605,10 +614,10 @@ public class PlayerManager : TurnManager {
         if (playerKidneys.Count > 0) // check if kidney on card and if player has room for kidney
         {
             Debug.Log("MoveKidneyFromDoctorToCard");
-            playerKidneys[0].transform.SetParent(myPlayerCard.transform, false);
+            playerKidneys[0].transform.SetParent(myCardManager.frame.transform, false);
             playerKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
             playerKidneys[0].transform.position = myCardManager.kidneyLocation.position;
-            playerKidneys[0].transform.localScale = new Vector3(0.03f, 0.03f, 0.03f); // correct value when on board
+            playerKidneys[0].transform.localScale = new Vector3(0.35f, 0.35f, 0.35f); // correct value when on board
         }
         //add kidney to playeer
         //remove kidney from gameboard

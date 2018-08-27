@@ -12,6 +12,11 @@ public class SelectionManager : MonoBehaviour {
     
     public GameObject blackScreen;
     public GameObject ribbon;
+    public Image ribbonImage;
+
+    public Sprite choose1;
+    public Sprite choose2;
+
     public Text RibbonText;
     public Text ChatBot2;
     public Button confirmButton;
@@ -81,10 +86,12 @@ public class SelectionManager : MonoBehaviour {
         if (amount == 1)
         {
             y = "Choose 1 Card";
+            ribbonImage.sprite = choose1;
         }
         else if (amount == 2)
         {
             y = "Choose 2 Cards";
+            ribbonImage.sprite = choose2;
         }
 
         RibbonText.text = y;
@@ -155,10 +162,12 @@ public class SelectionManager : MonoBehaviour {
         if (amount == 1)
         {
             y = "Choose 1 Card";
+            ribbonImage.sprite = choose1;
         }
         else if (amount == 2)
         {
             y = "Choose 2 Cards";
+            ribbonImage.sprite = choose2;
         }
 
         RibbonText.text = y;
