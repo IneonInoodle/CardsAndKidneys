@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour {
     //switch players turn 
@@ -13,7 +14,8 @@ public class GameManager : MonoBehaviour {
 
     public Sprite BottomPortraitMask;
     public Sprite TopPortraitMask;
-    
+
+    public Camera camera;
     public MessageManager messageManager;
     public SelectionManager selectionManager;
 
@@ -91,7 +93,18 @@ public class GameManager : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
- 
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            RotateEverything();
+            
+            //SwapCard(new Point(1, 1), new Point(0, 0));
+            //Generate();
+            //StartCoroutine(GenerateTest());
+        }
+
+
+        
     }
 
     void Start()
@@ -317,6 +330,29 @@ public class GameManager : MonoBehaviour {
         board.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
     }
 
+    public void RotateEverything()
+    {
+       // camera.transform.DOLocalRotate(new Vector3(90f, 0f, camera.transform.localRotation.eulerAngles.y + 180), 0.25f, RotateMode.FastBeyond360);
+
+
+        selectionManager.transform.DOLocalRotate(new Vector3(0f, 0f, selectionManager.transform.localRotation.eulerAngles.z + 180), 0f, RotateMode.FastBeyond360);
+        messageManager.transform.DOLocalRotate(new Vector3(0f, 0f, messageManager.transform.localRotation.eulerAngles.z + 180), 0f, RotateMode.FastBeyond360);
+        StartCoroutine(board.RotateFieldCards());
+        board.RotatePlayerPortaitZones();
+
+        foreach (PlayerManager p in players)
+        {
+            p.RotateElements();
+        }
+
+       
+
+        Debug.Log(camera.transform.localRotation.eulerAngles);
+
+        
+        //camera.transform.DOLocalRotate(new Vector3(90f, 0f, 180), 0.25f, RotateMode.FastBeyond360);
+        camera.transform.DOLocalRotateQuaternion(camera.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
+    }
 
     public void PlayPlayerTurn(PlayerManager player)
     {
@@ -363,4 +399,6 @@ public class GameManager : MonoBehaviour {
         //player now has control, waiting for them to call Unity action (from event) update turn to switch players
 
     }
+
+  
 }

@@ -49,6 +49,9 @@ public class BoardManager : MonoBehaviour
     public GameObject Top;
     public GameObject Bottom;
 
+    public GameObject TopCanv;
+    public GameObject BottomCanv;
+
     private int rows = 2;
     public int cols = 3;
 
@@ -405,14 +408,52 @@ public class BoardManager : MonoBehaviour
         return nList;
     }
 
+    public void RotatePlayerPortaitZones() {
+
+        TopCanv.transform.DOLocalRotate(new Vector3(0f, 0f, TopCanv.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
+        BottomCanv.transform.DOLocalRotate(new Vector3(0f, 0f, BottomCanv.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
+
+    }
+
+    public void RotateFieldCard(OneCardManager c)
+    {
+        c.frame.transform.DOLocalRotateQuaternion(c.frame.transform.localRotation * Quaternion.Euler(0, 0, GameManager.Instance.camera.transform.localRotation.eulerAngles.y), 0f);
+    }
+
+    public IEnumerator RotateFieldCards()
+    {
+        foreach (OneCardManager c in AllCards)
+        {
+            //hide arrows
+            c.CardArrowLeft.SetActive(false);
+            c.CardArrowRight.SetActive(false);
+            c.CardArrowDown.SetActive(false);
+            c.CardArrowUp.SetActive(false);
+            Debug.Log("gggggggg");
+            //c.frame.transform.DOLocalRotate(new Vector3(0f, 0f, c.frame.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
+            c.frame.transform.DORotateQuaternion(c.frame.transform.rotation * Quaternion.Euler(0, 0, GameManager.Instance.camera.transform.rotation.eulerAngles.y), 0.25f);
+            //RotateFieldCard(c);
+
+        }
+
+        yield return new WaitForSeconds(0.25f);
+        foreach (OneCardManager cc in AllCards)
+        {
+            cc.updateArrows(cc.arrows);        
+        }
+    }
+
 
     public OneCardManager CreateCard(Point p, GameObject cardPrefab, GameObject initPosition, CardAsset cardAsset, float delay)
     {
         //card = Instantiate(cardPrefab);
 
         //keep it bewtween 2 and 1
-        
-        OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 180, 0 + UnityEngine.Random.Range(-1, 1))).GetComponent<OneCardManager>();
+
+        Debug.Log(GameManager.Instance.camera.transform.localRotation.eulerAngles.z);
+        Debug.Log(GameManager.Instance.camera.transform.localRotation.eulerAngles.y);
+        OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 180, UnityEngine.Random.Range(-1, 1))).GetComponent<OneCardManager>();
+        RotateFieldCard(card);
         AllCards.Add(card);
 
         card.transform.SetParent(FieldCardParent.transform, false);
@@ -555,13 +596,7 @@ public class BoardManager : MonoBehaviour
             //Generate();
             StartCoroutine(DealOutFieldCards(0.2f));
         }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-
-            SwapCard(new Point(1, 1), new Point(0, 0));
-            //Generate();
-            //StartCoroutine(GenerateTest());
-        }
+       
 
 
         if (Input.GetKeyDown(KeyCode.Y))

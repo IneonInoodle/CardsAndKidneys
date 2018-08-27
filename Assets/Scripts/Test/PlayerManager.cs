@@ -90,6 +90,7 @@ public class PlayerManager : TurnManager {
     public Image PotionImage;
     public Sprite PortraitFull;
     public Sprite PortraitHalf;
+
     // Kidneys shit 
     public GameObject KidneyPrefab;
     public List<GameObject> patientKidneys = new List<GameObject>(); //kidneys safe in the patient
@@ -319,6 +320,15 @@ public class PlayerManager : TurnManager {
         }
 
         hpvis.EffectAmount = l;
+    }
+
+    public void RotateElements()
+    {   // buttons
+        hpvis.HpText.transform.DOLocalRotate(new Vector3(0f, 0f, hpvis.HpText.transform.localRotation.eulerAngles.z + 180), 0f, RotateMode.FastBeyond360);
+        button.transform.DOLocalRotate(new Vector3(0f, 0f, button.transform.localRotation.eulerAngles.z + 180), 0f, RotateMode.FastBeyond360);
+
+        //doctor
+        Doctor.transform.DOLocalRotate(new Vector3(0f, 0f, Doctor.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
     }
     public void applyStatusEffects()
     {
@@ -762,8 +772,8 @@ public class PlayerManager : TurnManager {
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-        
-           
+
+            RotateElements();
 
         }
 
