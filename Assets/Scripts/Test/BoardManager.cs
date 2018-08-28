@@ -48,7 +48,7 @@ public class BoardManager : MonoBehaviour
     public Text ChatBot2;
     public GameObject Top;
     public GameObject Bottom;
-
+    public GameObject PauseButtonArm;
     public GameObject TopCanv;
     public GameObject BottomCanv;
 
@@ -412,7 +412,11 @@ public class BoardManager : MonoBehaviour
 
         TopCanv.transform.DOLocalRotate(new Vector3(0f, 0f, TopCanv.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
         BottomCanv.transform.DOLocalRotate(new Vector3(0f, 0f, BottomCanv.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
-
+        RotatePauseButton();
+    }
+    public void RotatePauseButton()
+    {
+        PauseButtonArm.transform.DOLocalRotate(new Vector3(0f, 0f, PauseButtonArm.transform.localRotation.eulerAngles.z + 180), 0.1f, RotateMode.FastBeyond360); 
     }
 
     public void RotateFieldCard(OneCardManager c)
