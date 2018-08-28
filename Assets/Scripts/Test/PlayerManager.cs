@@ -77,6 +77,7 @@ public class PlayerManager : TurnManager {
 
     public List <CardAsset> Deck;
 
+    public GameObject PlayerDeck;
     public GameObject Doctor;
 
     public Button button;
@@ -651,6 +652,10 @@ public class PlayerManager : TurnManager {
     {
         playerInput.InputEnabled = false;
 
+        if (Deck.Count == 0)
+        {
+            Deck.AddRange(PlayerDeck.GetComponent<PlayerDeck>().playerDeck);
+        }
         for (int i = 0; i < 1; i++)
         {
             CardAsset cs = Deck[UnityEngine.Random.Range(0, Deck.Count)];
@@ -727,7 +732,16 @@ public class PlayerManager : TurnManager {
     protected override void Awake()
     {
         base.Awake();
+
+        if (PlayerDeck != null)
+        {
+            //  PlayerDeck.Get
+            
+            Deck.AddRange(PlayerDeck.GetComponent<PlayerDeck>().playerDeck);
+        }
+        
         boardManager = BoardManager.Instance;
+
         kvis.AvailableKidneys = 1;
         AvailableAp = 1;
         apvis.TotalAp = AvailableAp;

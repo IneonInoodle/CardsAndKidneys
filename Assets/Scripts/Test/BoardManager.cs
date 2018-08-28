@@ -52,6 +52,8 @@ public class BoardManager : MonoBehaviour
     public GameObject TopCanv;
     public GameObject BottomCanv;
 
+    public GameObject FieldDeck;
+
     private int rows = 2;
     public int cols = 3;
 
@@ -63,6 +65,11 @@ public class BoardManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        if (FieldDeck != null)
+        {
+            fieldCardAssets.AddRange(FieldDeck.GetComponent<FieldDeck>().fieldDeck);
+        }
         // store card info in allSlots
         CardSlotManager[] AllFieldCardsOneDim = GameObject.FindObjectsOfType<CardSlotManager>();
 
@@ -499,6 +506,12 @@ public class BoardManager : MonoBehaviour
         // coud convert list to array, go through array and delte list.
         OneCardManager card;
         int count = EmptyCardSlots.Count;
+        if (fieldCardAssets.Count <= 6)
+        {
+            fieldCardAssets.AddRange(FieldDeck.GetComponent<FieldDeck>().fieldDeck);
+        }
+        
+
         ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": DealOutFieldCards()";
         if (count > 0)
         {
