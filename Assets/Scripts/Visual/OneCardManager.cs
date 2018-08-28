@@ -168,9 +168,17 @@ public class OneCardManager : MonoBehaviour {
         {
             if (value > 0 && adjencyBonus != value)
             {
+                CardGraphicImage.sprite = cardAsset.CardAngryImage;
                 adjencyBonus = value;
                 DamageText.text = (cardAsset.Damage + adjencyBonus).ToString();
                 DamageText.color = Color.green;
+                StartCoroutine(FlipThisCard());
+            } else if (value <= 0 && adjencyBonus != value)
+            {
+                CardGraphicImage.sprite = cardAsset.CardImage;
+                adjencyBonus = value;
+                DamageText.text = (cardAsset.Damage).ToString();
+                DamageText.color = Color.white;
                 StartCoroutine(FlipThisCard());
             }
         }
@@ -367,7 +375,7 @@ public class OneCardManager : MonoBehaviour {
     {
         AudioManager.instance.Play("cardFlip");
         this.GetComponent<DragRotator>().enabled = false;
-        this.transform.DOLocalRotate(new Vector3(0f, 360f + 180f, this.transform.localRotation.eulerAngles.z), 0.5f, RotateMode.FastBeyond360); 
+        this.transform.DOLocalRotate(new Vector3(0f, 360f + 180f, this.transform.localRotation.eulerAngles.z), 0.2f, RotateMode.FastBeyond360); 
        
         yield return null;
     }

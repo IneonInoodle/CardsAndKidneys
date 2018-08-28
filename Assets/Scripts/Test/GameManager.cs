@@ -240,7 +240,7 @@ public class GameManager : MonoBehaviour {
             {
                 if (players[0].patientKidneys.Count == 2)
                 {
-                    messageManager.ShowMessage("You Win", 1f);
+                    messageManager.ShowMessage("merlinWin", 1f);
                     isGameOver = true;
                     yield return new WaitForSeconds(3f);
                     SceneManager.LoadScene("MainMenu");
@@ -269,7 +269,7 @@ public class GameManager : MonoBehaviour {
             {
                  if (players[1].patientKidneys.Count == 2)
                 {
-                    messageManager.ShowMessage("You Win", 1f);
+                    messageManager.ShowMessage("patricWin", 1f);
                     isGameOver = true;
                     yield return new WaitForSeconds(3f);
                     SceneManager.LoadScene("MainMenu");

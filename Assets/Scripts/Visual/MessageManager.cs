@@ -10,6 +10,8 @@ public class MessageManager : MonoBehaviour
     public Image panelImage;
     public Sprite Merlin;
     public Sprite Patric;
+    public Sprite youWinPartic;
+    public Sprite youWinMerlin;
 
     public static MessageManager Instance;
 
@@ -26,13 +28,23 @@ public class MessageManager : MonoBehaviour
 
     IEnumerator ShowMessageCoroutine(string Message, float Duration)
     {   
-        if (Message == "patric")
+        switch (Message)
         {
-            panelImage.sprite = Patric;
-        } else
-        {
-            panelImage.sprite = Merlin;
+            case "patric":
+                panelImage.sprite = Patric;
+                break;
+            case "patricWin":
+                panelImage.sprite = youWinMerlin;
+                break;
+            case "merlinWin":
+                panelImage.sprite = youWinPartic;
+                break;
+            case "merlin":
+                panelImage.sprite = Merlin;
+                break;
         }
+
+     
         //Debug.Log("Showing some message. Duration: " + Duration);
         MessageText.text = Message;
         MessagePanel.SetActive(true);

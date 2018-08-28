@@ -102,7 +102,7 @@ public class HPVisual : MonoBehaviour
             {   
                 if (i < availableHp)
                 {
-                    HealthPoints[i].color = Color.red;
+                    HealthPoints[i].color = Color.white;
                     if (i != 0)
                     IceEffect[(int)(i / 5)].color = Color.white; // 15/6 = 2.5
                 }

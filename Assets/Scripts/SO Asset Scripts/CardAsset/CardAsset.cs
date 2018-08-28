@@ -41,6 +41,7 @@ public class CardAsset : ScriptableObject
     public CardType Type;
 
     [Header("Field Card Info")]
+    public Sprite CardAngryImage;
     public Sprite DamageImage;
     public int Damage; //if zero then a spell card
     public string MonsterScriptName;
