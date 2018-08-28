@@ -5,6 +5,9 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 public class APVisual : MonoBehaviour {
 
+    public Sprite greySprite;
+    public Sprite glowSprite; 
+
     private int totalAp = 4;
     public int TotalAp
     {
@@ -26,7 +29,11 @@ public class APVisual : MonoBehaviour {
                 if (i < totalAp)
                 {
                     if (ActionPoints[i].color == Color.clear)
-                        ActionPoints[i].color = Color.gray;
+                    {
+                        ActionPoints[i].color = Color.white;
+                        ActionPoints[i].sprite = greySprite;
+                    }
+                        
                 }
                 else
                     ActionPoints[i].color = Color.clear;
@@ -65,15 +72,22 @@ public class APVisual : MonoBehaviour {
                 for (int i = 0; i < totalAp; i++)
                 {
                     if (i < availableAp)
-                        ActionPoints[i].color = Color.white;
+                    {
+                        
+                        ActionPoints[i].sprite = glowSprite;
+                    }
                     else
-                        ActionPoints[i].color = Color.gray;
+                    {
+                        
+                        ActionPoints[i].sprite = greySprite;
+                    }
+                        
                 }
             } else //ADDING IN EXTRA AP FROM BOOST
             {
                 for (int i = 0; i < availableAp; i++)
                 {
-                        ActionPoints[i].color = Color.white;                   
+                    ActionPoints[i].sprite = glowSprite;
                 }
             }
             
