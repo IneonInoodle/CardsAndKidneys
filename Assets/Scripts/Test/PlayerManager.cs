@@ -244,7 +244,6 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Poison":
-                Debug.Log("WTF");
                 //GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
                 Vector3 ApLocation = boardManager.transform.position;
                 //GameManager.Instance.getOtherPlayer(this).takeDamage(2);
@@ -255,13 +254,24 @@ public class PlayerManager : TurnManager {
                 d.CreatePoisonEffect(PosionEff, handvisual.PlayPreviewSpot.transform.position, GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).hpvis.Box.transform.position);
                 StartCoroutine(posionEffekt(PosionImage,st));
                 break;
+            case "Damage":
+                Vector3 ApLocation2 = boardManager.transform.position;
+                DamageEffect ddd = new DamageEffect();
+                ddd.CreatePoisonEffect(PosionEff, handvisual.PlayPreviewSpot.transform.position, GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).hpvis.Box.transform.position);
+                StartCoroutine(damageEffekt());
+                break;
+            case "Health":               
+                DamageEffect dd = new DamageEffect();
+                dd.CreatePotionEffect(PotionEff, handvisual.PlayPreviewSpot.transform.position, GameManager.Instance.CurrentPlayerTurn.hpvis.Box.transform.position);
+                StartCoroutine(healingEffekt());
+                break;
             case "Potion":
                 //GameManager.Instance.CurrentPlayerTurn.Hp += 5;
                 statusEffect st2 = new statusEffect(statusEffecttype.healing, 3, 2);
                 statusEffects.Add(st2);
 
-                DamageEffect dd = new DamageEffect();
-                dd.CreatePotionEffect(PotionEff, handvisual.PlayPreviewSpot.transform.position,GameManager.Instance.CurrentPlayerTurn.hpvis.Box.transform.position);
+                DamageEffect dddd = new DamageEffect();
+                dddd.CreatePotionEffect(PotionEff, handvisual.PlayPreviewSpot.transform.position,GameManager.Instance.CurrentPlayerTurn.hpvis.Box.transform.position);
                 StartCoroutine(potionEffekt(PotionImage, st2));
                 break;
             case "Boost":
@@ -289,10 +299,21 @@ public class PlayerManager : TurnManager {
     public IEnumerator potionEffekt(Image posionimg, statusEffect ss)
     {
         yield return new WaitForSeconds(1f);
-
-        //GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).applyStatusEffects();
         GameManager.Instance.CurrentPlayerTurn.setStatusEffectColors();
     }
+
+    public IEnumerator damageEffekt()
+    {
+        yield return new WaitForSeconds(1f);
+        GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
+    }
+
+    public IEnumerator healingEffekt()
+    {
+        yield return new WaitForSeconds(1f);
+        GameManager.Instance.CurrentPlayerTurn.Hp += 5;
+    }
+
     public void clearStatusEffects()
     {
         statusEffects.Clear();
