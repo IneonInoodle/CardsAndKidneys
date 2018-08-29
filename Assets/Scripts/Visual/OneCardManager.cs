@@ -375,8 +375,16 @@ public class OneCardManager : MonoBehaviour {
     {
         AudioManager.instance.Play("cardFlip");
         this.GetComponent<DragRotator>().enabled = false;
-        this.transform.DOLocalRotate(new Vector3(0f, 360f + 180f, this.transform.localRotation.eulerAngles.z), 0.2f, RotateMode.FastBeyond360); 
-       
+        Sequence mySequence = DOTween.Sequence();
+
+
+        this.transform.rotation = Quaternion.Euler(270, 180, 0);//why this is correct I have no fucking idea
+
+        mySequence.Append(this.transform.DOLocalRotate(new Vector3(0f, 360f + 180f, this.transform.localRotation.eulerAngles.z), 0.2f, RotateMode.FastBeyond360));
+        //mySequence.Append(this.frame.transform.DORotateQuaternion(Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y), 0f));
+
+        yield return new WaitForSeconds(0.2f);
+        this.frame.transform.rotation = Quaternion.Euler(270, 180, 0);
         yield return null;
     }
 

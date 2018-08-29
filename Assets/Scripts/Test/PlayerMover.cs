@@ -135,13 +135,23 @@ public void setPlayerArrows(arrows arrowz)
                 Debug.Log("takingdamage");
                 Debug.Log(int.Parse(desCard.DamageText.text));
 
-                playerManager.takeDamage(int.Parse(desCard.DamageText.text));
-               
-                if (desCard.cardAsset.Type == CardType.Monster && playerManager.Hp > 0)
+
+                //needs to go before take damage, because if take damage kills you, it resets your hp to 10, then this check doesnt work
+                if (desCard.cardAsset.Type == CardType.Monster && playerManager.Hp > int.Parse(desCard.DamageText.text))
                 {
+                    Debug.Log(playerManager.Hp);
+                    Debug.Log(int.Parse(desCard.DamageText.text));
+
                     AudioManager.instance.Play("damage");
                     playerManager.raiseAp();
                 }
+
+                if (desCard.cardAsset.Type == CardType.Monster)
+                {
+                    playerManager.takeDamage(int.Parse(desCard.DamageText.text));
+                }
+                
+              
                 else if (desCard.cardAsset.Type == CardType.Neutral)
                 {
                     AudioManager.instance.Play("neutral");
@@ -154,6 +164,7 @@ public void setPlayerArrows(arrows arrowz)
                 
                 isMoving = false;
                 playerManager.ActionPoints--; // needs to be after take damage
+                Debug.Log("updating cards in moveonboard");
                 BoardManager.Instance.UpdateCards();
             }
         }
@@ -312,16 +323,24 @@ public void setPlayerArrows(arrows arrowz)
                 {
                     Debug.Log("DAMAGE");
                     Debug.Log(damage);
+
+                    if (fieldCardDes.cardAsset.Type == CardType.Monster)
+                    {
+
+                        if (playerManager.Hp > 0 && playerManager.Hp > damage)
+                        {
+                            Debug.Log(playerManager.Hp);
+                            Debug.Log(damage);
+                            AudioManager.instance.Play("damage");
+                            playerManager.raiseAp();
+                        }
+
+                    }
+
                     playerManager.takeDamage(damage);
                 }
 
-                if (fieldCardDes.cardAsset.Type == CardType.Monster)
-                {
-                    
-                    if (playerManager.Hp > 0)
-                        AudioManager.instance.Play("damage");
-                    playerManager.raiseAp();
-                }
+                
 
                 else if (fieldCardDes.cardAsset.Type == CardType.Neutral)
                 {

@@ -353,7 +353,7 @@ public class GameManager : MonoBehaviour {
 
        
 
-        Debug.Log(camera.transform.localRotation.eulerAngles);
+ 
 
         
         //camera.transform.DOLocalRotate(new Vector3(90f, 0f, 180), 0.25f, RotateMode.FastBeyond360);

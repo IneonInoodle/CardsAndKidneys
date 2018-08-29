@@ -431,6 +431,7 @@ public class BoardManager : MonoBehaviour
         c.frame.transform.DOLocalRotateQuaternion(c.frame.transform.localRotation * Quaternion.Euler(0, 0, GameManager.Instance.camera.transform.localRotation.eulerAngles.y), 0f);
     }
 
+
     public IEnumerator RotateFieldCards()
     {
         foreach (OneCardManager c in AllCards)
@@ -442,7 +443,28 @@ public class BoardManager : MonoBehaviour
             c.CardArrowUp.SetActive(false);
             //c.frame.transform.DOLocalRotate(new Vector3(0f, 0f, c.frame.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
             Debug.Log(GameManager.Instance.camera.transform.rotation.eulerAngles.y);
-            c.frame.transform.DORotateQuaternion(c.frame.transform.rotation * Quaternion.Euler(0, 0, 180), 0.25f);
+
+
+            Debug.Log(c.frame.transform.localRotation.eulerAngles);
+
+            Sequence mySequence = DOTween.Sequence();
+
+            //c.frame.transform.rotation = 
+
+            c.frame.transform.rotation = Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y);
+            mySequence.Append(c.frame.transform.DORotateQuaternion(Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y),0f));
+            //mySequence.Append(c.frame.transform.DORotate(new Vector3(270, 0, 0), 0.0f));
+            mySequence.Append(c.frame.transform.DORotateQuaternion(c.frame.transform.rotation * Quaternion.Euler(0, 0, 180), 0.25f));
+
+            //mySequence.Append(c.frame.transform.DORotateQuaternion(Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y), 0f));
+            
+
+
+            DOTween.Play(mySequence);
+
+            
+            //goal is to get card rotation y to 180 so that its not half rotated
+
             //RotateFieldCard(c);
 
         }
@@ -450,6 +472,7 @@ public class BoardManager : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         foreach (OneCardManager cc in AllCards)
         {
+            cc.frame.transform.rotation = Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y);
             cc.updateArrows(cc.arrows);        
         }
     }
@@ -696,6 +719,7 @@ public class BoardManager : MonoBehaviour
 
     public void UpdateCards() // responsible for adjecny bonus and arrow glow
     {
+        Debug.Log("updateCards");
         ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : UpdateCards()";
         List<OneCardManager> SelectableCards = new List<OneCardManager>();
         List<OneCardManager> HighlightableCards = new List<OneCardManager>();
@@ -795,6 +819,8 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
+
+
 
         if (GameManager.Instance.CurrentPlayerTurn.myCardManager != null && GameManager.Instance.CurrentPlayerTurn.ActionPoints > 0)
         {
