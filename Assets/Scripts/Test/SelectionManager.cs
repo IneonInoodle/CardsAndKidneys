@@ -111,9 +111,26 @@ public class SelectionManager : MonoBehaviour {
 
         //turn all field cards to be selectable
         foreach (Selector s in AllSelectors)
-        {   
-                s.GetComponentInChildren<Canvas>().sortingLayerName = "Selection";
-                s.GetComponentInChildren<Canvas>().sortingOrder = 10;
+        {
+
+            var bb = s.gameObject.GetComponentsInChildren<Canvas>();
+
+            foreach (Canvas cc in bb)
+            {
+                cc.sortingLayerName = "Selection";
+                cc.sortingOrder = 10;
+            }
+
+            var bbb = s.gameObject.GetComponentsInChildren<SpriteRenderer>();
+
+            foreach (SpriteRenderer ccc in bbb)
+            {
+                Debug.Log("ggtttt");
+                ccc.sortingLayerName = "Selection";
+                ccc.sortingOrder = 10;
+            }
+
+           
                 // here theres a check missing for their card type
                 s.isSelectable = true;
 
@@ -192,8 +209,22 @@ public class SelectionManager : MonoBehaviour {
             // here theres a check missing for their card type
             if (s.gameObject.GetComponent<OneCardManager>().cardAsset.Type != CardType.Player)
             {
-                s.GetComponentInChildren<Canvas>().sortingLayerName = "Selection";
-                s.GetComponentInChildren<Canvas>().sortingOrder = 10;
+                var bb = s.gameObject.GetComponentsInChildren<Canvas>();
+
+                foreach (Canvas cc in bb)
+                {
+                    cc.sortingLayerName = "Selection";
+                    cc.sortingOrder = 10;
+                }
+
+                var bbb = s.gameObject.GetComponentsInChildren<SpriteRenderer>();
+
+                foreach (SpriteRenderer ccc in bbb)
+                {
+                    Debug.Log("ggtttt");
+                    ccc.sortingLayerName = "Selection";
+                    ccc.sortingOrder = 10;
+                }
                 s.isSelectable = true;
             }
                 
@@ -250,10 +281,26 @@ public class SelectionManager : MonoBehaviour {
                 // extra check to disable all glowing field cards
                 s.gameObject.GetComponent<OneCardManager>().CardFaceGlowObject.SetActive(false);
 
-                s.GetComponentInChildren<Canvas>().sortingLayerName = "FieldCard";
-                s.GetComponentInChildren<Canvas>().sortingOrder = 0;
 
-                ParticleSystemRenderer[] psr = s.GetComponentsInChildren<ParticleSystemRenderer>(true);
+
+                var bb = s.gameObject.GetComponentsInChildren<Canvas>();
+
+                foreach (Canvas cc in bb)
+                {
+                    cc.sortingLayerName = "FieldCard";
+                    cc.sortingOrder = 0;
+                }
+
+                var bbb = s.gameObject.GetComponentsInChildren<SpriteRenderer>();
+
+                foreach (SpriteRenderer ccc in bbb)
+                {
+                    ccc.sortingLayerName = "FieldCard";
+                    ccc.sortingOrder = 0;
+                }
+
+
+            ParticleSystemRenderer[] psr = s.GetComponentsInChildren<ParticleSystemRenderer>(true);
 
                 foreach (ParticleSystemRenderer p in psr)
                 {
