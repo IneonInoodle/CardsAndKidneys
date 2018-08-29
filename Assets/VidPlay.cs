@@ -12,7 +12,7 @@ public class VidPlay : MonoBehaviour {
     public RawImage image;
     //Video To Play [Assign from the Editor]
     public VideoClip videoToPlay;
-
+    public RawImage IntroImage;
     private VideoPlayer videoPlayer;
     private VideoSource videoSource;
 
@@ -76,7 +76,13 @@ public class VidPlay : MonoBehaviour {
             Debug.LogWarning("Video Time: " + Mathf.FloorToInt((float)videoPlayer.time));
             yield return null;
         }
-        SceneManager.LoadScene("MainMenu");
+        
+        IntroImage.enabled = true;
+        image.enabled = false;
         Debug.Log("Done Playing Video");
+    }
+    public void NextScene()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

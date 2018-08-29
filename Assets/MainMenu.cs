@@ -7,13 +7,23 @@ public class MainMenu : MonoBehaviour {
 
     public static bool GameIsPaused = false;
     public GameObject PauseMenuUI;
-
+    public List<GameObject> PauseMenuUI2;
+    private SceneLoader sceneloader;
 	public void PlayGame()
-    {
-        PauseMenuUI.SetActive(false);
+    { 
         Time.timeScale = 1f;
         GameIsPaused = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        GameObject playbutton = GameObject.Find("MainMenu");
+        sceneloader = playbutton.transform.GetComponent<SceneLoader>();
+        Debug.Log(sceneloader);
+        if (sceneloader != null)
+        sceneloader.startloading = true;
+        for (int i = 0; i < PauseMenuUI2.Count; i++)
+        {
+            PauseMenuUI2[i].SetActive(false);
+        }
+
     }
 
     public void QuitGame()
@@ -94,32 +104,33 @@ public class MainMenu : MonoBehaviour {
     }
     void Awake()
     {
-        Debug.Log("Awake");
+        //Debug.Log("Awake");
+        
     }
     void OnEnable()
     {
-        Debug.Log("OnEnable called");
+        //Debug.Log("OnEnable called");
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     // called second
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("OnSceneLoaded: " + scene.name);
+        //Debug.Log("OnSceneLoaded: " + scene.name);
         Debug.Log(mode);
     }
 
     // called third
     void Start()
     {
-        Debug.Log("Start");
+        //Debug.Log("Start");
         AudioManager.instance.rePlay("GameStart");
     }
 
     // called when the game is terminated
     void OnDisable()
     {
-        Debug.Log("OnDisable");
+        //Debug.Log("OnDisable");
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
    
