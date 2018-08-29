@@ -71,10 +71,19 @@ public class MainMenu : MonoBehaviour {
 
     public void Restart()
     {
+
+        
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        GameManager.Instance.CurrentPlayerTurn = GameManager.Instance.players[0];
+        GameManager.Instance.players[0].IsTurnComplete = true;
+
+        GameManager.Instance.UpdateTurn();
         Time.timeScale = 1f;
         GameIsPaused = false;
         PauseMenuUI.SetActive(false);
+
+        
     }
 
     public void Pause()

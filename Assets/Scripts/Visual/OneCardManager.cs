@@ -384,7 +384,7 @@ public class OneCardManager : MonoBehaviour {
         //mySequence.Append(this.frame.transform.DORotateQuaternion(Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y), 0f));
 
         yield return new WaitForSeconds(0.2f);
-        this.frame.transform.rotation = Quaternion.Euler(270, 180, 0);
+        this.frame.transform.rotation = Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y);
         yield return null;
     }
 

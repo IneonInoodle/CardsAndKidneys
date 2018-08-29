@@ -81,10 +81,15 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Assert(selectionManager != null);
         Debug.Assert(messageManager != null);
-        players = Object.FindObjectsOfType<PlayerManager>(); //find player
         board = BoardManager.Instance; //find board
 
 
+        
+            Debug.Log("ttttttt");
+            //for first round here we do a trick, set the condition as if enemy just finished playing
+            CurrentPlayerTurn = players[0];
+            players[0].IsTurnComplete = true;
+        
         //create both players
         //assign one to top and one to bottom 
         //set one on bottom as going first 
@@ -223,14 +228,9 @@ public class GameManager : MonoBehaviour {
     }
     public IEnumerator UpdateTurn() //switches player turns
     {
-        
+
         //AudioManager.instance.Play("pressEndTurnButtonSound");
-        if (CurrentPlayerTurn == null)
-        {
-            //for first round here we do a trick, set the condition as if enemy just finished playing
-            CurrentPlayerTurn = players[0];
-            players[0].IsTurnComplete = true;
-        }
+        
 
         //changes player turn 
         if (CurrentPlayerTurn == players[0])
@@ -247,7 +247,7 @@ public class GameManager : MonoBehaviour {
                 }
                 else
                 {
-
+                    Debug.Log("Follow");
                     players[0].playerInput.InputEnabled = false;
                     players[0].button.interactable = false;
                     players[0].PortaitGlowObject.SetActive(false);
