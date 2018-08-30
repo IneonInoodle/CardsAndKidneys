@@ -117,8 +117,12 @@ public class SelectionManager : MonoBehaviour {
 
             foreach (Canvas cc in bb)
             {
-                cc.sortingLayerName = "Selection";
-                cc.sortingOrder = 10;
+                Debug.Log(cc.name);
+                if (cc.name != "Canvas")
+                {
+                    cc.sortingLayerName = "Selection";
+                    cc.sortingOrder = 10;
+                }
             }
 
             var bbb = s.gameObject.GetComponentsInChildren<SpriteRenderer>();
@@ -212,9 +216,13 @@ public class SelectionManager : MonoBehaviour {
                 var bb = s.gameObject.GetComponentsInChildren<Canvas>();
 
                 foreach (Canvas cc in bb)
-                {
-                    cc.sortingLayerName = "Selection";
-                    cc.sortingOrder = 10;
+                {   
+                    if (cc.name != "Canvas")
+                    {
+                        cc.sortingLayerName = "Selection";
+                        cc.sortingOrder = 10;
+                    }
+
                 }
 
                 var bbb = s.gameObject.GetComponentsInChildren<SpriteRenderer>();
@@ -287,8 +295,12 @@ public class SelectionManager : MonoBehaviour {
 
                 foreach (Canvas cc in bb)
                 {
+
+                    if (cc.name != "Canvas")
+                    {
                     cc.sortingLayerName = "FieldCard";
                     cc.sortingOrder = 0;
+                 }
                 }
 
                 var bbb = s.gameObject.GetComponentsInChildren<SpriteRenderer>();

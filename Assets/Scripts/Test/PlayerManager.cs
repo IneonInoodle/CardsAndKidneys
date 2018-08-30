@@ -513,11 +513,11 @@ public class PlayerManager : TurnManager {
                 Debug.Log("removing kidney from player");
                 cardslot.Kidneys.Add(playerKidneys[0]);
 
-                cardslot.Kidneys[0].transform.SetParent(cardslot.transform, false);
+                playerKidneys[0].transform.SetParent(cardslot.transform, false);
 
 
                 playerKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-                playerKidneys[0].transform.localPosition = new Vector3(0,0,0);
+                playerKidneys[0].transform.localPosition = new Vector3(0,0,-0.19f);
                 playerKidneys[0].transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
 
 
@@ -527,8 +527,8 @@ public class PlayerManager : TurnManager {
 
                 Sequence mySequence = DOTween.Sequence();
 
-                mySequence.Append(cardslot.Kidneys[0].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
-                mySequence.Append(cardslot.Kidneys[0].transform.DOMove(pos, 1.2f));
+                mySequence.Append(playerKidneys[0].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
+                mySequence.Append(playerKidneys[0].transform.DOMove(pos, 1.2f));
                 //AudioManager.instance.Play("dropKidney");
                 //AudioManager.instance.Play("splat");
                 DOTween.Play(mySequence);
@@ -551,7 +551,7 @@ public class PlayerManager : TurnManager {
         {
             if (count > 0)
             {
-                Debug.Log("removing kidney from player");
+                Debug.Log("removing kidney from player and returning to patient");
 
                 if (myLocation == mySide)
                 {
@@ -597,7 +597,9 @@ public class PlayerManager : TurnManager {
             Debug.Log("PickupKidney");
             playerKidneys.Add(cardslot.Kidneys[0]);
             cardslot.Kidneys[0].transform.SetParent(myPlayerCard.transform, false);
-            playerKidneys[0].transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+
+            playerKidneys[0].transform.position = myCardManager.kidneyLocation.position;
+            playerKidneys[0].transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
             cardslot.Kidneys.Remove(cardslot.Kidneys[0]);
             
         }
