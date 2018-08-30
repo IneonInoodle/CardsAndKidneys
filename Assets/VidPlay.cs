@@ -4,22 +4,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
-
+using DG.Tweening;
 public class VidPlay : MonoBehaviour {
 
-    // Use this for initialization
-    //Raw Image to Show Video Images [Assign from the Editor]
     public RawImage image;
-    //Video To Play [Assign from the Editor]
     public VideoClip videoToPlay;
-    public RawImage IntroImage;
+    public RawImage Hole;
+    public RawImage door;
+    public RawImage Kidney;
+    public RawImage Texture;
     private VideoPlayer videoPlayer;
     private VideoSource videoSource;
-
-    //Audio
+    public Rigidbody camerra;
     private AudioSource audioSource;
 
-    // Use this for initialization
     void Start()
     {
         Application.runInBackground = true;
@@ -51,7 +49,7 @@ public class VidPlay : MonoBehaviour {
         //Set video To Play then prepare Audio to prevent Buffering
         videoPlayer.clip = videoToPlay;
         videoPlayer.Prepare();
-        WaitForSeconds waitTime = new WaitForSeconds(5);
+        //WaitForSeconds waitTime = new WaitForSeconds(5);
         //Wait until video is prepared
        while (!videoPlayer.isPrepared)
         {
@@ -60,7 +58,7 @@ public class VidPlay : MonoBehaviour {
         }
 
         Debug.Log("Done Preparing Video");
-
+        image.enabled = true;
         //Assign the Texture from Video to RawImage to be displayed
         image.texture = videoPlayer.texture;
         AudioManager.instance.rePlay("GameIntro");
@@ -77,12 +75,24 @@ public class VidPlay : MonoBehaviour {
             yield return null;
         }
         
-        IntroImage.enabled = true;
+        Hole.enabled = true;
+        door.enabled = true;
+        Kidney.enabled = true;
+        Texture.enabled = true;
         image.enabled = false;
         Debug.Log("Done Playing Video");
     }
     public void NextScene()
     {
-        SceneManager.LoadScene("MainMenu");
+        Kidney.transform.DOMoveZ(-50f, 6);
+        Texture.transform.DOMoveZ(50f, 6);
+        StartCoroutine(LoadNewScene());
     }
+    IEnumerator LoadNewScene()
+    {
+        yield return new WaitForSeconds(1.5f);
+        Camera.main.transform.DOMove(new Vector3(0.456f, -85.54f, 5.456f), 3f);
+        yield return new WaitForSeconds(2.5f);
+        SceneManager.LoadScene("MainMenu");
+    }   
 }
