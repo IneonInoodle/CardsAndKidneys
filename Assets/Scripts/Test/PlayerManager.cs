@@ -146,7 +146,7 @@ public class PlayerManager : TurnManager {
         {   
             if (value == actionPoints - 1)
             {
-                Debug.Log("okrrrr");
+                
                 applyStatusEffects();
             }
             actionPoints = value;
@@ -276,6 +276,7 @@ public class PlayerManager : TurnManager {
                 StartCoroutine(potionEffekt(PotionImage, st2));
                 break;
             case "Boost":
+                Debug.Log("Boost");
                 ActionPoints++;
                 BoardManager.Instance.UpdateCards();
                 break;

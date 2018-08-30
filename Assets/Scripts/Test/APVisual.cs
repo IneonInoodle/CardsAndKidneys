@@ -84,10 +84,12 @@ public class APVisual : MonoBehaviour {
                         
                 }
             } else //ADDING IN EXTRA AP FROM BOOST
-            {
+            {   
+                
                 for (int i = 0; i < availableAp; i++)
                 {
                     ActionPoints[i].sprite = glowSprite;
+                    ActionPoints[i].color = Color.white;
                 }
             }
             
