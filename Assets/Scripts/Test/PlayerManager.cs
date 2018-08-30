@@ -814,12 +814,7 @@ public class PlayerManager : TurnManager {
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-
-            RotateElements();
-
-        }
+        
 
         
 
