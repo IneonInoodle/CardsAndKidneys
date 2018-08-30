@@ -34,10 +34,10 @@ public class MessageManager : MonoBehaviour
                 panelImage.sprite = Patric;
                 break;
             case "patricWin":
-                panelImage.sprite = youWinMerlin;
+                panelImage.sprite = youWinPartic;
                 break;
             case "merlinWin":
-                panelImage.sprite = youWinPartic;
+                panelImage.sprite = youWinMerlin;
                 break;
             case "merlin":
                 panelImage.sprite = Merlin;
