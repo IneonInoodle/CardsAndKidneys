@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
-
+using DG.Tweening;
 public class SceneLoader : MonoBehaviour
 {
 
@@ -13,7 +13,7 @@ public class SceneLoader : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI loadingText;
     public bool startloading = false;
-
+    public Image loadingImage;
 
     // Updates once per frame
     
@@ -29,7 +29,8 @@ public class SceneLoader : MonoBehaviour
 
             // ...change the instruction text to read "Loading..."
             loadingText.text = "Loading...";
-
+            loadingImage.enabled = true;
+            loadingImage.transform.DORotate(new Vector3(0, 0, -800f),5f);
             // ...and start a coroutine that will load the desired scene.
             StartCoroutine(LoadNewScene());
 

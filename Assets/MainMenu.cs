@@ -21,7 +21,7 @@ public class MainMenu : MonoBehaviour {
         sceneloader.startloading = true;
         for (int i = 0; i < PauseMenuUI2.Count; i++)
         {
-            PauseMenuUI2[i].SetActive(false);
+            //PauseMenuUI2[i].SetActive(false);
         }
 
     }
@@ -56,7 +56,7 @@ public class MainMenu : MonoBehaviour {
     
 	public void Break()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MenuScene");
     }
 
     public void ResumePause()

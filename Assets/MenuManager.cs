@@ -23,6 +23,7 @@ public class MenuManager : MonoBehaviour
 
     public Camera myCamera;
     public GameObject ZoomLocation;
+    public GameObject MenuSceneButtons;
 
     public void MoveItemsOffScreen(float delay)
     {
@@ -48,7 +49,7 @@ public class MenuManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        MenuSceneButtons.SetActive(false);
     }
 
 
@@ -88,6 +89,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnMouseDown()
     {
+        MenuSceneButtons.SetActive(true);
         StartCoroutine(DoStartEffects());
     }
 }
