@@ -14,7 +14,8 @@ public class Selector : MonoBehaviour
     {
         get { return isSelected; }
         set { isSelected = value;
-            card.CardFaceGlowObject.SetActive(isSelected);           
+            card.CardFaceInnerGlowImage.color = Color.green;
+            card.CardFaceInnerGlowImage.enabled = isSelected;        
         }
     }
 

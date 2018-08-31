@@ -118,10 +118,23 @@ public class SelectionManager : MonoBehaviour {
             foreach (Canvas cc in bb)
             {
                 Debug.Log(cc.name);
-                if (cc.name != "Canvas")
+                switch (cc.name)
                 {
-                    cc.sortingLayerName = "Selection";
-                    cc.sortingOrder = 10;
+                    case "Canvas": // this would be the kidney on le card
+
+                        break;
+                    case "CanvasFieldCard":
+                        cc.sortingLayerName = "Selection";
+                        cc.sortingOrder = 1;
+                        break;
+                    case "DefaultIdol":
+                        cc.sortingLayerName = "Selection";
+                        cc.sortingOrder = 10;
+                        break;
+                    case "CardGlowObject":
+                        cc.sortingLayerName = "Selection";
+                        cc.sortingOrder = 11;
+                        break;
                 }
             }
 
@@ -216,13 +229,25 @@ public class SelectionManager : MonoBehaviour {
                 var bb = s.gameObject.GetComponentsInChildren<Canvas>();
 
                 foreach (Canvas cc in bb)
-                {   
-                    if (cc.name != "Canvas")
+                {
+                    switch (cc.name)
                     {
-                        cc.sortingLayerName = "Selection";
-                        cc.sortingOrder = 10;
-                    }
+                        case "Canvas": // this would be the kidney on le card
 
+                            break;
+                        case "CanvasFieldCard":
+                            cc.sortingLayerName = "Selection";
+                            cc.sortingOrder = 1;
+                            break;
+                        case "DefaultIdol":
+                            cc.sortingLayerName = "Selection";
+                            cc.sortingOrder = 10;
+                            break;
+                        case "CardGlowObject":
+                            cc.sortingLayerName = "Selection";
+                            cc.sortingOrder = 11;
+                            break;
+                    }
                 }
 
                 var bbb = s.gameObject.GetComponentsInChildren<SpriteRenderer>();
@@ -234,16 +259,18 @@ public class SelectionManager : MonoBehaviour {
                     ccc.sortingOrder = 10;
                 }
                 s.isSelectable = true;
+
+                ParticleSystemRenderer[] psr = s.GetComponentsInChildren<ParticleSystemRenderer>(true);
+
+                foreach (ParticleSystemRenderer p in psr)
+                {
+                    p.sortingLayerName = "Selection";
+                    p.sortingOrder = 2;
+                }
             }
                 
 
-            ParticleSystemRenderer[] psr = s.GetComponentsInChildren<ParticleSystemRenderer>(true);
-
-            foreach (ParticleSystemRenderer p in psr)
-            {
-                p.sortingLayerName = "Selection";
-                p.sortingOrder = 2;
-            }
+            
 
         }
 
@@ -284,6 +311,7 @@ public class SelectionManager : MonoBehaviour {
         foreach (Selector s in AllSelectors)
         {
             s.IsSelected = false;
+            s.gameObject.GetComponent<OneCardManager>().CardFaceInnerGlowImage.color = Color.white;
             s.isSelectable = false;
 
                 // extra check to disable all glowing field cards
@@ -292,23 +320,36 @@ public class SelectionManager : MonoBehaviour {
 
 
                 var bb = s.gameObject.GetComponentsInChildren<Canvas>();
+                
 
                 foreach (Canvas cc in bb)
                 {
-
-                    if (cc.name != "Canvas")
+                    switch (cc.name)
                     {
-                    cc.sortingLayerName = "FieldCard";
-                    cc.sortingOrder = 0;
-                 }
+                        case "Canvas": // this would be the kidney on le card
+
+                            break;
+                        case "CanvasFieldCard":
+                            cc.sortingLayerName = "FieldCard";
+                            cc.sortingOrder = 8;
+                            break;
+                        case "DefaultIdol":
+                            cc.sortingLayerName = "FieldCard";
+                            cc.sortingOrder = 10;
+                            break;
+                        case "CardGlowObject": //this one doesnt matter
+                            cc.sortingLayerName = "FieldCard";
+                            cc.sortingOrder = 11;
+                            break;
+                    }
                 }
 
                 var bbb = s.gameObject.GetComponentsInChildren<SpriteRenderer>();
 
-                foreach (SpriteRenderer ccc in bbb)
+                foreach (SpriteRenderer ccc in bbb) //this is for the card image / animation
                 {
                     ccc.sortingLayerName = "FieldCard";
-                    ccc.sortingOrder = 0;
+                    ccc.sortingOrder = 10;
                 }
 
 
@@ -316,12 +357,9 @@ public class SelectionManager : MonoBehaviour {
 
                 foreach (ParticleSystemRenderer p in psr)
                 {
-                    p.sortingLayerName = "Default";
-                    p.sortingOrder = 0;
+                    p.sortingLayerName = "FieldCard";
+                    p.sortingOrder = 9;
                 }
-
-
-            
         }
 
         ribbon.SetActive(false);
@@ -329,7 +367,6 @@ public class SelectionManager : MonoBehaviour {
         confirmButton.gameObject.SetActive(false);
 
         selectionComplete = true;
-        
         isSelectingForSpellCards = false;
     }
 

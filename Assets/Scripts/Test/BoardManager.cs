@@ -484,8 +484,6 @@ public class BoardManager : MonoBehaviour
 
         //keep it bewtween 2 and 1
 
-        Debug.Log(GameManager.Instance.camera.transform.localRotation.eulerAngles.z);
-        Debug.Log(GameManager.Instance.camera.transform.localRotation.eulerAngles.y);
         OneCardManager card = Instantiate(cardPrefab, initPosition.transform.position, Quaternion.Euler(0, 180, UnityEngine.Random.Range(-1, 1))).GetComponent<OneCardManager>();
         RotateFieldCard(card);
         AllCards.Add(card);
@@ -527,14 +525,15 @@ public class BoardManager : MonoBehaviour
     public IEnumerator DealOutFieldCards(float delay)
     {   // itterates through the emptycardslot list and spawns cards at each.
         // coud convert list to array, go through array and delte list.
+        
         OneCardManager card;
         int count = EmptyCardSlots.Count;
         if (fieldCardAssets.Count <= 6)
         {
             fieldCardAssets.AddRange(FieldDeck.GetComponent<FieldDeck>().fieldDeck);
         }
-        
 
+        Debug.Log(count + "herrrrrrr");
         ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": DealOutFieldCards()";
         if (count > 0)
         {
@@ -570,8 +569,10 @@ public class BoardManager : MonoBehaviour
     }
     public void DeleteCard(OneCardManager card)
     {
-        //Debug.Log(card.point.X + " " + card.point.Y);
+       Debug.Log("DeletingCard");
         ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : DeleteCard()";
+        Debug.Log(card.point.X);
+        Debug.Log(card.point.Y);
         AddEmptySlot(card.point);
         StartCoroutine(card.DeleteThisCard());
     }
@@ -579,6 +580,7 @@ public class BoardManager : MonoBehaviour
     public void AddEmptySlot(Point p)
     {
         ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : AddEmptySlot()";
+        Debug.Log(AllSlots[p.Y, p.X]);
         EmptyCardSlots.Add(AllSlots[p.Y, p.X]);
     }
 

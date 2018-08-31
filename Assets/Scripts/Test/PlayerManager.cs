@@ -163,7 +163,7 @@ public class PlayerManager : TurnManager {
             {   
                 if (myLocation == location.board)
                     myCardManager.CardFaceGlowObject.SetActive(false);
-
+                if (GameManager.Instance.CurrentPlayerTurn == this)
                 this.EndTurnGlowObject.SetActive(true);
                 // end turn
             }
@@ -516,14 +516,21 @@ public class PlayerManager : TurnManager {
 
                 playerKidneys[0].transform.SetParent(cardslot.transform, false);
 
+                if (cardslot.Kidneys.Count == 2) //two kidneys on one slot what are the odds
+                {
+                    playerKidneys[0].transform.localPosition = new Vector3(0, 1, -0.19f);
+                } else //one kidney on slot
+                {
+                    playerKidneys[0].transform.localPosition = new Vector3(0, 0, -0.19f);
+                }
 
                 playerKidneys[0].transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-                playerKidneys[0].transform.localPosition = new Vector3(0,0,-0.19f);
+                
                 playerKidneys[0].transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
 
 
 
-                pos = cardslot.Kidneys[0].transform.position;
+                pos = playerKidneys[0].transform.position;
 
 
                 Sequence mySequence = DOTween.Sequence();
@@ -560,7 +567,7 @@ public class PlayerManager : TurnManager {
                 }
                 else
                 {
-                    GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).patientKidneys.Add(playerKidneys[0]);
+                    patientKidneys.Add(playerKidneys[0]);
                     pos = playerKidneys[0].transform.position;
 
                     Sequence mySequence = DOTween.Sequence();
@@ -572,12 +579,14 @@ public class PlayerManager : TurnManager {
                     DOTween.Play(mySequence);
 
 
-                    playerKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-                    playerKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
+                    //playerKidneys[0].transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                    //playerKidneys[0].transform.position = new Vector3(0f, 0f, 0f);
 
-                    playerKidneys[0].transform.SetParent(GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).kidneyLocation.transform, true);
+                    //playerKidneys[0].transform.SetParent(GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).kidneyLocation.transform, true);
                     playerKidneys[0].SetActive(false);
                     playerKidneys.Remove(playerKidneys[0]);
+                    
+                    
 
                     GameManager.Instance.getOtherPlayer(this).kvis.AvailableKidneys++;
                 }
@@ -599,8 +608,8 @@ public class PlayerManager : TurnManager {
             playerKidneys.Add(cardslot.Kidneys[0]);
             cardslot.Kidneys[0].transform.SetParent(myPlayerCard.transform, false);
 
-            playerKidneys[0].transform.position = myCardManager.kidneyLocation.position;
-            playerKidneys[0].transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+            cardslot.Kidneys[0].transform.position = myCardManager.kidneyLocation.position;
+            cardslot.Kidneys[0].transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
             cardslot.Kidneys.Remove(cardslot.Kidneys[0]);
             
         }

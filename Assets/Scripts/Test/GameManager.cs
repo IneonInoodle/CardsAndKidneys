@@ -250,6 +250,7 @@ public class GameManager : MonoBehaviour {
                     Debug.Log("Follow");
                     players[0].playerInput.InputEnabled = false;
                     players[0].button.interactable = false;
+                    players[0].button.GetComponent<Image>().color = Color.gray;
                     players[0].PortaitGlowObject.SetActive(false);
 
                     if (players[0].myCardManager != null)
@@ -277,6 +278,7 @@ public class GameManager : MonoBehaviour {
                 {
                     players[1].playerInput.InputEnabled = false;
                     players[1].button.interactable = false;
+                    players[1].button.GetComponent<Image>().color = Color.gray;
                     players[1].PortaitGlowObject.SetActive(false);
 
                     if (players[1].myCardManager != null)
@@ -363,6 +365,8 @@ public class GameManager : MonoBehaviour {
     public void PlayPlayerTurn(PlayerManager player)
     {
         GameManager.Instance.getOtherPlayer(player).handvisual.MakeCardsGrey(true);
+        player.button.GetComponent<Image>().color = Color.white;
+
         player.handvisual.MakeCardsGrey(false);
 
         GameManager.Instance.getOtherPlayer(player).setAnimationState(false);
@@ -394,6 +398,7 @@ public class GameManager : MonoBehaviour {
         player.IsTurnComplete = false;
 
         StartCoroutine(board.UpdateBoard());
+        //Debug.Log("dealingoutleCards");
         StartCoroutine(player.DealPlayerCards(1));
 
 
