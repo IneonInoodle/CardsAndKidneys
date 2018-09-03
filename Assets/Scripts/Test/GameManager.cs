@@ -9,6 +9,8 @@ using DG.Tweening;
 public class GameManager : MonoBehaviour {
     //switch players turn 
 
+    public bool bRotate = false;
+
     public PlayerManager[] players;
     public PlayerManager CurrentPlayerTurn;
 
@@ -339,28 +341,26 @@ public class GameManager : MonoBehaviour {
     }
 
     public void RotateEverything()
-    {
+    {   
+
         // camera.transform.DOLocalRotate(new Vector3(90f, 0f, camera.transform.localRotation.eulerAngles.y + 180), 0.25f, RotateMode.FastBeyond360);
 
-        camera.transform.DOLocalRotateQuaternion(camera.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
-
-        selectionManager.transform.DOLocalRotateQuaternion(selectionManager.transform.localRotation * Quaternion.Euler(0, 180, 0), 0.25f);
-        mainMenu.transform.DOLocalRotateQuaternion(selectionManager.transform.localRotation * Quaternion.Euler(0, 180, 0), 0.25f);
-        messageManager.transform.DOLocalRotateQuaternion(messageManager.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
-
-        StartCoroutine(board.RotateFieldCards());
-        board.RotatePlayerPortaitZones();
-
-        foreach (PlayerManager p in players)
+        if (bRotate)
         {
-            p.RotateElements();
+            camera.transform.DOLocalRotateQuaternion(camera.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
+
+            selectionManager.transform.DOLocalRotateQuaternion(selectionManager.transform.localRotation * Quaternion.Euler(0, 180, 0), 0.25f);
+            mainMenu.transform.DOLocalRotateQuaternion(selectionManager.transform.localRotation * Quaternion.Euler(0, 180, 0), 0.25f);
+            messageManager.transform.DOLocalRotateQuaternion(messageManager.transform.localRotation * Quaternion.Euler(0, 0, 180), 0.25f);
+
+            StartCoroutine(board.RotateFieldCards());
+            board.RotatePlayerPortaitZones();
+
+            foreach (PlayerManager p in players)
+            {
+                p.RotateElements();
+            }
         }
-
-       
-
- 
-
-        
         //camera.transform.DOLocalRotate(new Vector3(90f, 0f, 180), 0.25f, RotateMode.FastBeyond360);
 
     }
