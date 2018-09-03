@@ -25,8 +25,9 @@ public class PagesScript : MonoBehaviour {
     }
     public void NextImage()
     {
-        if (CurrentImageNr != Images.Length-1) { 
-        MainImage.sprite = Images[CurrentImageNr + 1];
+        if (CurrentImageNr != Images.Length-1) {
+            AudioManager.instance.rePlay("turnpage");
+            MainImage.sprite = Images[CurrentImageNr + 1];
         CurrentImageNr++;
         CurrentPage.text = CurrentImageNr + 1 + "/" + Images.Length;
     }
@@ -35,6 +36,7 @@ public class PagesScript : MonoBehaviour {
     {
         if (CurrentImageNr != 0)
         {
+            AudioManager.instance.rePlay("turnpage");
             MainImage.sprite = Images[CurrentImageNr - 1];
             CurrentImageNr--;
             CurrentPage.text = CurrentImageNr + 1 + "/" + Images.Length;

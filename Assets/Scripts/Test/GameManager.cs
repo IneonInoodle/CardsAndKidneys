@@ -229,8 +229,9 @@ public class GameManager : MonoBehaviour {
     public IEnumerator UpdateTurn() //switches player turns
     {
 
-        //AudioManager.instance.Play("pressEndTurnButtonSound");
-        
+        AudioManager.instance.rePlay("endturn");
+        yield return new WaitForSeconds(0.1f);
+        AudioManager.instance.rePlay("getcard");
 
         //changes player turn 
         if (CurrentPlayerTurn == players[0])
@@ -247,6 +248,7 @@ public class GameManager : MonoBehaviour {
                 }
                 else
                 {
+                    //AudioManager.instance.rePlay("endturn");
                     Debug.Log("Follow");
                     players[0].playerInput.InputEnabled = false;
                     players[0].button.interactable = false;
@@ -276,6 +278,7 @@ public class GameManager : MonoBehaviour {
                     SceneManager.LoadScene("MainMenu");
                 } else
                 {
+                    //AudioManager.instance.rePlay("endturn");
                     players[1].playerInput.InputEnabled = false;
                     players[1].button.interactable = false;
                     players[1].button.GetComponent<Image>().color = Color.gray;
@@ -330,7 +333,7 @@ public class GameManager : MonoBehaviour {
         {
             p.handvisual.gameObject.SetActive(true);
         }
-
+        
         board.Top.GetComponent<EndzoneManager>().isSelectable = true;
         board.Bottom.GetComponent<EndzoneManager>().isSelectable = true;
     }

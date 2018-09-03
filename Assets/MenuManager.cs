@@ -49,6 +49,8 @@ public class MenuManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //AudioManager.instance.Stopall();
+        AudioManager.instance.rePlay("GameMenu");
         MenuSceneButtons.SetActive(false);
     }
 
@@ -89,6 +91,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnMouseDown()
     {
+        AudioManager.instance.rePlay("Dooropen");
         MenuSceneButtons.SetActive(true);
         StartCoroutine(DoStartEffects());
     }

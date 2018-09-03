@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour {
     public Sound[] KidneyStealSounds;
     public Sound[] LinesSounds;
     public Sound[] NeutralSounds;
+    public Sound[] SpellCardSounds;
     //-------NEW Sounds--------
     //LabelFieldExample.OnGUI();     
     public AudioMixerGroup masterMixer;
@@ -86,7 +87,7 @@ public class AudioManager : MonoBehaviour {
         
         DontDestroyOnLoad(gameObject);
 
-        AllSounds = new Sound[12][];
+        AllSounds = new Sound[13][];
         AllSounds[0] = OneOffsounds;
         AllSounds[1] = dealCardSounds;
         AllSounds[2] = splatSounds;
@@ -99,6 +100,7 @@ public class AudioManager : MonoBehaviour {
         AllSounds[9] = KidneyStealSounds;
         AllSounds[10] = LinesSounds;
         AllSounds[11] = NeutralSounds;
+        AllSounds[12] = SpellCardSounds;
 
         for (int i = 0; i < AllSounds.Length; i++)
         {
@@ -112,6 +114,7 @@ public class AudioManager : MonoBehaviour {
                 AllSounds[i][j].source.pitch = AllSounds[i][j].pitch;
                 AllSounds[i][j].source.loop = AllSounds[i][j].loop;
                 AllSounds[i][j].source.outputAudioMixerGroup = AllSounds[i][j].outputGroup;
+                AllSounds[i][j].source.playOnAwake = AllSounds[i][j].PlayOnAwak;
             }
         }
     }
@@ -256,6 +259,45 @@ public class AudioManager : MonoBehaviour {
             case "GameIntro":
                 s = AllSounds[0][1]; 
                 break;
+            case "GameMenu":
+                s = AllSounds[0][2];
+                break;
+            case "Dooropen":
+                s = AllSounds[0][3];
+                break;
+            case "endturn":
+                s = AllSounds[0][4];
+                break;
+            case "getcard":
+                s = AllSounds[0][5];
+                break;
+            case "turnpage":
+                s = AllSounds[0][6];
+                break;
+            case "rotate":
+                s = AllSounds[12][0];
+                break;
+            case "swap":
+                s = AllSounds[12][1];
+                break;
+            case "boost":
+                s = AllSounds[12][2];
+                break;
+            case "damage":
+                s = AllSounds[12][3];
+                break;
+            case "health":
+                s = AllSounds[12][4];
+                break;
+            case "poison":
+                s = AllSounds[12][5];
+                break;
+            case "potion":
+                s = AllSounds[12][6];
+                break;
+            case "replace2":
+                s = AllSounds[12][7];
+                break;
             default:
                 for (int i = 0; i < AllSounds.Length; i++)
                 {
@@ -266,5 +308,14 @@ public class AudioManager : MonoBehaviour {
         }
         if (s == null) return;
         s.source.Play();
+    }
+    public void Stopall()
+    {
+        Sound s = null;
+        for (int i = 0; i < AllSounds.Length; i++)
+        {
+            s = Array.Find(AllSounds[i], sound => sound.name == name);
+            if (s != null) s.source.Stop();
+        }        
     }
 }

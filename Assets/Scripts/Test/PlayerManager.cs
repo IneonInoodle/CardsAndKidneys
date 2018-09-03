@@ -211,6 +211,8 @@ public class PlayerManager : TurnManager {
                 Debug.Log(gm.selectionManager.points.Count);
                 if (gm.selectionManager.points.Count == 2)
                 {
+                    AudioManager.instance.rePlay("swap");
+                    AudioManager.instance.rePlay("swap");
                     Debug.Log("swapping");
                     boardManager.SwapCard(gm.selectionManager.points[0], gm.selectionManager.points[1]);
                     BoardManager.Instance.UpdateCards();
@@ -220,12 +222,14 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Rotate":
+                
                 Debug.Log("starting rotate");
 
                 yield return StartCoroutine(gm.selectionManager.getSelectionWithPlayers(1));
                 if (gm.selectionManager.points.Count == 1)
                 {
                     Debug.Log("here");
+                    AudioManager.instance.rePlay("rotate");
                     boardManager.RotateArrows(gm.selectionManager.points[0]);
                     BoardManager.Instance.UpdateCards();
                 } else
@@ -234,9 +238,11 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Replace2":
+                
                 yield return StartCoroutine(gm.selectionManager.getSelectionNoPlayers(2));
                 if (gm.selectionManager.points.Count == 2)
                 {
+                    AudioManager.instance.rePlay("replace2");
                     boardManager.Replace2(gm.selectionManager.points[0], gm.selectionManager.points[1]);
                     BoardManager.Instance.UpdateCards();
                 } else
@@ -245,6 +251,7 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Poison":
+                AudioManager.instance.rePlay("poison");
                 //GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
                 Vector3 ApLocation = boardManager.transform.position;
                 //GameManager.Instance.getOtherPlayer(this).takeDamage(2);
@@ -256,17 +263,20 @@ public class PlayerManager : TurnManager {
                 StartCoroutine(posionEffekt(PosionImage,st));
                 break;
             case "Damage":
+                AudioManager.instance.rePlay("damage");
                 Vector3 ApLocation2 = boardManager.transform.position;
                 DamageEffect ddd = new DamageEffect();
                 ddd.CreatePoisonEffect(PosionEff, handvisual.PlayPreviewSpot.transform.position, GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).hpvis.Box.transform.position);
                 StartCoroutine(damageEffekt());
                 break;
-            case "Health":               
+            case "Health":
+                AudioManager.instance.rePlay("health");
                 DamageEffect dd = new DamageEffect();
                 dd.CreatePotionEffect(PotionEff, handvisual.PlayPreviewSpot.transform.position, GameManager.Instance.CurrentPlayerTurn.hpvis.Box.transform.position);
                 StartCoroutine(healingEffekt());
                 break;
             case "Potion":
+                AudioManager.instance.rePlay("potion");
                 //GameManager.Instance.CurrentPlayerTurn.Hp += 5;
                 statusEffect st2 = new statusEffect(statusEffecttype.healing, 3, 2);
                 statusEffects.Add(st2);
@@ -276,6 +286,7 @@ public class PlayerManager : TurnManager {
                 StartCoroutine(potionEffekt(PotionImage, st2));
                 break;
             case "Boost":
+                AudioManager.instance.rePlay("boost");
                 Debug.Log("Boost");
                 ActionPoints++;
                 BoardManager.Instance.UpdateCards();
