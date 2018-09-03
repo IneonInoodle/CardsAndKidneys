@@ -124,7 +124,7 @@ public class MainMenu : MonoBehaviour {
     void Start()
     {
         //Debug.Log("Start");
-        AudioManager.instance.rePlay("GameStart");
+        //AudioManager.instance.rePlay("GameStart");
     }
 
     // called when the game is terminated

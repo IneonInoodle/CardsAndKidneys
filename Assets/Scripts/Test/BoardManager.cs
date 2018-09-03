@@ -84,7 +84,7 @@ public class BoardManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        AudioManager.instance.Play("GameStart");
+        //AudioManager.instance.Play("GameStart");
         
     }
 
@@ -533,7 +533,7 @@ public class BoardManager : MonoBehaviour
             fieldCardAssets.AddRange(FieldDeck.GetComponent<FieldDeck>().fieldDeck);
         }
 
-        Debug.Log(count + "herrrrrrr");
+
         ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": DealOutFieldCards()";
         if (count > 0)
         {

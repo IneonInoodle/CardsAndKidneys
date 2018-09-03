@@ -74,7 +74,9 @@ public class AudioManager : MonoBehaviour {
     }
     void Awake()
     {
-        
+        DontDestroyOnLoad(gameObject);
+
+
         if (instance == null)
         {
             instance = this;
@@ -85,7 +87,7 @@ public class AudioManager : MonoBehaviour {
             return;
         }
         
-        DontDestroyOnLoad(gameObject);
+        
 
         AllSounds = new Sound[13][];
         AllSounds[0] = OneOffsounds;
