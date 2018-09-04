@@ -314,10 +314,13 @@ public class OneCardManager : MonoBehaviour {
                 if (GameManager.Instance.CurrentPlayerTurn.mySide == location.bottom && cardAsset.Type == CardType.Spell)
                 {
                     cardFrameMat = GameManager.Instance.BottomSpellMat;
+                    CardBodyImage.sprite = GameManager.Instance.BottomSpellSprite;
+
                 }
                 else if (GameManager.Instance.CurrentPlayerTurn.mySide == location.top && cardAsset.Type == CardType.Spell)
                 {
                     cardFrameMat = GameManager.Instance.TopSpellMat;
+                    CardBodyImage.sprite = GameManager.Instance.TopSpellSprite;
                 }
             }
         }

@@ -8,6 +8,7 @@ public class MessageManager : MonoBehaviour
     public GameObject MessagePanel;
 
     public Image panelImage;
+    public Image YouWin;
     public Sprite Merlin;
     public Sprite Patric;
     public Sprite youWinPartic;
@@ -19,6 +20,7 @@ public class MessageManager : MonoBehaviour
     {
         Instance = this;
         MessagePanel.SetActive(false);
+        YouWin.enabled = false;
     }
 
     public void ShowMessage(string Message, float Duration)
@@ -32,26 +34,33 @@ public class MessageManager : MonoBehaviour
         {
             case "patric":
                 panelImage.sprite = Patric;
+                panelImage.enabled = true;
                 break;
             case "patricWin":
-                panelImage.sprite = youWinPartic;
+                YouWin.sprite = youWinPartic;
+                YouWin.enabled = true;
                 break;
             case "merlinWin":
-                panelImage.sprite = youWinMerlin;
+                YouWin.sprite = youWinMerlin;
+                YouWin.enabled = true;
                 break;
             case "merlin":
                 panelImage.sprite = Merlin;
+                panelImage.enabled = true;
                 break;
         }
 
-     
+
+        MessagePanel.SetActive(true);
         //Debug.Log("Showing some message. Duration: " + Duration);
         MessageText.text = Message;
-        MessagePanel.SetActive(true);
+        
 
         yield return new WaitForSeconds(Duration);
 
+        panelImage.enabled = false;
         MessagePanel.SetActive(false);
+        YouWin.enabled = false;
         //Command.CommandExecutionComplete();
     }
     

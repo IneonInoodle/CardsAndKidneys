@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour {
 
     public Material TopSpellMat;
     public Material BottomSpellMat;
+
+    public Sprite TopSpellSprite;
+    public Sprite BottomSpellSprite;
     BoardManager  board;
 
     bool hasLevelStarted = false;
