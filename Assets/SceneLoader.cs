@@ -11,7 +11,9 @@ public class SceneLoader : MonoBehaviour
     [SerializeField]
     private int scene;
     [SerializeField]
-    private TextMeshProUGUI loadingText;
+    private TextMeshProUGUI loadingText1;
+    [SerializeField]
+    private Text loadingText2;
     public bool startloading = false;
     public Image loadingImage;
 
@@ -28,7 +30,7 @@ public class SceneLoader : MonoBehaviour
             loadScene = true;
 
             // ...change the instruction text to read "Loading..."
-            loadingText.text = "Loading...";
+            loadingText2.text = "Loading...";
             loadingImage.enabled = true;
             loadingImage.transform.DORotate(new Vector3(0, 0, -800f),5f);
             // ...and start a coroutine that will load the desired scene.
@@ -41,7 +43,7 @@ public class SceneLoader : MonoBehaviour
         {
 
             // ...then pulse the transparency of the loading text to let the player know that the computer is still working.
-            loadingText.color = new Color(loadingText.color.r, loadingText.color.g, loadingText.color.b, Mathf.PingPong(Time.time, 1));
+            loadingText2.color = new Color(loadingText2.color.r, loadingText2.color.g, loadingText2.color.b, Mathf.PingPong(Time.time, 1));
 
         }
 
