@@ -69,20 +69,28 @@ public class LongClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                         {
                             //-------------------FieldCard3D---------------------
                             case "PlayerFat":
-                                quickTip.text = "It's me whos gonna win this game!";                                
+                                quickTip.text = "Player One";                                
                                 break;
                             case "PlayerThin":
-                                quickTip.text = "I own this game for sure!";
+                                quickTip.text = "Player Two";
                                 break;
                             case "Hp":
-                                quickTip.text = "Take 5 health points";
+                                quickTip.text = "+5 Health";
+                                break;
+                            case "M3":
+                                //quickTip.text = "Take Damage equal to amount on card, increases ActionPoints by one";
+                                quickTip.text = "3 Damage \n+1 AP";
                                 break;
                             case "M5":
                                 //quickTip.text = "Take Damage equal to amount on card, increases ActionPoints by one";
-                                quickTip.text = "Damage with amout on card \nAction Points +1";
+                                quickTip.text = "5 Damage \n+1 AP";
+                                break;
+                            case "M8":
+                                //quickTip.text = "Take Damage equal to amount on card, increases ActionPoints by one";
+                                quickTip.text = "8 Damage \n+1 AP";
                                 break;
                             case "Neutral":
-                                quickTip.text = "You can move here, don't worry";
+                                quickTip.text = "Nothing to worry about";
                                 break;
                             //-------------------SpellCard3D---------------------
                             case "Boost":
@@ -92,7 +100,7 @@ public class LongClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                                 quickTip.text = "3 Rounds with 3 Damage each for oposite player";
                                 break;
                             case "Potion":
-                                quickTip.text = "HP +5";
+                                quickTip.text = "+5 Health";
                                 break;
                             case "Replace2":
                                 quickTip.text = "destroy 2 cards and replace them";
@@ -102,6 +110,12 @@ public class LongClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                                 break;
                             case "Swap":
                                 quickTip.text = "swap 2 cards spots";
+                                break;
+                            case "Damage":
+                                quickTip.text = "-5 Health";
+                                break;
+                            case "Health":
+                                quickTip.text = "+5 Health";
                                 break;
                         }                        
                         Panel.SetActive(true);
