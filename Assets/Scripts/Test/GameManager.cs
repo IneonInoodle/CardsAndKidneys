@@ -21,17 +21,13 @@ public class GameManager : MonoBehaviour {
     public MessageManager messageManager;
     public SelectionManager selectionManager;
 
+    public GameObject KidneyPrefab;
     public GameObject mainMenu;
     public GameObject DamagePrefab;
     public GameObject SpellCardPrefab;
 
     public TableCollider TableCollider;
 
-    public Material TopSpellMat;
-    public Material BottomSpellMat;
-
-    public Sprite TopSpellSprite;
-    public Sprite BottomSpellSprite;
     BoardManager  board;
 
     bool hasLevelStarted = false;
@@ -84,13 +80,14 @@ public class GameManager : MonoBehaviour {
 
     private void Awake()
     {
+        
         Debug.Assert(selectionManager != null);
         Debug.Assert(messageManager != null);
         board = BoardManager.Instance; //find board
+        AudioManager.instance.loadPlayerSoundsFromAssets();
 
 
-        
-            Debug.Log("ttttttt");
+        Debug.Log("ttttttt");
             //for first round here we do a trick, set the condition as if enemy just finished playing
             CurrentPlayerTurn = players[0];
             players[0].IsTurnComplete = true;
@@ -234,9 +231,9 @@ public class GameManager : MonoBehaviour {
     public IEnumerator UpdateTurn() //switches player turns
     {
 
-        AudioManager.instance.rePlay("endturn");
+        AudioManager.instance.PlaySound("EndTurnButtonPress");
         yield return new WaitForSeconds(0.1f);
-        AudioManager.instance.rePlay("getcard");
+        AudioManager.instance.PlaySound("DealCard");
 
         //changes player turn 
         if (CurrentPlayerTurn == players[0])
@@ -253,7 +250,6 @@ public class GameManager : MonoBehaviour {
                 }
                 else
                 {
-                    //AudioManager.instance.rePlay("endturn");
                     Debug.Log("Follow");
                     players[0].playerInput.InputEnabled = false;
                     players[0].button.interactable = false;
@@ -283,7 +279,6 @@ public class GameManager : MonoBehaviour {
                     SceneManager.LoadScene("MainMenu");
                 } else
                 {
-                    //AudioManager.instance.rePlay("endturn");
                     players[1].playerInput.InputEnabled = false;
                     players[1].button.interactable = false;
                     players[1].button.GetComponent<Image>().color = Color.gray;
@@ -371,12 +366,12 @@ public class GameManager : MonoBehaviour {
     public void PlayPlayerTurn(PlayerManager player)
     {
         GameManager.Instance.getOtherPlayer(player).handvisual.MakeCardsGrey(true);
-        player.button.GetComponent<Image>().color = Color.white;
 
+        player.button.GetComponent<Image>().color = Color.white;
         player.handvisual.MakeCardsGrey(false);
 
-        GameManager.Instance.getOtherPlayer(player).setAnimationState(false);
-        player.setAnimationState(true);
+        GameManager.Instance.getOtherPlayer(player).enableAnimation(false);
+        player.enableAnimation(true);
 
         if (player.patientKidneys.Count  == 0)
         {
@@ -399,7 +394,7 @@ public class GameManager : MonoBehaviour {
 
         //player.applyStatusEffects();
     
-        player.ActionPoints = player.AvailableAp;
+        player.ActionPoints = player.apvis.TotalAp;
         CurrentPlayerTurn = player;
         player.IsTurnComplete = false;
 

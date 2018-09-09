@@ -297,32 +297,12 @@ public class OneCardManager : MonoBehaviour {
             animator.gameObject.SetActive(false);
         }
 
-            
+        cardFrameMat = cardAsset.FrameMat;
 
-
-    
-
-
-
-
-
-    cardFrameMat = cardAsset.FrameMat;
         if (cardAsset.Type == CardType.Spell)
         {
-            if (GameManager.Instance.CurrentPlayerTurn != null)
-            {
-                if (GameManager.Instance.CurrentPlayerTurn.mySide == location.bottom && cardAsset.Type == CardType.Spell)
-                {
-                    cardFrameMat = GameManager.Instance.BottomSpellMat;
-                    CardBodyImage.sprite = GameManager.Instance.BottomSpellSprite;
-
-                }
-                else if (GameManager.Instance.CurrentPlayerTurn.mySide == location.top && cardAsset.Type == CardType.Spell)
-                {
-                    cardFrameMat = GameManager.Instance.TopSpellMat;
-                    CardBodyImage.sprite = GameManager.Instance.TopSpellSprite;
-                }
-            }
+                    cardFrameMat = GameManager.Instance.CurrentPlayerTurn.SpellCardFrameMat;
+                    CardBodyImage.sprite = GameManager.Instance.CurrentPlayerTurn.SpellCardBackgroundSprite;
         }
 
            
@@ -376,7 +356,7 @@ public class OneCardManager : MonoBehaviour {
 
     public IEnumerator FlipThisCard()
     {
-        AudioManager.instance.Play("cardFlip");
+        AudioManager.instance.PlaySound("CardFlip");
         this.GetComponent<DragRotator>().enabled = false;
         Sequence mySequence = DOTween.Sequence();
 

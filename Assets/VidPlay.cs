@@ -61,7 +61,7 @@ public class VidPlay : MonoBehaviour {
         image.enabled = true;
         //Assign the Texture from Video to RawImage to be displayed
         image.texture = videoPlayer.texture;
-        AudioManager.instance.rePlay("GameIntro");
+        //AudioManager.instance.PlaySound("GameIntro"); //idk what audio this was
         //Play Video
         videoPlayer.Play();
 

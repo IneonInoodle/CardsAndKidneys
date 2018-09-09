@@ -142,7 +142,8 @@ public void setPlayerArrows(arrows arrowz)
                     Debug.Log(playerManager.Hp);
                     Debug.Log(int.Parse(desCard.DamageText.text));
 
-                    AudioManager.instance.Play("damage");
+                    AudioManager.instance.PlaySound("IceCubeSpill");
+                    AudioManager.instance.PlaySound("PlayerDamage");
                     playerManager.raiseAp();
                 }
 
@@ -154,11 +155,12 @@ public void setPlayerArrows(arrows arrowz)
               
                 else if (desCard.cardAsset.Type == CardType.Neutral)
                 {
-                    AudioManager.instance.Play("neutral");
+                    AudioManager.instance.PlaySound("PlayerNeutral");
                 }
                 else if (desCard.cardAsset.Type == CardType.Hp)
                 {
-                    AudioManager.instance.Play("hp");
+                    playerManager.takeDamage(int.Parse(desCard.DamageText.text));
+                    AudioManager.instance.PlaySound("PlayerHp");
                 }
                 // take damage from deleted card?
                 
@@ -172,7 +174,7 @@ public void setPlayerArrows(arrows arrowz)
    
     public IEnumerator MoveIntoEndzone(GameObject des)
     {   
-        AudioManager.instance.Play("dealCardSound");
+        AudioManager.instance.PlaySound("MoveOnBoard");
         //needs to be coroutinetm
 
         Debug.Log("MoveintoEndzone");
@@ -278,8 +280,8 @@ public void setPlayerArrows(arrows arrowz)
                     GameManager.Instance.getOtherPlayer(playerManager).Doctor.GetComponent<SpriteRenderer>().enabled = true;
                 }
 
-                    playerManager.button.interactable = true;
-                SoundManager.PlaySound("dealCardSound");
+                playerManager.button.interactable = true;
+                SoundManager.PlaySound("DealCard");
                 isMoving = true;
                 fieldCardDes = boardManager.FindFieldCardAtPoint(des);
                 playerManager.Doctor.SetActive(false);
@@ -288,7 +290,7 @@ public void setPlayerArrows(arrows arrowz)
                 temp = fieldCardDes.arrows; // deleting card delete le arrows
 
                 //save playermanager things
-                playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab, playerManager.Doctor, playerManager.playerCardAsset, 0.5f).gameObject;
+                playerManager.myPlayerCard = boardManager.CreateCard(des, boardManager.FieldCardPrefab, playerManager.Doctor, playerManager.CharacterAsset.playerCardAsset, 0.5f).gameObject;
                 playerManager.myCardManager = playerManager.myPlayerCard.GetComponent<OneCardManager>();
 
                 //last 2 lines removed for testing
@@ -331,24 +333,26 @@ public void setPlayerArrows(arrows arrowz)
                         {
                             Debug.Log(playerManager.Hp);
                             Debug.Log(damage);
-                            AudioManager.instance.Play("damage");
+                            AudioManager.instance.PlaySound("IceCubeSpill");
+                            AudioManager.instance.PlaySound("PlayerDamage");
                             playerManager.raiseAp();
                         }
-
-                    }
+                        
+                    } 
 
                     playerManager.takeDamage(damage);
                 }
 
-                
 
-                else if (fieldCardDes.cardAsset.Type == CardType.Neutral)
+
+                if (fieldCardDes.cardAsset.Type == CardType.Neutral)
                 {
-                    AudioManager.instance.Play("neutral");
+                    AudioManager.instance.PlaySound("PlayerNeutral");
                 }
                 else if (fieldCardDes.cardAsset.Type == CardType.Hp)
                 {
-                    AudioManager.instance.Play("hp");
+                    AudioManager.instance.PlaySound("PlayerHp");
+
                 }
 
                 playerManager.ActionPoints--;
@@ -356,7 +360,7 @@ public void setPlayerArrows(arrows arrowz)
             }
         }
          // card finished moving now can take input
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f); 
         isMoving = false;// need to add a fucking state manager god damn this is ugly
         BoardManager.Instance.UpdateCards();
         yield return null;

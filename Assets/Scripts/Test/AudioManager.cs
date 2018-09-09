@@ -7,75 +7,113 @@ using DG.Tweening;
 
 using UnityEngine.UI;
 using UnityEditor;
+using CommandPattern;
 
+public class AudioManager : MonoBehaviour
+{
+    //TODO load player sounds from Character Assets
 
-public class AudioManager : MonoBehaviour {
-    public Sound[] OneOffsounds;
-    public Sound[] dealCardSounds;
-    public Sound[] splatSounds;
-    public Sound[] iceCubesSounds;
-    public Sound[] doctor1Sounds;
-    public Sound[] doctor2Sounds;
-    //-------NEW Sounds--------
-    public Sound[] CaptureSounds;
-    public Sound[] DamageSounds;
-    public Sound[] HpupSounds;
-    public Sound[] KidneyStealSounds;
-    public Sound[] LinesSounds;
-    public Sound[] NeutralSounds;
-    public Sound[] SpellCardSounds;
-    //-------NEW Sounds--------
-    //LabelFieldExample.OnGUI();     
-    public AudioMixerGroup masterMixer;
-    public AudioMixer mainMixer;
-    public AudioMixer efxMixer;
-    [Range(-80f, 20f)]
-    public float volume;
-    public Slider mslider;
-    public Slider msliderefx;
     public static AudioManager instance;
-    private Sound[][] AllSounds;
 
-    // Use this for initialization
+    // Player Unspecific Sounds
 
-    public void SetVolume(float volume)
+    public Sound[] OneOffSounds;
+    public Sound[] DealCardSounds;
+    public Sound[] CardFlipSounds;
+    public Sound[] SplatSounds;
+    public Sound[] IceCubesSounds;
+    public Sound[] MoveOnBoardSounds;
+    public Sound[] StealKidneySounds;
+
+    private Sound[][] UnspecificSounds;
+
+    // Player Specific Sounds
+
+    private Sound[][] player1Sounds;
+    private Sound[][] player2Sounds;
+
+    // Audio Mixer
+
+    public AudioMixerGroup MasterMixer;
+    public AudioMixer MusicMixer;
+    public AudioMixer SoundEffects;
+
+    [Range(-80f, 20f)]
+    public float Volume;
+
+    public Slider MusicVolumeSlider;
+    public Slider SoundEffectsVolumeSlider;
+
+    public void SetMusicVolume(float volume)
     {
-        mainMixer.SetFloat("volume", volume);
+        MusicMixer.SetFloat("volume", volume);
     }
 
-    public void GetVolumee()
-    {
-        mainMixer.GetFloat("volume", out volume);
-        mslider.value = volume;        
+    public void GetEffectsVolume()
+    {       
+        MusicMixer.GetFloat("volume", out Volume);
+        MusicVolumeSlider.value = Volume;
     }
 
-    public void SetVolumee(float volume)
+    public void SetEffectVolume(float volume)
     {
-        efxMixer.SetFloat("volume", volume);
+        SoundEffects.SetFloat("volume", volume);
     }
 
-    public void GetVolume()
+    public void GetMusicVolume()
     {
-        efxMixer.GetFloat("volume", out volume);
-        msliderefx.value = volume;
+        SoundEffects.GetFloat("volume", out Volume);
+        SoundEffectsVolumeSlider.value = Volume;
     }
 
-    public void Start()
+    public Sound[][] getUnspecificSounds()
     {
-       //mainMixer.SetFloat("volume", volume);
+        //TODO addme
+        Sound[][] s;
+        s = new Sound[100][];
+
+        s[0] = OneOffSounds;
+        s[1] = DealCardSounds;
+        s[2] = SplatSounds;
+        s[3] = IceCubesSounds;
+        s[4] = MoveOnBoardSounds;
+        s[5] = StealKidneySounds;
+        s[6] = CardFlipSounds;
+
+        return s;
     }
 
-    public void Update()
+    public void loadPlayerSoundsFromAssets()
     {
-        //  GetVolume(volume); Loads volume value on game start BUT bugs between switching Scenes..
-        //PlayerManager p = GameManager.Instance.CurrentPlayerTurn;
-        //Debug.Log(p.mySide+"   "+location.bottom);
-       
+        
+        //TODO addme to load from charAsset
+        foreach (PlayerManager p in GameManager.Instance.players)
+        {   
+            Sound[][] s;
+            s = new Sound[100][];
+
+            Debug.Log("loadingplayerSoundsFromAssets");
+
+            s[0] = p.CharacterAsset.CaptureSounds;
+            s[1] = p.CharacterAsset.DamageSounds;
+            s[2] = p.CharacterAsset.HpupSounds;
+            s[3] = p.CharacterAsset.KidneyStealSounds;
+            s[4] = p.CharacterAsset.LinesSounds;
+            s[5] = p.CharacterAsset.NeutralSounds;
+
+            if (p.mySide == location.top)
+            {   
+                player1Sounds = s;
+            }
+            else if (p.mySide == location.bottom)
+            {
+                player2Sounds = s;
+            }
+        }
     }
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
 
         if (instance == null)
         {
@@ -83,241 +121,175 @@ public class AudioManager : MonoBehaviour {
         }
         else
         {
-            
+
             return;
         }
-        
-        
 
-        AllSounds = new Sound[13][];
-        AllSounds[0] = OneOffsounds;
-        AllSounds[1] = dealCardSounds;
-        AllSounds[2] = splatSounds;
-        AllSounds[3] = iceCubesSounds;
-        AllSounds[4] = doctor1Sounds;
-        AllSounds[5] = doctor2Sounds;
-        AllSounds[6] = CaptureSounds;
-        AllSounds[7] = DamageSounds;
-        AllSounds[8] = HpupSounds;
-        AllSounds[9] = KidneyStealSounds;
-        AllSounds[10] = LinesSounds;
-        AllSounds[11] = NeutralSounds;
-        AllSounds[12] = SpellCardSounds;
+        // fill Sounds Arrays with Sounds
+        UnspecificSounds = getUnspecificSounds();
+    }
 
-        for (int i = 0; i < AllSounds.Length; i++)
+    private void createSoundSourceAndPlay(Sound s) // creates source and attaches it to gameObject
+    {
+        if (s != null)
         {
-            for (int j = 0; j < AllSounds[i].Length; j++)
-            {
+            s.source = gameObject.AddComponent<AudioSource>();
+            s.source.clip = s.clip;
+            s.source.volume = s.volume;
+            s.source.pitch = s.pitch;
+            s.source.loop = s.loop;
+            s.source.outputAudioMixerGroup = s.outputGroup;
+            s.source.playOnAwake = s.PlayOnAwake;
 
-                AllSounds[i][j].source = gameObject.AddComponent<AudioSource>();
-                AllSounds[i][j].source.clip = AllSounds[i][j].clip;
-
-                AllSounds[i][j].source.volume = AllSounds[i][j].volume;
-                AllSounds[i][j].source.pitch = AllSounds[i][j].pitch;
-                AllSounds[i][j].source.loop = AllSounds[i][j].loop;
-                AllSounds[i][j].source.outputAudioMixerGroup = AllSounds[i][j].outputGroup;
-                AllSounds[i][j].source.playOnAwake = AllSounds[i][j].PlayOnAwak;
-            }
+            s.source.Play();
+            StartCoroutine(deleteSource(s, s.clip.length));//coroutine waits for sound to finish playing then deletes it
         }
     }
-    // Update is called once per frame
 
-    /* public static void SetVolume(float volume)
-     {    
-         audioMixer.SetFloat("volume", volume);
-         audiomanager.
-     }*/
-        public void Play(string name)
+    IEnumerator deleteSource(Sound s, float delay)
     {
-        Sound s = null;
+        yield return new WaitForSeconds(delay);
+        s.source = null;
+    }
+
+    public Sound getRandomPlayerSound(string name)
+    {
         PlayerManager p = GameManager.Instance.CurrentPlayerTurn;
+        Sound[][] ss;
+        ss = new Sound[100][];
+        Sound s = null;
+
+        if (name == null) return s;
+        // Decide Which Array To Search
+        if (p.mySide == location.top)
+        {
+            ss = player1Sounds;
+        }
+        else if (p.mySide == location.bottom)
+        {
+            ss = player2Sounds;
+        } 
+
         switch (name)
         {
-            case "dealCardSound"://done
-                s = AllSounds[1][UnityEngine.Random.Range(0, dealCardSounds.Length)];
-                break;
-
-            case "capture":
-                if (p.mySide == location.bottom)
-                {
-                    s = AllSounds[6][UnityEngine.Random.Range(2, 4)];
-                }
-                else
-                {
-                    //TOP PLAYER FOR SURE
-                    s = AllSounds[6][UnityEngine.Random.Range(0, 1)];
-                }
-                break;            
-                   
-            case "damage":
-                if (p.mySide == location.bottom)
-                {
-                    s = AllSounds[7][UnityEngine.Random.Range(3, 6)];
-                }
-                else
-                {
-                    //TOP PLAYER FOR SURE
-                    s = AllSounds[7][UnityEngine.Random.Range(0, 2)];
-                }
-                break;            
-                     
-            case "hp":
-                if (p.mySide == location.bottom)
-                {
-                    s = AllSounds[8][UnityEngine.Random.Range(2, 5)];
-                }
-                else
-                {
-                    //TOP PLAYER FOR SURE
-                    s = AllSounds[8][UnityEngine.Random.Range(0, 1)];
-                }
-                break;            
-                        
-            case "kidney":
-                if (p.mySide == location.bottom)
-                {
-                    s = AllSounds[9][UnityEngine.Random.Range(2, 3)];
-                }
-                else
-                {
-                    //TOP PLAYER FOR SURE
-                    s = AllSounds[9][UnityEngine.Random.Range(0, 1)];
-                }
-                break;            
-                        
-            case "line":
-                if (p.mySide == location.bottom)
-                {
-                    s = AllSounds[10][UnityEngine.Random.Range(2, 2)];
-                }
-                else
-                {
-                    //TOP PLAYER FOR SURE
-                    s = AllSounds[10][UnityEngine.Random.Range(0, 1)];
-                }
-                break;            
-                   
-            case "neutral":
-                if (p.mySide == location.bottom)
-                {
-                    s = AllSounds[11][UnityEngine.Random.Range(4, 7)];
-                }
-                else
-                {
-                    //TOP PLAYER FOR SURE
-                    s = AllSounds[11][UnityEngine.Random.Range(0, 3)];
-                }
-                break;            
-             
-            //"hpUp": addme
-            case "iceCube"://done
-                s = AllSounds[1][UnityEngine.Random.Range(0, iceCubesSounds.Length)];
-                break;
-            case "splat"://done
-                s = AllSounds[2][UnityEngine.Random.Range(0, splatSounds.Length)]; //Anis this is broken here please fix
-                break;
-            //"dropKidney" addme          
-            //"stealKidneySound" addme
-            //"pressEndTurnButtonSound"  addme
             default:
-                for (int i = 0; i < AllSounds.Length; i++)
-                {
-                    s = Array.Find(AllSounds[i], sound => sound.name == name);
-                    if (s != null) break;
+                for (int i = 0; i < ss.Length; i++)
+                {   
+                    if (ss[i] != null)
+                    {
+                        s = Array.Find(ss[i], sound => sound.name.Contains(name));
+                        if (s != null)
+                        { //set to random inside of Array
+                            s = ss[i][UnityEngine.Random.Range(0, ss[i].Length)];
+                            break;
+                        }
+                    }
                 }
                 break;
         }
+        return s;
 
-        /*
-        if (name = "dealCardSound")
+    }
+    public Sound getRandomSound(string name)
+    {
+        Sound s = null;
+        switch (name)
         {
-            s = dealCardSounds[0, Random.Range.dealcardsounds.length];
+            //BoardSounds Nonplayer Specific
+            default:
+                for (int i = 0; i < UnspecificSounds.Length; i++)
+                {   
+                    if (UnspecificSounds[i] != null)
+                    {
+                        s = Array.Find(UnspecificSounds[i], sound => sound.name.Contains(name));
+                        if (s != null)
+                        { //set to random inside of Array
+                            s = UnspecificSounds[i][UnityEngine.Random.Range(0, UnspecificSounds[i].Length)];
+                            break;
+                        }
+                    }
+                }
+                break;
+        }
+        return s;
+    }
+    public void PlaySound(string name)
+    {
+        Debug.Log(name);
+        Sound s = null;
+        switch (name)
+        {
+            //BoardSounds Nonplayer Specific
+            default:
+                for (int i = 0; i < UnspecificSounds.Length; i++)
+                {   
+                    if (UnspecificSounds[i] != null)
+                    {
+                        s = Array.Find(UnspecificSounds[i], sound => sound.name == name);
+                        if (s != null) break;
+                    }
+                }
+                break;
+            case "CardFlip": //done
+                Debug.Log("inhere");
+                s = getRandomSound(name);
+                break;
+            case "DealCard"://done
+                s = getRandomSound(name);
+                break;
+
+            case "IceCubeSpill"://done
+                s = getRandomSound(name);
+                break;
+            case "Splat"://done
+                s = getRandomSound(name);
+                break;
+            case "MoveOnBoard"://done
+                s = getRandomSound(name);
+                break;
+            case "StealKidney"://done
+                s = getRandomSound(name);
+                break;
             
+            //Player Specific Sounds
+            //TODO "hpUp": addme
+            //TODO "dropKidney" addme          
+            //TODO"stealKidneySound" addme
+            //TODO "pressEndTurnButtonSound"  addme
+
+            case "PlayerCapture":
+                s = getRandomPlayerSound(name);
+                break;
+
+            case "PlayerDamage":
+                s = getRandomPlayerSound(name);
+                break;
+
+            case "PlayerHp":
+                s = getRandomPlayerSound(name);
+                break;
+
+            case "PlayerStealKidney":
+                s = getRandomPlayerSound(name);
+                break;
+
+            case "PlayerIntroLine":
+                s = getRandomPlayerSound(name);
+                break;
+
+            case "PlayerNeutral":
+                s = getRandomPlayerSound(name);
+                break;
+        }
+
+        if (s == null) {
+            Debug.LogError("No Sound Found For: " + name);
+            return;
         } else
         {
-            for (int i = 0; i < AllSounds.Length; i++)
-            {
-                s = Array.Find(AllSounds[i], sound => sound.name == name);
-                if (s != null) break;
-            }
-
-        }*/
-
-        
-
-
-        if (s == null) return;
-        s.source.Play();
-    }
-
-    public void rePlay(string name)
-    {
-        Sound s = null;
-        switch (name)
-        {     
-            case "GameStart":
-                s = AllSounds[0][0];
-                break;
-            case "GameIntro":
-                s = AllSounds[0][1]; 
-                break;
-            case "GameMenu":
-                s = AllSounds[0][2];
-                break;
-            case "Dooropen":
-                s = AllSounds[0][3];
-                break;
-            case "endturn":
-                s = AllSounds[0][4];
-                break;
-            case "getcard":
-                s = AllSounds[0][5];
-                break;
-            case "turnpage":
-                s = AllSounds[0][6];
-                break;
-            case "rotate":
-                s = AllSounds[12][0];
-                break;
-            case "swap":
-                s = AllSounds[12][1];
-                break;
-            case "boost":
-                s = AllSounds[12][2];
-                break;
-            case "damage":
-                s = AllSounds[12][3];
-                break;
-            case "health":
-                s = AllSounds[12][4];
-                break;
-            case "poison":
-                s = AllSounds[12][5];
-                break;
-            case "potion":
-                s = AllSounds[12][6];
-                break;
-            case "replace2":
-                s = AllSounds[12][7];
-                break;
-            default:
-                for (int i = 0; i < AllSounds.Length; i++)
-                {
-                    s = Array.Find(AllSounds[i], sound => sound.name == name);                    
-                        if (s != null) break;
-                }
-                break;
+            Debug.Log(s.name);
         }
-        if (s == null) return;
-        s.source.Play();
-    }
-    public void Stopall()
-    {
-        Sound s = null;
-        for (int i = 0; i < AllSounds.Length; i++)
-        {
-            s = Array.Find(AllSounds[i], sound => sound.name == name);
-            if (s != null) s.source.Stop();
-        }        
+
+        createSoundSourceAndPlay(s);
     }
 }

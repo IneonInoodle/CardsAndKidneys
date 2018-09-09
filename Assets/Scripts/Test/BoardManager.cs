@@ -85,7 +85,7 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         //AudioManager.instance.Play("GameStart");
-        
+
     }
 
 
@@ -96,7 +96,7 @@ public class BoardManager : MonoBehaviour
 
     public void SwapCard(Point p1, Point p2)
     {
-        
+
         OneCardManager c1 = FindCardAtPoint(p1);
         OneCardManager c2 = FindCardAtPoint(p2);
 
@@ -136,7 +136,7 @@ public class BoardManager : MonoBehaviour
 
     public void Replace2(Point p1, Point p2)
     {
-        
+
         OneCardManager c1 = FindFieldCardAtPoint(p1);
         OneCardManager c2 = FindFieldCardAtPoint(p2);
         DeleteCard(c1);
@@ -148,7 +148,7 @@ public class BoardManager : MonoBehaviour
 
     public void Damage(Point p1)
     {
-        
+
         OneCardManager c = BoardManager.Instance.FindFieldCardAtPoint(p1);
         int i = Int32.Parse(c.DamageText.text);
         i = i - 100;
@@ -171,7 +171,7 @@ public class BoardManager : MonoBehaviour
 
     public void RotateArrows(Point p)
     {
-        
+
         OneCardManager myCard = FindCardAtPoint(p);
 
         // if (myCard.gameObject.tag == "Arrows")
@@ -266,14 +266,12 @@ public class BoardManager : MonoBehaviour
             {
                 return card;
             }
-
         }
         return null;
     }
 
     public void HighlightArrows() // highlight arrows and save all player moves found 
     {
-        
         foreach (OneCardManager card in AllCards)
         {
             if (card.cardAsset.Type != CardType.Spell)
@@ -299,7 +297,7 @@ public class BoardManager : MonoBehaviour
 
     public bool IsEndzoneValid(Point p)
     {
-        
+
         arrows check = p.Y == 0 ? arrows.Up : arrows.Down;
 
         OneCardManager c;
@@ -415,7 +413,8 @@ public class BoardManager : MonoBehaviour
         return nList;
     }
 
-    public void RotatePlayerPortaitZones() {
+    public void RotatePlayerPortaitZones()
+    {
 
         TopCanv.transform.DOLocalRotate(new Vector3(0f, 0f, TopCanv.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
         BottomCanv.transform.DOLocalRotate(new Vector3(0f, 0f, BottomCanv.transform.localRotation.eulerAngles.z + 180), 0.25f, RotateMode.FastBeyond360);
@@ -423,7 +422,7 @@ public class BoardManager : MonoBehaviour
     }
     public void RotatePauseButton()
     {
-        PauseButtonArm.transform.DOLocalRotate(new Vector3(0f, 0f, PauseButtonArm.transform.localRotation.eulerAngles.z + 180), 0.1f, RotateMode.FastBeyond360); 
+        PauseButtonArm.transform.DOLocalRotate(new Vector3(0f, 0f, PauseButtonArm.transform.localRotation.eulerAngles.z + 180), 0.1f, RotateMode.FastBeyond360);
     }
 
     public void RotateFieldCard(OneCardManager c)
@@ -452,17 +451,17 @@ public class BoardManager : MonoBehaviour
             //c.frame.transform.rotation = 
 
             c.frame.transform.rotation = Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y);
-            mySequence.Append(c.frame.transform.DORotateQuaternion(Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y),0f));
+            mySequence.Append(c.frame.transform.DORotateQuaternion(Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y), 0f));
             //mySequence.Append(c.frame.transform.DORotate(new Vector3(270, 0, 0), 0.0f));
             mySequence.Append(c.frame.transform.DORotateQuaternion(c.frame.transform.rotation * Quaternion.Euler(0, 0, 180), 0.25f));
 
             //mySequence.Append(c.frame.transform.DORotateQuaternion(Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y), 0f));
-            
+
 
 
             DOTween.Play(mySequence);
 
-            
+
             //goal is to get card rotation y to 180 so that its not half rotated
 
             //RotateFieldCard(c);
@@ -473,7 +472,7 @@ public class BoardManager : MonoBehaviour
         foreach (OneCardManager cc in AllCards)
         {
             cc.frame.transform.rotation = Quaternion.Euler(270, 180, GameManager.Instance.camera.transform.rotation.eulerAngles.y);
-            cc.updateArrows(cc.arrows);        
+            cc.updateArrows(cc.arrows);
         }
     }
 
@@ -525,7 +524,7 @@ public class BoardManager : MonoBehaviour
     public IEnumerator DealOutFieldCards(float delay)
     {   // itterates through the emptycardslot list and spawns cards at each.
         // coud convert list to array, go through array and delte list.
-        
+
         OneCardManager card;
         int count = EmptyCardSlots.Count;
         if (fieldCardAssets.Count <= 6)
@@ -539,7 +538,7 @@ public class BoardManager : MonoBehaviour
         {
             for (int i = EmptyCardSlots.Count - 1; i >= 0; i--)
             {
-                AudioManager.instance.Play("dealCardSound");
+                AudioManager.instance.PlaySound("DealCard");
                 //FindObjectOfType<AudioManager>().Play("cardPlace1");
 
                 Vector2 newPos = EmptyCardSlots[i].transform.position;
@@ -569,7 +568,7 @@ public class BoardManager : MonoBehaviour
     }
     public void DeleteCard(OneCardManager card)
     {
-       Debug.Log("DeletingCard");
+        Debug.Log("DeletingCard");
         ChatBot2.text = ChatBot2.text + "\n" + System.DateTime.Now.ToString("hh:mm:ss") + ": : DeleteCard()";
         Debug.Log(card.point.X);
         Debug.Log(card.point.Y);
@@ -638,7 +637,7 @@ public class BoardManager : MonoBehaviour
             //Generate();
             StartCoroutine(DealOutFieldCards(0.2f));
         }
-       
+
 
 
         if (Input.GetKeyDown(KeyCode.Y))

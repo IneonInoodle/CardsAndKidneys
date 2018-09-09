@@ -20,9 +20,8 @@ public class statusEffect
     }
 
 }
+
 public enum statusEffecttype {poisoned,healing,nothing};
-
-
 public enum location { top, bottom, board };
 
 [Flags]
@@ -34,7 +33,6 @@ public enum arrows
     Left = 1 << 2,
     Right = 1 << 3
 }
-
 
 
 //
@@ -58,84 +56,65 @@ public enum arrows
 [RequireComponent(typeof(PlayerInput))]
 
 public class PlayerManager : TurnManager {
-
-    public Transform kidneyLocation;
-    public arrows arrows = arrows.None;
-    private List <statusEffect> statusEffects = new List<statusEffect>();
+    //Player
     public PlayerMover playerMover;
     public PlayerInput playerInput;
-    public HPVisual hpvis;
-    public APVisual apvis;
-    public KidneyVisual kvis;
+    public CharacterAsset CharacterAsset;
+    public location mySide; //top or bottom
+    public location myLocation;
+    private List<statusEffect> statusEffects = new List<statusEffect>();
+    public List<CardAsset> Deck;
 
-    public OneCardManager myCardManager;
-    public GameObject myPlayerCard;
-
-    public CardAsset playerCardAsset;
-    private BoardManager boardManager;
-    public HandVisual handvisual;
-
-    public List <CardAsset> Deck;
-
-    public GameObject PlayerDeck;
-    public GameObject Doctor;
-
-    public Button button;
-
-    public GameObject PortaitGlowObject;
-    public GameObject EndTurnGlowObject;
-    public GameObject ParticalEff;
-    public GameObject PosionEff;
-    public GameObject PotionEff;
-    public Image PosionImage;
-    public Image PotionImage;
-    public Sprite PortraitFull;
-    public Sprite PortraitHalf;
-
-    // Kidneys shit 
-    public GameObject KidneyPrefab;
+    // Player Kidneys
     public List<GameObject> patientKidneys = new List<GameObject>(); //kidneys safe in the patient
     public List<GameObject> playerKidneys = new List<GameObject>();  //kidney on board that player has
 
-    // movement points
-    // need to know which side is theirs
-    // needs to have connections to card Elements?
-
-    
-    public location mySide; //top or bottom
-    public location myLocation;
-    private int maxAp;
-    public int AvailableAp
-    {
-        get { return maxAp; }
-
-        set
-        {
-            if (value <= 4)
-            {
-                maxAp = value;
-            }
-        }
-    }
+    // Player Card
+    public GameObject myPlayerCard;
+    public OneCardManager myCardManager;
+    public arrows arrows = arrows.None;
     public Point point;
+
+    // Player Endzone Images 
+    public Sprite PortraitFull;
+    public Sprite PortraitHalf;
+
+    public Material SpellCardFrameMat;
+    public Sprite SpellCardBackgroundSprite;
+
+    // UI Elements
+    public HPVisual hpvis;
+    public APVisual apvis;
+    public KidneyVisual kvis;
+    public HandVisual handvisual;
+    public GameObject Doctor;
+    public Button button;
+
+    // UI Element Glows
+    public GameObject PortaitGlowObject;
+    public GameObject EndTurnGlowObject;
+
+    // Transforms
+    public Transform kidneyLocation;
+    public GameObject PlayerDeck;
+    
+        // TODO i dont think these 5 are needed
+        public GameObject ParticalEff;
+        public GameObject PosionEff;
+        public GameObject PotionEff;
+    
+    //TODO Add these to Posion and Potion Prefabs
+    public Image PosionImage;
+    public Image PotionImage;
+
+    // Events
     public UnityEvent finishTurnEvent;
 
-    private int turnsWithoutKidney;
-    public int TurnsWithoutKidney
-    {
-        get
-        {
-            return turnsWithoutKidney;
-        }
-        set
-        {
-            turnsWithoutKidney = value;
+    // Private
+    private BoardManager boardManager;
+    // Propertys       
 
-            kvis.TurnsTilyouLoose = 3 - turnsWithoutKidney;
-        }
-    }
-
-    public int actionPoints;
+    private int actionPoints;
     public int ActionPoints
     {
         get
@@ -157,7 +136,6 @@ public class PlayerManager : TurnManager {
                 actionPoints = 4;
 
             apvis.AvailableAp = actionPoints;
-            
 
             if (actionPoints == 0)
             {   
@@ -187,14 +165,13 @@ public class PlayerManager : TurnManager {
             hpvis.AvailableHp = hp;
         }
     }
+
+    // Methods
     
-    public void setAnimationState(bool b)
+    public void enableAnimation(bool b)
     {   
         if (myCardManager != null)
         {
-            Debug.Log("tt");
-            Debug.Log(b);
-
             int s = b == true ? 1 : 0;
             myCardManager.animator.speed = s;
         }
@@ -211,9 +188,7 @@ public class PlayerManager : TurnManager {
                 Debug.Log(gm.selectionManager.points.Count);
                 if (gm.selectionManager.points.Count == 2)
                 {
-                    AudioManager.instance.rePlay("swap");
-                    AudioManager.instance.rePlay("swap");
-                    Debug.Log("swapping");
+                    AudioManager.instance.PlaySound("DealCard");
                     boardManager.SwapCard(gm.selectionManager.points[0], gm.selectionManager.points[1]);
                     BoardManager.Instance.UpdateCards();
                 } else
@@ -229,7 +204,7 @@ public class PlayerManager : TurnManager {
                 if (gm.selectionManager.points.Count == 1)
                 {
                     Debug.Log("here");
-                    AudioManager.instance.rePlay("rotate");
+                    AudioManager.instance.PlaySound("RotateSpellCard");
                     boardManager.RotateArrows(gm.selectionManager.points[0]);
                     BoardManager.Instance.UpdateCards();
                 } else
@@ -242,7 +217,7 @@ public class PlayerManager : TurnManager {
                 yield return StartCoroutine(gm.selectionManager.getSelectionNoPlayers(2));
                 if (gm.selectionManager.points.Count == 2)
                 {
-                    AudioManager.instance.rePlay("replace2");
+                    AudioManager.instance.PlaySound("DealCard");
                     boardManager.Replace2(gm.selectionManager.points[0], gm.selectionManager.points[1]);
                     BoardManager.Instance.UpdateCards();
                 } else
@@ -251,7 +226,7 @@ public class PlayerManager : TurnManager {
                 }
                 break;
             case "Poison":
-                AudioManager.instance.rePlay("poison");
+                AudioManager.instance.PlaySound("Poison");
                 //GameManager.Instance.getOtherPlayer(this).takeDamage(5) ;
                 Vector3 ApLocation = boardManager.transform.position;
                 //GameManager.Instance.getOtherPlayer(this).takeDamage(2);
@@ -263,20 +238,20 @@ public class PlayerManager : TurnManager {
                 StartCoroutine(posionEffekt(PosionImage,st));
                 break;
             case "Damage":
-                AudioManager.instance.rePlay("damage");
+                AudioManager.instance.PlaySound("DamageSpellCard");
                 Vector3 ApLocation2 = boardManager.transform.position;
                 DamageEffect ddd = new DamageEffect();
                 ddd.CreatePoisonEffect(PosionEff, handvisual.PlayPreviewSpot.transform.position, GameManager.Instance.getOtherPlayer(GameManager.Instance.CurrentPlayerTurn).hpvis.Box.transform.position);
                 StartCoroutine(damageEffekt());
                 break;
             case "Health":
-                AudioManager.instance.rePlay("health");
+                AudioManager.instance.PlaySound("HealSpellCard");
                 DamageEffect dd = new DamageEffect();
                 dd.CreatePotionEffect(PotionEff, handvisual.PlayPreviewSpot.transform.position, GameManager.Instance.CurrentPlayerTurn.hpvis.Box.transform.position);
                 StartCoroutine(healingEffekt());
                 break;
             case "Potion":
-                AudioManager.instance.rePlay("potion");
+                AudioManager.instance.PlaySound("Potion");
                 //GameManager.Instance.CurrentPlayerTurn.Hp += 5;
                 statusEffect st2 = new statusEffect(statusEffecttype.healing, 3, 2);
                 statusEffects.Add(st2);
@@ -286,7 +261,7 @@ public class PlayerManager : TurnManager {
                 StartCoroutine(potionEffekt(PotionImage, st2));
                 break;
             case "Boost":
-                AudioManager.instance.rePlay("boost");
+                AudioManager.instance.PlaySound("BoostSpellCard");
                 Debug.Log("Boost");
                 ActionPoints++;
                 BoardManager.Instance.UpdateCards();
@@ -347,17 +322,15 @@ public class PlayerManager : TurnManager {
             if (s.St == statusEffecttype.poisoned)
             {
                 l = s.Val * s.Rounds;
-                //PosionImage.color = new Color(255f, 0f, 255f);
             }
-
-
         }
 
         hpvis.EffectAmount = l;
     }
 
     public void RotateElements()
-    {   // buttons
+    {   
+        // buttons
         hpvis.HpText.transform.DOLocalRotate(new Vector3(0f, 0f, hpvis.HpText.transform.localRotation.eulerAngles.z + 180), 0f, RotateMode.FastBeyond360);
         button.transform.DOLocalRotate(new Vector3(0f, 0f, button.transform.localRotation.eulerAngles.z + 180), 0f, RotateMode.FastBeyond360);
 
@@ -371,8 +344,6 @@ public class PlayerManager : TurnManager {
         int damageOrHeal = 0;
         for (int i=0; i< statusEffects.Count; i++) 
         {
-
-            Debug.Log("whatsyourflavorxx");
             statusEffect s = statusEffects[i];
             
             if (s.St == statusEffecttype.healing)
@@ -418,7 +389,6 @@ public class PlayerManager : TurnManager {
     }
     public void MoveKidneyFromCardToDoctor()
     {
-
         if (playerKidneys.Count > 0) // check if kidney on card and if player has room for kidney
         {
             Debug.Log("MoveKidneyFromDoctorToCard");
@@ -444,12 +414,11 @@ public class PlayerManager : TurnManager {
         if (myLocation == location.board)
         myCardManager.CardFaceGlowObject.SetActive(false);
 
-        AvailableAp = 1;
         Debug.Log("actionpoints0");
         ActionPoints = 0;
 
         apvis.AvailableAp = ActionPoints;
-        apvis.TotalAp = AvailableAp;
+        apvis.TotalAp = 1;
 
         Hp = 10;
         if (myLocation == location.board)
@@ -548,8 +517,9 @@ public class PlayerManager : TurnManager {
 
                 mySequence.Append(playerKidneys[0].transform.DOMove(new Vector3(cardslot.transform.position.x, transform.position.y + 6, transform.position.z), 1.2f));
                 mySequence.Append(playerKidneys[0].transform.DOMove(pos, 1.2f));
-                //AudioManager.instance.Play("dropKidney");
-                //AudioManager.instance.Play("splat");
+
+                AudioManager.instance.PlaySound("DropKidney");
+                
                 DOTween.Play(mySequence);
 
                 playerKidneys.Remove(playerKidneys[0]);
@@ -647,7 +617,7 @@ public class PlayerManager : TurnManager {
                 otherPlayer.patientKidneys[0].transform.localScale = new Vector3(0.11f, 0.11f, 0.11f);
                 
                 otherPlayer.patientKidneys.Remove(playerKidneys[0]);
-                //AudioManager.instance.Play("stealKidneySound");
+                AudioManager.instance.PlaySound("StealKidney");
 
             }
         }
@@ -720,25 +690,33 @@ public class PlayerManager : TurnManager {
 
     public void raiseAp()
     {
-
         Vector3 ApLocation = new Vector3(0, 0, 0);
         Debug.Log("RaisAP max ap is");
-        Debug.Log(AvailableAp);
-        if (AvailableAp < 4) { 
-            ApLocation = apvis.ActionPoints[AvailableAp].transform.position;
-        StartCoroutine(AddAvailableApp());
+        Debug.Log(ActionPoints);
+        if (ActionPoints < 4) { 
+            ApLocation = apvis.ActionPoints[ActionPoints].transform.position;
+        StartCoroutine(AddMaxApp());
         DamageEffect.CreateMoveEffect(ParticalEff, myPlayerCard.transform.position, ApLocation);
          }
     }
 
 
-    public IEnumerator AddAvailableApp()
+    public IEnumerator AddMaxApp()
     {
-        Debug.Log("ADDING AP!!");
         yield return new WaitForSeconds(1f);
-        AvailableAp++;
-        apvis.TotalAp = AvailableAp;
         
+        Debug.Log(apvis.TotalAp);
+        apvis.TotalAp = apvis.TotalAp+1;
+    }
+
+
+    public void readFromCharAsset()
+    {
+        PortraitFull = CharacterAsset.PortraitFull;
+        PortraitHalf = CharacterAsset.PortaitHalf;
+
+        SpellCardBackgroundSprite = CharacterAsset.SpellCardBackgroundSprite;
+        SpellCardFrameMat = CharacterAsset.SpellCardFrameMat;
     }
 
     /*public void TakeDamage(int amount, int healthAfter)
@@ -766,15 +744,16 @@ public class PlayerManager : TurnManager {
         boardManager = BoardManager.Instance;
 
         kvis.AvailableKidneys = 1;
-        AvailableAp = 1;
-        apvis.TotalAp = AvailableAp;
+        ActionPoints = 1;
+        apvis.TotalAp = ActionPoints;
         ActionPoints = 1;
         
         Hp = 10;
-        // for testing // this spawns a player card
 
-        // instantate kideny object and assign add it to the list 
-        patientKidneys.Add(Instantiate(KidneyPrefab));
+        // for testing // this spawns a player card
+        // instantiate kidney object and assign add it to the list 
+
+        patientKidneys.Add(Instantiate(GameManager.Instance.KidneyPrefab));
         
         //patientKidneys[0].transform.position = KidneyLocation.transform.position;
         patientKidneys[0].transform.rotation = Quaternion.Euler(90f,0f,0f);//set kidney to proper place and //parent kidney
@@ -816,6 +795,7 @@ public class PlayerManager : TurnManager {
         //playerInput.InputEnabled = true;
         playerMover = GetComponent<PlayerMover>();
         playerInput = GetComponent<PlayerInput>();
+        readFromCharAsset();
     }
     // Use this for initialization
     void Start () {

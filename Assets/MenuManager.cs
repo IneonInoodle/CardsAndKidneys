@@ -22,6 +22,7 @@ public class MenuManager : MonoBehaviour
     public Image copyrightText;
 
     public Camera myCamera;
+
     public GameObject ZoomLocation;
     public GameObject MenuSceneButtons;
 
@@ -42,15 +43,11 @@ public class MenuManager : MonoBehaviour
     public void zoomCamera(float delay)
     {
         myCamera.transform.DOMove(new Vector3(ZoomLocation.transform.position.x, ZoomLocation.transform.position.y, ZoomLocation.transform.position.z), delay);
-
-
-
     }
     // Use this for initialization
     void Start()
     {
-        //AudioManager.instance.Stopall();
-        AudioManager.instance.rePlay("GameMenu");
+        AudioManager.instance.PlaySound("MainGameMusic");
         MenuSceneButtons.SetActive(false);
     }
 
@@ -80,19 +77,12 @@ public class MenuManager : MonoBehaviour
 
         yield return null;
     }
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            StartCoroutine(DoStartEffects());
-        }
-    }
 
     private void OnMouseDown()
     {
-        AudioManager.instance.rePlay("Dooropen");
-        MenuSceneButtons.SetActive(true);
+        AudioManager.instance.PlaySound("DoorOpen");
+
         StartCoroutine(DoStartEffects());
+        MenuSceneButtons.SetActive(true);
     }
 }
