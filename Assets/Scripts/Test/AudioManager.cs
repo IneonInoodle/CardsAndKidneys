@@ -170,23 +170,27 @@ public class AudioManager : MonoBehaviour
             ss = player2Sounds;
         } 
 
-        switch (name)
+        if (ss != null)
         {
-            default:
-                for (int i = 0; i < ss.Length; i++)
-                {   
-                    if (ss[i] != null)
+            switch (name)
+            {
+                default:
+                    for (int i = 0; i < ss.Length; i++)
                     {
-                        s = Array.Find(ss[i], sound => sound.name.Contains(name));
-                        if (s != null)
-                        { //set to random inside of Array
-                            s = ss[i][UnityEngine.Random.Range(0, ss[i].Length)];
-                            break;
+                        if (ss[i] != null)
+                        {
+                            s = Array.Find(ss[i], sound => sound.name.Contains(name));
+                            if (s != null)
+                            { //set to random inside of Array
+                                s = ss[i][UnityEngine.Random.Range(0, ss[i].Length)];
+                                break;
+                            }
                         }
                     }
-                }
                 break;
+            }
         }
+        
         return s;
 
     }

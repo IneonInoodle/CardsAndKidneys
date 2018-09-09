@@ -694,7 +694,7 @@ public class PlayerManager : TurnManager {
         Debug.Log("RaisAP max ap is");
         Debug.Log(ActionPoints);
         if (ActionPoints < 4) { 
-            ApLocation = apvis.ActionPoints[ActionPoints].transform.position;
+            ApLocation = apvis.ActionPoints[apvis.TotalAp].transform.position;
         StartCoroutine(AddMaxApp());
         DamageEffect.CreateMoveEffect(ParticalEff, myPlayerCard.transform.position, ApLocation);
          }

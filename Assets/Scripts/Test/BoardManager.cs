@@ -750,13 +750,17 @@ public class BoardManager : MonoBehaviour
             GameManager.Instance.CurrentPlayerTurn.button.interactable = true;
         HighlightableCards = GetValidMovesDist(GameManager.Instance.CurrentPlayerTurn.point, GameManager.Instance.CurrentPlayerTurn.arrows, GameManager.Instance.CurrentPlayerTurn.ActionPoints);
 
-
         if (GameManager.Instance.CurrentPlayerTurn.ActionPoints == 0)
         {
             SelectableCards.Clear();
         }
 
-
+        // bring forward all selectable moves
+        // if not already brought forward 
+            //bring forward
+            //fade grey
+        // push back all non selectable moves
+            // if brought forward, push back and grey out
 
         foreach (OneCardManager c in SelectableCards)
         {
@@ -772,6 +776,7 @@ public class BoardManager : MonoBehaviour
         }
 
 
+        /* Do I really want this in game?
         foreach (OneCardManager c in HighlightableCards)
         {
             if (c.cardAsset.Type == CardType.Hp ||
@@ -780,7 +785,7 @@ public class BoardManager : MonoBehaviour
             {
                 c.CardFaceInnerGlowImage.enabled = true;
             }
-        }
+        }*/
 
         HighlightArrows();
         HighlightEndZones();
@@ -789,6 +794,30 @@ public class BoardManager : MonoBehaviour
         Top.GetComponent<EndzoneManager>().setEndZoneArrows();
         Bottom.GetComponent<EndzoneManager>().setEndZoneArrows();
 
+        BringCardsForwardOrBack();
+
+    }
+    // Bring Cards Forward and ungreys them out.
+    public void BringCardsForwardOrBack()
+    {
+        foreach (OneCardManager card in AllCards)
+        {
+            if (card.CardFaceInnerGlowImage.enabled == true)
+            {
+                card.transform.DOMoveY(0.5f, 1f);
+                card.CardGreyOutImage.enabled = false;
+            }   else
+            {
+                card.transform.DOMoveY(0.1f, 1f);
+                card.CardGreyOutImage.enabled = true;
+            }
+        }
+
+        if (GameManager.Instance.CurrentPlayerTurn.myCardManager != null)
+        {
+            GameManager.Instance.CurrentPlayerTurn.myPlayerCard.transform.DOMoveY(0.5f, 1f);
+            GameManager.Instance.CurrentPlayerTurn.myCardManager.CardGreyOutImage.enabled = false;
+        }
     }
 
     public void HighlightEndZones()

@@ -21,6 +21,7 @@ public class OneCardManager : MonoBehaviour {
     public Image CardTypeImage;
 
     public Image CardGraphicImage;
+
     public Image CardBodyImage;
     public Image DamageImage;
 
@@ -238,8 +239,6 @@ public class OneCardManager : MonoBehaviour {
             isMoveOption = value;
             CardFaceGlowObject.SetActive(value);
         }
-
-
     }
 
     public void ReadCardFromAsset()
@@ -264,21 +263,6 @@ public class OneCardManager : MonoBehaviour {
             animator.speed = 2;
             animator.Play("idle");
   
-            /*
-            AnimatorOverrideController animatorOverrideController;
-            animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
-            animator.runtimeAnimatorController = animatorOverrideController;
-
-
-            animatorOverrideController["idle"] = cardAsset.idleClip;
-            Debug.Log("setting idle Animation clip");
-            */
-
-
-
-
-
-
             AnimatorOverrideController aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
             var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
             foreach (var a in aoc.animationClips)
@@ -289,7 +273,6 @@ public class OneCardManager : MonoBehaviour {
                 
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
-
 
         } else
         {
